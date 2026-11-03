@@ -1,5 +1,7 @@
 "use client";
 
+import "./community-share.css";
+
 import { useState, type ChangeEvent } from "react";
 import Link from "next/link";
 
