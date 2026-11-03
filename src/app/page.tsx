@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import Link from "next/link";
 
 type Game = {
@@ -32,6 +32,37 @@ const games: Game[] = [
 
 const categories = ["Tout", "Action", "Aventure", "Course", "Réflexion", "Stratégie", "Simulation"];
 
+const BACKUP_FORMAT = "nexus-games-player-backup";
+const BACKUP_STORAGE_KEYS = [
+  "nexus-games-favorites", "nexus-games-player-name", "nexus-platform-city-visited",
+  "nexus-city-save-v1", "nexus-neon-dodge-best", "nexus-creator-creations-v1",
+  "nexus-community-games-v1", "nexus-community-liked-v1"
+] as const;
+
+function validateBackupData(data: unknown): data is Record<string, string> {
+  if (!data || typeof data !== "object" || Array.isArray(data)) return false;
+  const entries = Object.entries(data as Record<string, unknown>);
+  if (entries.length === 0 || entries.length > BACKUP_STORAGE_KEYS.length) return false;
+  for (const [key, value] of entries) {
+    if (!BACKUP_STORAGE_KEYS.includes(key as typeof BACKUP_STORAGE_KEYS[number]) || typeof value !== "string" || value.length > 600000) return false;
+    if (key === "nexus-games-player-name") { if (value.length > 24) return false; continue; }
+    if (key === "nexus-platform-city-visited") { if (value !== "1") return false; continue; }
+    if (key === "nexus-neon-dodge-best") { if (!Number.isFinite(Number(value)) || Number(value) < 0) return false; continue; }
+    let parsed: unknown;
+    try { parsed = JSON.parse(value); } catch { return false; }
+    if (key === "nexus-games-favorites" && (!Array.isArray(parsed) || !parsed.every(item => Number.isInteger(item)))) return false;
+    if ((key === "nexus-creator-creations-v1" || key === "nexus-community-games-v1") && (!Array.isArray(parsed) || parsed.length > 100)) return false;
+    if (key === "nexus-community-liked-v1" && (!Array.isArray(parsed) || !parsed.every(item => typeof item === "string"))) return false;
+    if (key === "nexus-city-save-v1") {
+      if (!parsed || typeof parsed !== "object" || !("job" in parsed) || !("vehicle" in parsed) || !("cash" in parsed) || !("level" in parsed) || !("pos" in parsed) || !("done" in parsed)) return false;
+      const save = parsed as { cash: unknown; level: unknown; pos: unknown; done: unknown };
+      if (typeof save.cash !== "number" || !Number.isFinite(save.cash) || typeof save.level !== "number" || !Number.isFinite(save.level) || !Array.isArray(save.done) || !save.pos || typeof save.pos !== "object") return false;
+    }
+  }
+  return true;
+}
+
+
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("Tout");
   const [sortOrder, setSortOrder] = useState("featured");
@@ -44,6 +75,7 @@ export default function Home() {
   const [cityVisited, setCityVisited] = useState(false);
   const [createdGames, setCreatedGames] = useState(0);
   const [communityGames, setCommunityGames] = useState(0);
+  const [backupNotice, setBackupNotice] = useState("");
 
   useEffect(() => {
     try {
@@ -107,6 +139,45 @@ export default function Home() {
     { id: "collector-plus", name: "Super collection", icon: "♥", detail: "Ajouter 5 jeux en favoris", earned: favorites.length >= 5 }
   ];
   const earnedBadges = playerBadges.filter((badge) => badge.earned).length;
+
+  function exportPlayerBackup() {
+    try {
+      const data: Record<string, string> = {};
+      for (const key of BACKUP_STORAGE_KEYS) {
+        const value = window.localStorage.getItem(key);
+        if (value !== null) data[key] = value;
+      }
+      const backup = { format: BACKUP_FORMAT, version: 1, createdAt: new Date().toISOString(), data };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "nexus-games-sauvegarde.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setBackupNotice("Sauvegarde exportée. Garde le fichier dans un endroit sûr.");
+    } catch {
+      setBackupNotice("Impossible d'exporter la sauvegarde sur cet appareil.");
+    }
+  }
+
+  async function importPlayerBackup(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (file.size > 5000000) { setBackupNotice("Fichier trop volumineux : limite de 5 Mo."); return; }
+    try {
+      const parsed: unknown = JSON.parse(await file.text());
+      if (!parsed || typeof parsed !== "object" || !("format" in parsed) || parsed.format !== BACKUP_FORMAT || !("version" in parsed) || parsed.version !== 1 || !("data" in parsed) || !validateBackupData(parsed.data)) throw new Error("Sauvegarde invalide");
+      for (const [key, value] of Object.entries(parsed.data)) window.localStorage.setItem(key, value);
+      window.location.reload();
+    } catch {
+      setBackupNotice("Import refusé : ce fichier n'est pas une sauvegarde Nexus Games valide.");
+    }
+  }
+
   const filteredGames = useMemo(() => {
     const filtered = games.filter((game) => {
       const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
