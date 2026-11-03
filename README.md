@@ -1,4 +1,4 @@
-# Nexus Games 2.4.0
+# Nexus Games 2.5.0
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
@@ -68,3 +68,12 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Outils de remplissage des cases vides et d'annulation de la dernière modification.
 - Nouveaux éléments intégrés à la validation et à l'export/import des projets.
 - Les anciennes créations restent compatibles ; les projets sont toujours stockés localement.
+
+
+## Nouveautés 2.5.0 — Online Foundation
+- Nouvelle page Nexus Network accessible depuis le hub.
+- Point de contrôle API `GET /api/health` sans cache.
+- Contrats TypeScript versionnés pour les profils et enveloppes de sauvegarde.
+- Export local JSON versionné depuis la page Network, sans transfert réseau.
+- Comptes, synchronisation cloud, galerie publique et classements mondiaux explicitement non activés.
+- Documentation des prérequis de sécurité avant toute mise en service d'un backend.
