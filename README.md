@@ -1,5 +1,13 @@
 # Nexus Games — BÊTA
 
+## Version bêta 0.0.1.3
+- Niveaux de joueur calculés à partir des XP gagnés dans les Défis Nexus
+- Quatre badges à débloquer selon les actions du joueur
+- Tableau de progression personnel avec niveau et XP
+- Progression conservée localement sur l'appareil ; aucun classement mondial ni compte en ligne
+
+# Nexus Games — BÊTA
+
 ## Version bêta 0.0.1.2
 - Cycle jour/nuit et météo évolutive dans Nexus City (ensoleillé, nuageux, pluie)
 - Ajout des Défis Nexus sur la plateforme : profil, collection de favoris et découverte de Nexus City
