@@ -1,5 +1,13 @@
 # Nexus Games — BÊTA
 
+## Version bêta 0.0.1.5 — Nexus Creator Studio
+- Nouvel espace Creator Studio pour concevoir une petite scène de jeu 2D avec une grille et une palette d'objets
+- Aperçu jouable avec déplacement du personnage au clavier et sur les commandes tactiles
+- Brouillons et créations enregistrés localement dans le navigateur
+- Publication locale dans « Mes créations » ; le partage public entre joueurs nécessite encore un backend et des comptes en ligne
+
+# Nexus Games — BÊTA
+
 ## Version bêta 0.0.1.4
 - Nexus City ajoute des activités de monde ouvert et des objets interactifs
 - Un système de recherche à cinq étoiles réagit aux actions du joueur
