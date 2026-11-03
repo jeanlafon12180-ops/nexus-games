@@ -351,3 +351,11 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 .ncity-refuel{margin-top:10px;padding:10px 13px;border:1px solid #9be56455;border-radius:4px;background:#9be56412;color:#9be564;font-size:9px;font-weight:900;letter-spacing:.6px;cursor:pointer}
 .ncity-fuel-track{height:6px;margin-top:9px;overflow:hidden;border-radius:5px;background:#ffffff16}
 .ncity-fuel-track span{display:block;height:100%;border-radius:5px;background:#9be564;transition:width .2s}
+
+
+/* Nexus Games 0.0.4.0 — tri et gestion de bibliothèque */
+.library-sort{display:flex;align-items:center;gap:7px;color:#8f9c91;font-size:8px;font-weight:900;letter-spacing:1px;white-space:nowrap}
+.library-sort select{max-width:140px;padding:10px;border:1px solid var(--line);border-radius:4px;background:#0b100d;color:#dce7dd;font:10px 'DM Sans'}
+.library-clear{margin-top:12px;padding:9px 12px;border:1px solid #ffffff24;border-radius:4px;background:#0b100d;color:#aeb9b0;font-size:8px;font-weight:900;letter-spacing:.7px;cursor:pointer}
+.library-clear:disabled{opacity:.35;cursor:not-allowed}
+@media(max-width:680px){.section-heading{align-items:flex-start;flex-direction:column}.library-sort{width:100%}.library-sort select{flex:1;max-width:none}}
