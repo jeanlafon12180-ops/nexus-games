@@ -1,13 +1,13 @@
 # Nexus Games — BÊTA
 
-## Version bêta 0.0.5.0 — Succès et progression
-- Deux défis supplémentaires liés à Creator Studio et à la galerie
-- XP attribués lorsque le joueur enregistre une création ou découvre la galerie
-- Trois nouveaux badges : Créateur, Galeriste et Super collection
-- Ajout du niveau Mythique au système de progression
-- Les succès restent calculés localement sur l'appareil
+## Version bêta 0.0.6.0 — Expérience mobile
+- Navigation compacte et défilante sur petit écran
+- Réorganisation du tableau de bord, des statistiques et du catalogue sur mobile
+- Ajustements des tailles de texte, boutons et espacements pour écran tactile
+- Correction du seuil du niveau Mythique afin qu'il soit atteignable avec tous les défis
+- Les commandes tactiles de Nexus City et Creator Studio restent disponibles
 
-# Nexus Games — BÊTA
+ Nexus Games — BÊTA
 
 ## Version bêta 0.0.4.0 — Bibliothèque améliorée
 - Tri du catalogue par ordre alphabétique, catégorie ou disponibilité
