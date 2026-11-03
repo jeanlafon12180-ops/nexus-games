@@ -56,3 +56,11 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Annulation de la dernière modification dans l'éditeur.
 - Nouveaux éléments pris en charge par la validation des projets et les fichiers JSON.
 - Nexus City, Neon Dodge et les sauvegardes joueur restent conservés.
+
+
+## 2.5.0 — Online Foundation
+- Ajout de la page Nexus Network et de son contrôle de disponibilité API.
+- Ajout de `GET /api/health` et des contrats versionnés pour les futurs profils et sauvegardes.
+- Export local de données allowlistées au format JSON versionné.
+- Documentation des prérequis de sécurité et des futures étapes backend.
+- Les comptes, sauvegardes cloud, galerie publique et classements mondiaux ne sont pas activés.
