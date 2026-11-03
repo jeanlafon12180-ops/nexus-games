@@ -42,12 +42,18 @@ export default function Home() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [storageReady, setStorageReady] = useState(false);
   const [cityVisited, setCityVisited] = useState(false);
+  const [createdGames, setCreatedGames] = useState(0);
+  const [communityGames, setCommunityGames] = useState(0);
 
   useEffect(() => {
     try {
       const savedFavorites = window.localStorage.getItem("nexus-games-favorites");
       const savedName = window.localStorage.getItem("nexus-games-player-name");
       setCityVisited(window.localStorage.getItem("nexus-platform-city-visited") === "1");
+      const creatorData = JSON.parse(window.localStorage.getItem("nexus-creator-creations-v1") || "[]");
+      const communityData = JSON.parse(window.localStorage.getItem("nexus-community-games-v1") || "[]");
+      setCreatedGames(Array.isArray(creatorData) ? creatorData.length : 0);
+      setCommunityGames(Array.isArray(communityData) ? communityData.length : 0);
       if (savedFavorites) {
         const parsed: unknown = JSON.parse(savedFavorites);
         if (Array.isArray(parsed) && parsed.every((item) => typeof item === "number")) setFavorites(parsed);
@@ -73,7 +79,9 @@ export default function Home() {
   const challenges = [
     { id: "profile", title: "Personnaliser ton pseudo", detail: "Choisis une identité de joueur.", points: 50, complete: playerName.trim().length > 0 && playerName !== "Joueur Nexus" },
     { id: "favorites", title: "Créer ta collection", detail: "Ajoute au moins 3 jeux en favoris.", points: 100, complete: favorites.length >= 3 },
-    { id: "city", title: "Explorer Nexus City", detail: "Lance le jeu de simulation.", points: 75, complete: cityVisited }
+    { id: "city", title: "Explorer Nexus City", detail: "Lance le jeu de simulation.", points: 75, complete: cityVisited },
+    { id: "creator", title: "Créer ton premier jeu", detail: "Enregistre une création dans Creator Studio.", points: 150, complete: createdGames > 0 },
+    { id: "gallery", title: "Découvrir la galerie", detail: "Publie ou importe une création dans la galerie.", points: 100, complete: communityGames > 0 }
   ];
   const nexusXp = challenges.filter((challenge) => challenge.complete).reduce((total, challenge) => total + challenge.points, 0);
   const playerLevels = [
@@ -81,7 +89,8 @@ export default function Home() {
     { name: "Explorateur", minXp: 75, nextXp: 150 },
     { name: "Aventurier", minXp: 150, nextXp: 225 },
     { name: "Vétéran", minXp: 225, nextXp: 350 },
-    { name: "Légende", minXp: 350, nextXp: 350 }
+    { name: "Légende", minXp: 350, nextXp: 500 },
+    { name: "Mythique", minXp: 500, nextXp: 500 }
   ];
   const currentLevel = [...playerLevels].reverse().find((level) => nexusXp >= level.minXp) ?? playerLevels[0];
   const nextLevel = playerLevels.find((level) => level.minXp > nexusXp);
@@ -92,7 +101,10 @@ export default function Home() {
     { id: "profile", name: "Identité Nexus", icon: "✦", detail: "Personnaliser son pseudo", earned: playerName.trim().length > 0 && playerName !== "Joueur Nexus" },
     { id: "collector", name: "Collectionneur", icon: "♥", detail: "Ajouter 3 jeux favoris", earned: favorites.length >= 3 },
     { id: "explorer", name: "Explorateur", icon: "⌖", detail: "Visiter Nexus City", earned: cityVisited },
-    { id: "xp", name: "Premier XP", icon: "★", detail: "Obtenir ses premiers points XP", earned: nexusXp > 0 }
+    { id: "xp", name: "Premier XP", icon: "★", detail: "Obtenir ses premiers points XP", earned: nexusXp > 0 },
+    { id: "creator", name: "Créateur", icon: "✎", detail: "Enregistrer un jeu dans Creator Studio", earned: createdGames > 0 },
+    { id: "gallery", name: "Galeriste", icon: "◇", detail: "Ajouter une création à la galerie", earned: communityGames > 0 },
+    { id: "collector-plus", name: "Super collection", icon: "♥", detail: "Ajouter 5 jeux en favoris", earned: favorites.length >= 5 }
   ];
   const earnedBadges = playerBadges.filter((badge) => badge.earned).length;
   const filteredGames = useMemo(() => {
@@ -130,11 +142,11 @@ export default function Home() {
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.4.0</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.5.0</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.4.0</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.5.0</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
@@ -195,7 +207,7 @@ export default function Home() {
           </section>
 
           <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div><button className="library-clear" onClick={()=>setFavorites([])} disabled={favorites.length===0}>VIDER LES FAVORIS</button></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
-          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.4.0</span><span>© 2026 NEXUS GAMES</span></footer>
+          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.5.0</span><span>© 2026 NEXUS GAMES</span></footer>
         </div>
       </section>
 
