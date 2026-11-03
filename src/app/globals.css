@@ -341,3 +341,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 .community-comment-form{display:flex;gap:6px;margin-top:4px}
 .community-comment-form input{min-width:0;flex:1;padding:9px;border:1px solid var(--line);border-radius:4px;background:#080d0a;color:#f3f7f3;font:10px 'DM Sans'}
 .community-comment-form button{padding:8px 10px;border:1px solid #9be56466;border-radius:4px;background:#9be56412;color:#9be564;font-size:8px;font-weight:900;cursor:pointer}
+
+
+/* Nexus Creator Studio 0.0.2.0 — arrivée et objectifs */
+.creator-tile.tile-goal{background:#315b42;border-color:#9be564;color:#eaffd9}
