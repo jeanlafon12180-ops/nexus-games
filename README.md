@@ -1,21 +1,13 @@
 # Nexus Games — BÊTA
 
-## Version bêta 0.0.1.9 — Interactions communautaires locales
-- Réactions « J'aime » sur les créations de la galerie
-- Commentaires avec pseudo du profil local actif
-- Jusqu'à 20 commentaires conservés par création
-- Export des jeux sans inclure les réactions/commentaires privés de l'appareil
-- Interactions enregistrées localement, sans publication publique ni synchronisation Internet
+## Version bêta 0.0.2.0 — Creator Studio avancé
+- Nouvel objet Arrivée pour définir la fin d'un niveau
+- Les pièces sont récupérées lorsque le joueur passe dessus
+- Les obstacles bloquent le déplacement ; l'arrivée termine la partie
+- Compteur de pièces dans le mode test, commandes clavier et tactiles conservées
+- Import/export Nexus Games accepte le nouvel objet Arrivée
 
  Nexus Games — BÊTA
-
-## Version bêta 0.0.1.3
-- Niveaux de joueur calculés à partir des XP gagnés dans les Défis Nexus
-- Quatre badges à débloquer selon les actions du joueur
-- Tableau de progression personnel avec niveau et XP
-- Progression conservée localement sur l'appareil ; aucun classement mondial ni compte en ligne
-
-# Nexus Games — BÊTA
 
 ## Version bêta 0.0.1.2
 - Cycle jour/nuit et météo évolutive dans Nexus City (ensoleillé, nuageux, pluie)
