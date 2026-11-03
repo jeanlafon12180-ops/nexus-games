@@ -161,3 +161,14 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 
 /* Nexus City v0.0.0.9 — sauvegarde et interactions */
 .ncity-nearby{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 5px 0;padding:10px 12px;border:1px solid #9be56455;background:#9be56410;border-radius:4px;color:#c9d8ca;font-size:8px;letter-spacing:1px}.ncity-nearby button{border:0;border-radius:3px;padding:9px 12px;background:var(--green);color:#10170d;font-size:8px;font-weight:900;letter-spacing:1px;cursor:pointer;white-space:nowrap}.ncity-save-note{font-size:8px;color:#819087;margin-top:8px}@media(max-width:520px){.ncity-nearby{align-items:flex-start;flex-direction:column}.ncity-nearby button{width:100%}}
+
+/* Nexus City 0.0.1.0 */
+.ncity-waypoint{position:absolute;z-index:3;transform:translate(-50%,-50%);width:29px;height:29px;border:2px solid #b9ff83;border-radius:50%;display:grid;place-items:center;color:#b9ff83;font-size:23px;font-weight:900;text-shadow:0 0 12px #9be564;box-shadow:0 0 0 7px rgba(155,229,100,.12),0 0 24px rgba(155,229,100,.55);pointer-events:none;animation:ncity-pulse 1.8s infinite}
+@keyframes ncity-pulse{50%{box-shadow:0 0 0 12px rgba(155,229,100,.03),0 0 28px rgba(155,229,100,.8)}}
+.ncity-explore{display:grid;gap:12px;padding:17px;margin-top:15px;border:1px solid var(--line);border-radius:6px;background:rgba(155,229,100,.035)}
+.ncity-explore p{margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.6}
+.ncity-destinations{display:flex;flex-wrap:wrap;gap:7px}
+.ncity-destinations button{border:1px solid var(--line);background:#111914;color:#aeb9b0;padding:8px 10px;border-radius:4px;font-size:10px;cursor:pointer}
+.ncity-destinations button.selected,.ncity-destinations button:hover{border-color:var(--green);color:var(--green);background:rgba(155,229,100,.1)}
+.ncity-objective{display:block!important;color:var(--green)!important;margin-top:4px}
+@media(max-width:700px){.ncity-destinations button{flex:1 1 42%}.ncity-explore{padding:13px}}
