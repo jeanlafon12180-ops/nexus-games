@@ -139,7 +139,7 @@ export default function CreatorPage() {
     try {
       if (file.size > 250000) throw new Error("Fichier trop volumineux (250 Ko maximum).");
       const parsed: unknown = JSON.parse(await file.text());
-      if (!parsed || typeof parsed !== "object" || !("format" in parsed) || parsed.format !== "nexus-games-creation" || !("game" in parsed)) throw new Error("Ce fichier n'est pas une création Nexus Games.");
+      if (!parsed || typeof parsed !== "object" || !("format" in parsed) || parsed.format !== "nexus-games-creation" || !("version" in parsed) || parsed.version !== 1 || !("game" in parsed)) throw new Error("Ce fichier n'est pas une création Nexus Games.");
       const game = parsed.game as Partial<Creation>;
       const allowed: Tile[] = ["", "player", "platform", "coin", "tree", "enemy", "goal"];
       if (typeof game.title !== "string" || typeof game.description !== "string" || typeof game.genre !== "string" || !Array.isArray(game.tiles) || game.tiles.length !== 70 || !game.tiles.every(tile => allowed.includes(tile as Tile))) throw new Error("Le fichier ne contient pas un niveau valide.");
