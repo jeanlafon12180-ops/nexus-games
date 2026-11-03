@@ -77,3 +77,14 @@
 - [ ] Confirmer que Nexus City, Neon Dodge, Creator Studio et les sauvegardes locales restent accessibles
 - [ ] Exécuter npm test et npm run build
 - [ ] Vérifier le déploiement Vercel
+
+
+## Contrôles 2.7.0
+- [ ] Vérifier /marketplace avec une galerie vide puis remplie
+- [ ] Tester recherche, filtres par genre et fiches détaillées
+- [ ] Ajouter/retirer des favoris puis recharger la page
+- [ ] Confirmer que les favoris utilisent une clé locale distincte et que les anciennes sauvegardes restent intactes
+- [ ] Vérifier les liens Creator Studio, galerie et Marketplace sur mobile et ordinateur
+- [ ] Confirmer qu'aucun achat, paiement ou transfert de création vers un serveur n'est proposé
+- [ ] Exécuter npm test et npm run build
+- [ ] Vérifier le déploiement Vercel
