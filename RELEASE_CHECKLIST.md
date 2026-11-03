@@ -100,3 +100,15 @@
 - [ ] Vérifier l'accès depuis le hub et préserver les jeux et sauvegardes existants
 - [ ] Exécuter npm test et npm run build
 - [ ] Vérifier le déploiement Vercel
+
+
+## Contrôles 2.9.0
+- [ ] Vérifier `/game-engine` sur mobile et ordinateur
+- [ ] Placer, sélectionner, déplacer et supprimer les cinq types d'objets
+- [ ] Tester les déplacements, collisions avec obstacles, collecte de pièces et arrivée
+- [ ] Enregistrer, recharger, exporter et importer une scène JSON valide
+- [ ] Vérifier le refus d'un JSON invalide ou supérieur à 200 Ko
+- [ ] Confirmer l'isolation de `nexus-engine-scenes-v1` et préserver les anciennes sauvegardes
+- [ ] Vérifier l'accès depuis le hub et la disponibilité de Nexus City et Neon Dodge
+- [ ] Exécuter `npm test`, `npm run build` et les tests manuels
+- [ ] Vérifier le déploiement Vercel avant toute annonce de publication
