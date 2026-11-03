@@ -2,7 +2,7 @@ name: Nexus Games CI
 
 on:
   push:
-    branches: [main, release/nexus-games-2.0, release/nexus-games-2.1, release/nexus-games-2.2, release/nexus-games-2.3, release/nexus-games-2.4]
+    branches: [main, release/nexus-games-2.0, release/nexus-games-2.1, release/nexus-games-2.2, release/nexus-games-2.3, release/nexus-games-2.4, release/nexus-games-2.5]
   pull_request:
     branches: [main, release/nexus-games-2.0, release/nexus-games-2.1, release/nexus-games-2.2, release/nexus-games-2.3, release/nexus-games-2.4]
 

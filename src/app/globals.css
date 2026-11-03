@@ -543,3 +543,26 @@ body{background:#070a0f;color:var(--text)}
 .evo-cell.cell-checkpoint{background:#59411f;border-color:#e7b65e}
 .evo-actions button:disabled{opacity:.35;cursor:not-allowed}
 .evo-actions button:not(:disabled):hover,.evo-palette button:hover{border-color:#9be45c}
+
+
+/* Nexus Games 2.5.0 — Online Foundation */
+.network-page{min-height:100vh;padding:0 5vw 45px;background:#080e17;color:#edf3fa;font-family:Arial,sans-serif}
+.network-top{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #202d3d}
+.network-hero{padding:52px 0 35px;max-width:900px}
+.network-hero>span,.network-kicker{color:#9be45c;font-size:10px;font-weight:900;letter-spacing:2px}
+.network-hero h1{font-size:clamp(42px,7vw,76px);line-height:.88;letter-spacing:-2px;margin:17px 0;font-weight:1000}
+.network-hero h1 em{font-style:normal;color:#9be45c}
+.network-hero p{max-width:620px;color:#9eafc1;font-size:14px;line-height:1.7}
+.network-status-panel{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px;border:1px solid #34465b;border-radius:7px;background:#101a27}
+.network-status-panel h2{margin:9px 0;color:#f4f7fb;font-size:23px}
+.network-status-panel p,.network-card p,.network-transfer p{color:#9eafc1;font-size:11px;line-height:1.7}
+.network-state{flex:none;padding:8px 11px;border:1px solid #62748a;border-radius:4px;color:#c7d3df;font-size:9px;font-weight:900;letter-spacing:1px}
+.network-state.is-ready{border-color:#9be45c66;color:#b9f58b}.network-state.is-offline{border-color:#ff9a9a66;color:#ffaaaa}
+.network-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}
+.network-card{display:grid;gap:10px;padding:20px;border:1px solid #273648;border-radius:6px;background:#101a27}
+.network-card>span{color:#9be45c;font-size:9px;font-weight:900;letter-spacing:1.3px}
+.network-card>b{font-size:18px;color:#f4f7fb}.network-card p{margin:0}.network-card small{color:#e7bd78;font-size:8px;font-weight:900;letter-spacing:1px}
+.network-transfer{display:grid;grid-template-columns:1fr auto;align-items:center;gap:15px;margin-top:15px;padding:22px;border:1px solid #34465b;border-radius:7px;background:#0d1622}
+.network-transfer h2{margin:8px 0;color:#f4f7fb;font-size:20px}.network-transfer p{margin:0;max-width:620px}
+.network-transfer .evo-primary{cursor:pointer}.network-notice{grid-column:1/-1;color:#b9f58b!important}
+@media(max-width:650px){.network-page{padding:0 4vw 30px}.network-top{height:62px}.network-hero{padding:35px 0 25px}.network-status-panel{align-items:flex-start;flex-direction:column}.network-grid{grid-template-columns:1fr}.network-transfer{grid-template-columns:1fr}.network-transfer .evo-primary{width:100%}}

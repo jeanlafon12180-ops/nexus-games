@@ -55,3 +55,14 @@
 - [ ] Vérifier l'ouverture des anciens projets 2.2/2.3
 - [ ] Tester les modes plateforme et évitement
 - [ ] Confirmer que Nexus City, Neon Dodge et les sauvegardes joueur restent accessibles
+
+
+## Contrôles 2.5.0
+- [ ] Vérifier l'accès à /online sur mobile et ordinateur
+- [ ] Vérifier que /api/health renvoie le statut foundation-ready et les capacités désactivées
+- [ ] Vérifier l'export JSON local et son contenu allowlisté
+- [ ] Confirmer qu'aucune donnée n'est envoyée à un serveur par l'export
+- [ ] Vérifier que la page affiche clairement l'absence de comptes et de synchronisation cloud
+- [ ] Vérifier que Nexus City, Neon Dodge, Creator Studio et les sauvegardes locales restent accessibles
+- [ ] Exécuter npm test et npm run build
+- [ ] Vérifier le déploiement Vercel
