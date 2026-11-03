@@ -2,9 +2,9 @@ name: Nexus Games CI
 
 on:
   push:
-    branches: [main, release/nexus-games-2.0, release/nexus-games-2.1, release/nexus-games-2.2]
+    branches: [main, release/nexus-games-2.0, release/nexus-games-2.1, release/nexus-games-2.2, release/nexus-games-2.3, release/nexus-games-2.4]
   pull_request:
-    branches: [main, release/nexus-games-2.0, release/nexus-games-2.1, release/nexus-games-2.2, release/nexus-games-2.3]
+    branches: [main, release/nexus-games-2.0, release/nexus-games-2.1, release/nexus-games-2.2, release/nexus-games-2.3, release/nexus-games-2.4]
 
 concurrency:
   group: nexus-games-ci-${{ github.ref }}
