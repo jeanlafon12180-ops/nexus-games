@@ -45,3 +45,13 @@
 - [ ] Exporter puis importer une sauvegarde avec les nouvelles clés
 - [ ] Vérifier qu'un accent ou un historique invalide est refusé
 - [ ] Confirmer que Nexus City, Neon Dodge et Creator Evolution restent accessibles
+
+
+## Contrôles 2.4.0
+- [ ] Vérifier l'affichage de la palette enrichie sur mobile et ordinateur
+- [ ] Placer les quatre nouveaux éléments et vérifier leur rendu
+- [ ] Tester le remplissage des cases vides et l'annulation
+- [ ] Exporter puis importer un projet contenant les nouveaux éléments
+- [ ] Vérifier l'ouverture des anciens projets 2.2/2.3
+- [ ] Tester les modes plateforme et évitement
+- [ ] Confirmer que Nexus City, Neon Dodge et les sauvegardes joueur restent accessibles

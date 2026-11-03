@@ -3,21 +3,21 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
-type Tile = "" | "player" | "platform" | "coin" | "obstacle" | "goal";
+type Tile = "" | "player" | "platform" | "coin" | "obstacle" | "goal" | "spring" | "water" | "gem" | "checkpoint";
 type Mode = "platform" | "dodge";
 type Project = { id: string; title: string; mode: Mode; tiles: Tile[]; updatedAt: string };
 const STORAGE = "nexus-creator-evolution-v1";
 const COUNT = 96;
 const EMPTY: Tile[] = Array.from({ length: COUNT }, (_, i) => i >= 84 ? "platform" : "");
-const VALID: Tile[] = ["", "player", "platform", "coin", "obstacle", "goal"];
+const VALID: Tile[] = ["", "player", "platform", "coin", "obstacle", "goal", "spring", "water", "gem", "checkpoint"];
 
 const copy = {
   fr: {
-    back: "← RETOUR À NEXUS GAMES", kicker: "CREATOR STUDIO · ÉVOLUTION 2.2",
-    titleA: "CONSTRUIS TON", titleB: "PROCHAIN JEU.",
-    intro: "Un atelier 2D plus complet : compose ton niveau, choisis un mode, teste-le et exporte ton projet.",
+    back: "← RETOUR À NEXUS GAMES", kicker: "CREATOR STUDIO · PRO 2.4",
+    titleA: "CRÉE TON", titleB: "PROCHAIN JEU.",
+    intro: "Un atelier 2D amélioré : construis avec de nouveaux éléments, remplis rapidement ton niveau, annule tes actions et teste ton jeu.",
     project: "PROJET", name: "NOM DU JEU", mode: "MODE DE JEU", platform: "Plateforme", dodge: "Évitement",
-    board: "ÉDITEUR DE NIVEAU", palette: "PALETTE", player: "Joueur", ground: "Sol", coin: "Pièce", obstacle: "Obstacle", goal: "Arrivée", erase: "Gomme",
+    board: "ÉDITEUR DE NIVEAU", palette: "PALETTE PRO", player: "Joueur", ground: "Sol", coin: "Pièce", obstacle: "Obstacle", goal: "Arrivée", erase: "Gomme", spring: "Ressort", water: "Eau", gem: "Gemme", checkpoint: "Checkpoint", fill: "REMPLIR", undo: "ANNULER",
     test: "▶ TESTER", edit: "MODE ÉDITION", reset: "EFFACER LE NIVEAU", save: "ENREGISTRER", export: "EXPORTER JSON", import: "IMPORTER JSON",
     library: "MES PROJETS", empty: "Aucun projet enregistré.", load: "OUVRIR", remove: "SUPPRIMER",
     helpPlatform: "Mode plateforme : rejoins le drapeau. Les plateformes et obstacles bloquent le passage.",
@@ -30,11 +30,11 @@ const copy = {
     language: "ENGLISH", private: "Les projets sont enregistrés uniquement dans ce navigateur. L’export JSON permet de les transférer ; la publication publique nécessitera un serveur."
   },
   en: {
-    back: "← BACK TO NEXUS GAMES", kicker: "CREATOR STUDIO · EVOLUTION 2.2",
+    back: "← BACK TO NEXUS GAMES", kicker: "CREATOR STUDIO · PRO 2.4",
     titleA: "BUILD YOUR", titleB: "NEXT GAME.",
-    intro: "A more complete 2D workshop: design a level, choose a mode, play-test it and export your project.",
+    intro: "An upgraded 2D workshop: build with new objects, fill your level quickly, undo edits and play-test your game.",
     project: "PROJECT", name: "GAME TITLE", mode: "GAME MODE", platform: "Platformer", dodge: "Dodge",
-    board: "LEVEL EDITOR", palette: "TOOLBOX", player: "Player", ground: "Ground", coin: "Coin", obstacle: "Obstacle", goal: "Goal", erase: "Eraser",
+    board: "LEVEL EDITOR", palette: "PRO TOOLBOX", player: "Player", ground: "Ground", coin: "Coin", obstacle: "Obstacle", goal: "Goal", erase: "Eraser", spring: "Spring", water: "Water", gem: "Gem", checkpoint: "Checkpoint", fill: "FILL LEVEL", undo: "UNDO",
     test: "▶ PLAY TEST", edit: "EDIT MODE", reset: "CLEAR LEVEL", save: "SAVE PROJECT", export: "EXPORT JSON", import: "IMPORT JSON",
     library: "MY PROJECTS", empty: "No saved projects yet.", load: "OPEN", remove: "DELETE",
     helpPlatform: "Platform mode: reach the flag. Ground and obstacles block your path.",
@@ -54,6 +54,10 @@ const palette: { id: Tile; key: keyof typeof copy.fr; icon: string }[] = [
   { id: "coin", key: "coin", icon: "🪙" },
   { id: "obstacle", key: "obstacle", icon: "👾" },
   { id: "goal", key: "goal", icon: "🏁" },
+  { id: "spring", key: "spring", icon: "🌀" },
+  { id: "water", key: "water", icon: "💧" },
+  { id: "gem", key: "gem", icon: "💎" },
+  { id: "checkpoint", key: "checkpoint", icon: "🚩" },
   { id: "", key: "erase", icon: "⌫" }
 ];
 
@@ -63,6 +67,7 @@ export default function CreatorEvolutionPage() {
   const [title, setTitle] = useState("Mon jeu 2D");
   const [mode, setMode] = useState<Mode>("platform");
   const [tiles, setTiles] = useState<Tile[]>(EMPTY);
+  const [history, setHistory] = useState<Tile[][]>([]);
   const [tool, setTool] = useState<Tile>("platform");
   const [projects, setProjects] = useState<Project[]>([]);
   const [ready, setReady] = useState(false);
@@ -103,13 +108,13 @@ export default function CreatorEvolutionPage() {
     const ny = Math.max(0, Math.min(7, y + dy));
     const next = ny * 12 + nx;
     const cell = tiles[next];
-    if (mode === "platform" && (cell === "platform" || cell === "obstacle")) return;
+    if (mode === "platform" && (cell === "platform" || cell === "obstacle" || cell === "water")) return;
     if (cell === "obstacle") {
       setPlaying(false);
       setNotice(t.hit);
       return;
     }
-    if (cell === "coin") {
+    if (cell === "coin" || cell === "gem") {
       setScore(value => value + 1);
       setTiles(current => current.map((tile, i) => i === next ? "" : tile));
     }
@@ -135,6 +140,26 @@ export default function CreatorEvolutionPage() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [playing, move]);
+
+  const placeTile = (index: number) => {
+    if (playing) return;
+    setHistory(current => [...current.slice(-19), tiles]);
+    setTiles(current => current.map((value, i) => i === index ? tool : value));
+  };
+
+  const fillLevel = () => {
+    if (playing) return;
+    setHistory(current => [...current.slice(-19), tiles]);
+    setTiles(current => current.map(value => value === "" ? tool : value));
+    setNotice(lang === "fr" ? "Les cases vides ont été remplies." : "Empty cells have been filled.");
+  };
+
+  const undo = () => {
+    if (playing || history.length === 0) return;
+    setTiles(history[history.length - 1]);
+    setHistory(current => current.slice(0, -1));
+    setNotice(lang === "fr" ? "Dernière modification annulée." : "Last edit undone.");
+  };
 
   const start = () => {
     const startIndex = tiles.findIndex(tile => tile === "player");
@@ -180,7 +205,7 @@ export default function CreatorEvolutionPage() {
   };
 
   const load = (p: Project) => { setTitle(p.title); setMode(p.mode); setTiles(p.tiles); setPlaying(false); };
-  const tileIcon = (tile: Tile) => tile === "player" ? "🧑" : tile === "coin" ? "🪙" : tile === "obstacle" ? "👾" : tile === "goal" ? "🏁" : "";
+  const tileIcon = (tile: Tile) => tile === "player" ? "🧑" : tile === "coin" ? "🪙" : tile === "obstacle" ? "👾" : tile === "goal" ? "🏁" : tile === "spring" ? "🌀" : tile === "water" ? "💧" : tile === "gem" ? "💎" : tile === "checkpoint" ? "🚩" : "";
   const projectCount = useMemo(() => ready ? projects.length : 0, [ready, projects.length]);
 
   return <main className="evo-page">
@@ -192,10 +217,10 @@ export default function CreatorEvolutionPage() {
         <div className="evo-fields"><label>{t.name}<input value={title} maxLength={40} onChange={e=>setTitle(e.target.value)}/></label><label>{t.mode}<select value={mode} onChange={e=>{setMode(e.target.value as Mode);setPlaying(false);}}><option value="platform">{t.platform}</option><option value="dodge">{t.dodge}</option></select></label></div>
         <div className="evo-panel-head"><h2>02 / {t.board}</h2><span>{t.palette}</span></div>
         <div className="evo-palette">{palette.map(item=><button key={item.key} className={tool===item.id?"selected":""} onClick={()=>{setTool(item.id);setPlaying(false);}}>{item.icon} {t[item.key]}</button>)}</div>
-        <div className="evo-grid" aria-label={t.board}>{tiles.map((tile,index)=><button key={index} disabled={playing} onClick={()=>setTiles(current=>current.map((value,i)=>i===index?tool:value))} className={"evo-cell "+(tile?"cell-"+tile:"")} aria-label={"Tile "+(index+1)}>{playing && index === player ? "🧑" : tileIcon(tile)}</button>)}</div>
+        <div className="evo-grid" aria-label={t.board}>{tiles.map((tile,index)=><button key={index} disabled={playing} onClick={()=>placeTile(index)} className={"evo-cell "+(tile?"cell-"+tile:"")} aria-label={"Tile "+(index+1)}>{playing && index === player ? "🧑" : tileIcon(tile)}</button>)}</div>
         <p className="evo-help">{mode === "platform" ? t.helpPlatform : t.helpDodge}</p>
         {playing && <div className="evo-score">SCORE : {score} {mode === "dodge" ? "/ 5" : ""}</div>}
-        <div className="evo-actions"><button className="evo-primary" onClick={playing?()=>setPlaying(false):start}>{playing?t.edit:t.test}</button><button onClick={()=>{setTiles(EMPTY);setPlaying(false);setScore(0);}}>{t.reset}</button></div>
+        <div className="evo-actions"><button className="evo-primary" onClick={playing?()=>setPlaying(false):start}>{playing?t.edit:t.test}</button><button onClick={fillLevel} disabled={playing}>{t.fill}</button><button onClick={undo} disabled={playing || history.length===0}>{t.undo}</button><button onClick={()=>{setHistory(current=>[...current.slice(-19),tiles]);setTiles(EMPTY);setPlaying(false);setScore(0);}}>{t.reset}</button></div>
         {playing && <div className="evo-pad"><button onClick={()=>move(0,-1)}>↑</button><div><button onClick={()=>move(-1,0)}>←</button><button onClick={()=>move(0,1)}>↓</button><button onClick={()=>move(1,0)}>→</button></div></div>}
         <div className="evo-status" role="status">{notice}</div>
       </section>
@@ -204,6 +229,6 @@ export default function CreatorEvolutionPage() {
         <section className="evo-panel"><div className="evo-panel-head"><h2>{t.library}</h2><span>{projectCount}</span></div>{projects.length===0?<p className="evo-empty">{t.empty}</p>:<div className="evo-projects">{projects.map(p=><article key={p.id}><b>{p.title}</b><small>{p.mode==="platform"?t.platform:t.dodge} · {p.updatedAt?new Date(p.updatedAt).toLocaleDateString(lang==="fr"?"fr-FR":"en-GB"):""}</small><div><button onClick={()=>load(p)}>{t.load}</button><button onClick={()=>exportProject(p)}>{t.export}</button><button onClick={()=>persist(projects.filter(item=>item.id!==p.id))}>{t.remove}</button></div></article>)}</div>}</section>
       </aside>
     </div>
-    <footer className="evo-footer">NEXUS GAMES 2.2.0 · CREATOR EVOLUTION · NEXUS CITY & NEON DODGE REMAIN UNCHANGED</footer>
+    <footer className="evo-footer">NEXUS GAMES 2.4.0 · CREATOR STUDIO PRO · NEXUS CITY & NEON DODGE REMAIN UNCHANGED</footer>
   </main>;
 }

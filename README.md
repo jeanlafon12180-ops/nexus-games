@@ -1,4 +1,4 @@
-# Nexus Games 2.2.0
+# Nexus Games 2.4.0
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
@@ -61,3 +61,10 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Historique local des derniers jeux lancés.
 - Export/import de sauvegarde étendu aux nouvelles préférences du profil et à l'historique.
 - Fonctionnalités locales uniquement, sans compte serveur.
+
+
+## Nouveautés 2.4.0 — Creator Studio Pro
+- Palette enrichie avec ressort, eau, gemme et checkpoint.
+- Outils de remplissage des cases vides et d'annulation de la dernière modification.
+- Nouveaux éléments intégrés à la validation et à l'export/import des projets.
+- Les anciennes créations restent compatibles ; les projets sont toujours stockés localement.

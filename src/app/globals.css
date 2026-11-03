@@ -532,3 +532,14 @@ body{background:#070a0f;color:var(--text)}
 .accent-green{background:#9be45c}.accent-blue{background:#60a5fa}.accent-violet{background:#b59cff}.accent-orange{background:#ffad66}.accent-cyan{background:#5ee7ee}
 .recent-play-panel{display:grid;gap:7px;margin:12px 0 5px;padding:12px;border:1px solid rgba(145,164,185,.2);border-radius:5px;background:#0b1420}
 .recent-play-panel b{font-size:9px;letter-spacing:1px;color:#9be45c}.recent-play-panel span{font-size:10px;color:#b4c1cf}
+
+
+/* Nexus Games 2.4.0 — Creator Studio Pro */
+.evo-palette{gap:8px}
+.evo-palette button{min-height:38px}
+.evo-cell.cell-spring{background:#42336b;border-color:#9e83e8}
+.evo-cell.cell-water{background:#173f62;border-color:#4da9e8}
+.evo-cell.cell-gem{background:#174c50;border-color:#5ee7d5}
+.evo-cell.cell-checkpoint{background:#59411f;border-color:#e7b65e}
+.evo-actions button:disabled{opacity:.35;cursor:not-allowed}
+.evo-actions button:not(:disabled):hover,.evo-palette button:hover{border-color:#9be45c}
