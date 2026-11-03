@@ -17,7 +17,7 @@ type Game = {
   details: string;
 };
 
-const games: Game[] = [
+const games: Game[] = [\n  { id: 10, title: "Nexus City", category: "Simulation", label: "ROLEPLAY", color: "green", icon: "✈", description: "Une ville à explorer et un aéroport à développer.", players: "1 joueur", status: "JOUABLE", slug: "/games/nexus-city", details: "Un univers de simulation original avec métiers, missions et gestion aéroportuaire." },
   { id: 1, title: "Neon Dodge", category: "Action", label: "ARCADE", color: "violet", icon: "✦", description: "Esquive les obstacles et bats ton meilleur score.", players: "1 joueur", status: "JOUABLE", slug: "/games/neon-dodge", details: "Un mini-jeu d'arcade original créé pour Nexus Games. Déplace ton vaisseau, évite les blocs et essaie de survivre le plus longtemps possible." },
   { id: 2, title: "Pixel Raiders", category: "Action", label: "ACTION", color: "orange", icon: "⚔", description: "Une aventure rétro pleine de défis.", players: "1 joueur", status: "BIENTÔT", details: "Une aventure d'action au style rétro. La fiche est prête, le jeu est encore en développement." },
   { id: 3, title: "Orbital", category: "Réflexion", label: "PUZZLE", color: "blue", icon: "◉", description: "Trouve ton chemin parmi les astres.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de réflexion spatial en préparation." },
@@ -29,7 +29,7 @@ const games: Game[] = [
   { id: 9, title: "Green Valley", category: "Stratégie", label: "SIMULATION", color: "green", icon: "♧", description: "Développe une vallée et ses villages.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de gestion paisible en préparation." }
 ];
 
-const categories = ["Tout", "Action", "Aventure", "Course", "Réflexion", "Stratégie"];
+const categories = ["Tout", "Action", "Aventure", "Course", "Réflexion", "Stratégie", "Simulation"];
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("Tout");
@@ -88,11 +88,11 @@ export default function Home() {
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.0.6</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.0.7</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.0.6</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.0.7</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
@@ -107,7 +107,7 @@ export default function Home() {
           </section>
 
           <section className="stats-row" aria-label="Informations sur la plateforme">
-            <div><strong>09</strong><span>JEUX AU<br />CATALOGUE</span></div><div><strong>01</strong><span>JEU HTML5<br />JOUABLE</span></div><div><strong>0€</strong><span>ACCÈS AU<br />PROTOTYPE</span></div><div className="stats-note">UNE PLATEFORME INDÉPENDANTE.<br /><b>PROPULSÉE PAR NEXUS.</b></div>
+            <div><strong>10</strong><span>JEUX AU<br />CATALOGUE</span></div><div><strong>01</strong><span>JEU HTML5<br />JOUABLE</span></div><div><strong>0€</strong><span>ACCÈS AU<br />PROTOTYPE</span></div><div className="stats-note">UNE PLATEFORME INDÉPENDANTE.<br /><b>PROPULSÉE PAR NEXUS.</b></div>
           </section>
 
           <section className="discover-section" id="discover">
@@ -129,7 +129,7 @@ export default function Home() {
           </section>
 
           <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
-          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.0.6</span><span>© 2026 NEXUS GAMES</span></footer>
+          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.0.7</span><span>© 2026 NEXUS GAMES</span></footer>
         </div>
       </section>
 
