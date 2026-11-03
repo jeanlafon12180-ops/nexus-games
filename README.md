@@ -1,13 +1,12 @@
 # Nexus Games — BÊTA
 
-## Version bêta 0.0.7.0 — Sécurité et robustesse
-- Validation stricte des créations restaurées depuis le stockage local
-- Limitation du nombre de projets chargés dans les bibliothèques locales
-- Vérification de la version du format des fichiers Nexus Games importés
-- Validation des tuiles autorisées avant l'affichage d'une création
-- Limitation et nettoyage des pseudos de profils locaux
+## Version bêta 0.0.8.0 — Tests automatisés
+- Ajout d'une suite de tests Node.js pour les fichiers de création Nexus Games
+- Vérification du format, de la version, des métadonnées et des 70 tuiles
+- Workflow GitHub Actions : installation, tests automatisés et compilation Next.js
+- La validation de la compilation reste nécessaire avant chaque promotion de version
 
-# Nexus Games — BÊTA
+ Nexus Games — BÊTA
 
 ## Version bêta 0.0.6.0 — Expérience mobile
 - Navigation compacte et défilante sur petit écran
