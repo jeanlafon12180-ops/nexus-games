@@ -1,6 +1,6 @@
 # Nexus Games 2.0
 
-**Version majeure 2.0.0 — interface joueur Xbox / Steam inspirée.**
+**Version majeure 2.1.0 — interface joueur Xbox / Steam inspirée.**
 
 Nexus Games rassemble un catalogue de jeux, deux jeux originaux jouables, une bibliothèque locale, le Nexus Player Club, Creator Studio et une galerie locale de créations.
 
@@ -10,7 +10,7 @@ Nexus Games rassemble un catalogue de jeux, deux jeux originaux jouables, une bi
 
 Les autres entrées du catalogue sont des fiches de jeux en préparation et ne sont pas annoncées comme jouables.
 
-## Nouveautés 2.0.0
+## Nouveautés 2.1.0
 - Nouvelle expérience d'accueil inspirée des interfaces Xbox et Steam.
 - Accès direct aux deux jeux depuis l'accueil avec des cartes « Reprendre ta partie ».
 - Hub central vers Nexus Creator Studio, la galerie communautaire et le Nexus Player Club.
@@ -38,3 +38,11 @@ npm run build
 
 ## Stack
 Next.js 15 · React 19 · TypeScript · CSS
+
+
+## Nouveautés 2.1.0 — Nexus Save Center
+- Centre de sauvegarde intégré au profil joueur.
+- Export JSON des favoris, du pseudo, de la sauvegarde Nexus City, du record Neon Dodge, des créations et de la galerie locale.
+- Import de sauvegarde sur un autre appareil avec contrôle du format, des clés autorisées, des types et des tailles avant écriture.
+- Les clés de stockage des versions précédentes sont conservées ; aucune migration destructive n'est effectuée.
+- L'import remplace uniquement les données locales présentes dans le fichier de sauvegarde. Exporter une sauvegarde avant tout import est recommandé.
