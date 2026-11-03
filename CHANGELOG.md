@@ -48,3 +48,11 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Historique local des jeux récemment lancés (Nexus City et Neon Dodge).
 - Les nouvelles préférences du profil et l'historique sont inclus dans Nexus Save Center avec validation à l'import.
 - Les données restent locales au navigateur ; aucune identité publique ou synchronisation en ligne n'est annoncée.
+
+
+## 2.4.0 — Creator Studio Pro
+- Palette enrichie : ressort, eau, gemme et checkpoint.
+- Outil de remplissage rapide des cases vides.
+- Annulation de la dernière modification dans l'éditeur.
+- Nouveaux éléments pris en charge par la validation des projets et les fichiers JSON.
+- Nexus City, Neon Dodge et les sauvegardes joueur restent conservés.
