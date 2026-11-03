@@ -4,6 +4,11 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
+## Version bêta 0.0.0.9
+- Sauvegarde locale du métier, véhicule, crédits, missions, niveau d'aéroport et position
+- Interactions contextuelles avec le terminal, le centre de secours, le commissariat, le hangar et le centre-ville
+- Les interactions des bâtiments sélectionnent le métier correspondant
+
 ## Version bêta 0.0.0.8
 - Garage avec cinq choix : à pied, voiture, camion de pompier, voiture de police et avion
 - Déplacement des véhicules avec une vitesse adaptée
