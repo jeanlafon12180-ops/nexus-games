@@ -1,8 +1,10 @@
-# Nexus Games
+# Nexus Games — BÊTA
+
+> **Nexus Games est actuellement en version bêta.** Certaines fonctionnalités sont expérimentales et peuvent évoluer.
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
-## Version 0.0.0.4
+## Version bêta 0.0.0.4
 - Profil joueur local avec pseudo personnalisable
 - Favoris et pseudo conservés entre les visites sur le même navigateur et appareil
 - Indication claire : pas encore de compte en ligne ni de synchronisation multi-appareils
