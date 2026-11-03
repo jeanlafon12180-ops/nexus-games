@@ -393,3 +393,9 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 
 /* Nexus Games 0.0.7.0 — sécurité des données locales */
 .community-cell.tile-goal{background:#315b42;border-color:#9be564}
+
+
+/* Nexus Games 0.0.9.0 — sauvegarde joueur */
+.account-backup{display:grid;gap:8px;margin:18px 0;padding:14px;border:1px solid #9be56433;border-radius:5px;background:#9be56408}
+.account-backup .primary-button{width:100%}
+.account-backup small{color:#9ba89e;font-size:9px;line-height:1.6}
