@@ -72,3 +72,10 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Validation stricte du format et limite de 500 Ko à l'import/export ; les données importées ne sont jamais exécutées.
 - Partage local par fichier uniquement, sans publication ni transfert serveur.
 - Aucun service de multijoueur réseau, compte, chat ou matchmaking n'est activé.
+
+
+## 2.7.0 — Creator Marketplace
+- Ajout de /marketplace pour parcourir les créations locales.
+- Recherche, filtres par genre, fiches détaillées et favoris persistants.
+- Connexion au stockage de la galerie locale existante, sans migration destructive.
+- Aucun achat, paiement, hébergement public ou transfert serveur n'est activé.
