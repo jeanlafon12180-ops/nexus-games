@@ -91,6 +91,41 @@ export default function CreatorPage() {
     persist(next);
     setNotice(publish ? "Jeu publié dans ta bibliothèque locale. Il est visible uniquement sur cet appareil." : "Brouillon enregistré sur cet appareil.");
   };
+  const exportCreation = (item: Creation) => {
+    const payload = { format: "nexus-games-creation", version: 1, game: item };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".nexusgame.json";
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setNotice("Fichier de partage téléchargé. Tu peux l'envoyer à un autre joueur.");
+  };
+
+  const exportCurrent = () => {
+    if (!title.trim()) { setNotice("Ajoute un nom à ton jeu avant l'export."); return; }
+    exportCreation({ id: String(Date.now()), title: title.trim(), description: description.trim(), genre, tiles, publishedAt: new Date().toISOString() });
+  };
+
+  const importCreation = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    try {
+      if (file.size > 250000) throw new Error("Fichier trop volumineux (250 Ko maximum).");
+      const parsed: unknown = JSON.parse(await file.text());
+      if (!parsed || typeof parsed !== "object" || !("format" in parsed) || parsed.format !== "nexus-games-creation" || !("game" in parsed)) throw new Error("Ce fichier n'est pas une création Nexus Games.");
+      const game = parsed.game as Partial<Creation>;
+      const allowed: Tile[] = ["", "player", "platform", "coin", "tree", "enemy"];
+      if (typeof game.title !== "string" || typeof game.description !== "string" || typeof game.genre !== "string" || !Array.isArray(game.tiles) || game.tiles.length !== 70 || !game.tiles.every(tile => allowed.includes(tile as Tile))) throw new Error("Le fichier ne contient pas un niveau valide.");
+      const imported: Creation = { id: String(Date.now()), title: game.title.slice(0,40), description: game.description.slice(0,180), genre: game.genre.slice(0,30), tiles: game.tiles as Tile[], publishedAt: new Date().toISOString() };
+      setTitle(imported.title); setDescription(imported.description); setGenre(imported.genre); setTiles(imported.tiles); setPlaying(false);
+      persist([imported, ...creations.filter(item => item.title !== imported.title)].slice(0,30));
+      setNotice("Création importée avec succès et ajoutée à ta bibliothèque locale.");
+    } catch (error) { setNotice(error instanceof Error ? error.message : "Impossible d'importer ce fichier."); }
+  };
+
   const load = (item: Creation) => {
     setTitle(item.title); setDescription(item.description); setGenre(item.genre);
     setTiles(item.tiles); setPlaying(false); setNotice("Création chargée dans l'éditeur.");
@@ -98,7 +133,7 @@ export default function CreatorPage() {
 
   return <main className="creator-page">
     <div className="creator-top"><Link className="creator-brand" href="/">NEXUS<span>GAMES</span></Link><Link className="creator-back" href="/">← RETOUR À LA PLATEFORME</Link></div>
-    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · BETA 0.0.1.5</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
+    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · BETA 0.0.1.6</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
     <div className="creator-layout">
       <section className="creator-panel">
         <h2>01 / CONFIGURER TON JEU</h2>
@@ -117,8 +152,8 @@ export default function CreatorPage() {
         {playing && <div className="creator-playbar"><span>COMMANDES DE DÉPLACEMENT</span><div className="creator-actions"><button onClick={()=>move(0,-1)}>↑</button><button onClick={()=>move(-1,0)}>←</button><button onClick={()=>move(0,1)}>↓</button><button onClick={()=>move(1,0)}>→</button></div></div>}
       </section>
       <aside className="creator-side">
-        <section className="creator-panel"><h2>03 / ENREGISTRER</h2><p>Conserve ton brouillon ou publie-le dans ta bibliothèque personnelle Nexus Games.</p><button className="creator-save" onClick={()=>save(false)}>ENREGISTRER LE BROUILLON</button><button className="creator-save" style={{marginTop:8}} onClick={()=>save(true)}>PUBLIER MA CRÉATION ↗</button><div className="creator-status" role="status">{notice}</div></section>
-        <section className="creator-panel"><h2>MES CRÉATIONS <span style={{color:"var(--green)"}}>{ready?creations.length:0}</span></h2>{creations.length===0?<div className="creator-empty">Aucune création enregistrée pour le moment.</div>:<div className="creator-list">{creations.map(item=><article className="creator-item" key={item.id}><b>{item.title}</b><small>{item.genre} · {new Date(item.publishedAt).toLocaleDateString("fr-FR")}</small><div className="creator-actions"><button onClick={()=>load(item)}>OUVRIR</button><button onClick={()=>persist(creations.filter(c=>c.id!==item.id))}>SUPPRIMER</button></div></article>)}</div>}</section>
+        <section className="creator-panel"><h2>03 / ENREGISTRER & PARTAGER</h2><p>Conserve ton brouillon, publie-le dans ta bibliothèque ou exporte un fichier pour l'envoyer à un autre joueur.</p><div className="creator-share-actions"><button onClick={exportCurrent}>↓ EXPORTER MON JEU</button><label className="creator-import-button">↑ IMPORTER UN FICHIER<input type="file" accept=".json,.nexusgame.json,application/json" onChange={importCreation}/></label></div><button className="creator-save" onClick={()=>save(false)}>ENREGISTRER LE BROUILLON</button><button className="creator-save" style={{marginTop:8}} onClick={()=>save(true)}>PUBLIER MA CRÉATION ↗</button><div className="creator-status" role="status">{notice}</div></section>
+        <section className="creator-panel"><h2>MES CRÉATIONS <span style={{color:"var(--green)"}}>{ready?creations.length:0}</span></h2>{creations.length===0?<div className="creator-empty">Aucune création enregistrée pour le moment.</div>:<div className="creator-list">{creations.map(item=><article className="creator-item" key={item.id}><b>{item.title}</b><small>{item.genre} · {new Date(item.publishedAt).toLocaleDateString("fr-FR")}</small><div className="creator-actions"><button onClick={()=>load(item)}>OUVRIR</button><button onClick={()=>exportCreation(item)}>EXPORTER</button><button onClick={()=>persist(creations.filter(c=>c.id!==item.id))}>SUPPRIMER</button></div></article>)}</div>}</section>
         <section className="creator-panel"><h2>PARTAGE COMMUNAUTAIRE</h2><p>La publication publique, les profils créateurs et le téléchargement des jeux seront ajoutés avec le système de comptes et le serveur de Nexus Games.</p><div className="creator-status">Pour le moment, tes créations restent privées sur cet appareil. Aucun compte ni identifiant n'est demandé.</div></section>
       </aside>
     </div>
