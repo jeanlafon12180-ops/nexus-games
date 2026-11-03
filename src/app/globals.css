@@ -124,3 +124,10 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 .touch-controls span{font-size:8px;letter-spacing:2px;color:#7f8b82}
 .arcade-footnote{text-align:center;font-size:8px;letter-spacing:1.2px;color:#59665d;margin-top:27px}
 @media(max-width:600px){.arcade-top{height:65px;flex-wrap:wrap}.arcade-version{display:none}.arcade-top .brand{font-size:12px}.back-link{font-size:7px}.arcade-content{margin:35px auto}.arcade-hud{gap:6px}.arcade-hud>div{padding:10px 8px}.arcade-hud span{font-size:7px}.arcade-hud strong{font-size:19px}.arena{height:390px}.game-modal{padding:19px}.library-banner{gap:12px}}
+
+/* Nexus Games v0.0.0.4 — profil local */
+.profile-modal h2 em{font-style:normal;color:var(--green)}
+.profile-label{display:block;margin:18px 0 8px;font-size:8px;letter-spacing:1.5px;color:#9aa89d;font-weight:800}
+.profile-input{width:100%;height:43px;padding:0 12px;background:#080d09;border:1px solid rgba(155,229,100,.3);border-radius:4px;color:#f3f7f3;outline:none;font-size:12px}
+.profile-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(155,229,100,.08)}
+.profile-note{font-size:9px;line-height:1.7;color:#819087;margin:12px 0 20px}
