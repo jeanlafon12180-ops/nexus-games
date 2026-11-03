@@ -359,3 +359,33 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 .library-clear{margin-top:12px;padding:9px 12px;border:1px solid #ffffff24;border-radius:4px;background:#0b100d;color:#aeb9b0;font-size:8px;font-weight:900;letter-spacing:.7px;cursor:pointer}
 .library-clear:disabled{opacity:.35;cursor:not-allowed}
 @media(max-width:680px){.section-heading{align-items:flex-start;flex-direction:column}.library-sort{width:100%}.library-sort select{flex:1;max-width:none}}
+
+
+/* Nexus Games 0.0.6.0 — optimisation mobile */
+@media(max-width:760px){
+  .sidebar{position:relative;inset:auto;width:100%;height:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;border-right:0;border-bottom:1px solid var(--line)}
+  .sidebar .brand{margin:0;font-size:15px}
+  .sidebar .side-label,.sidebar .sidebar-bottom,.sidebar .side-nav:last-of-type{display:none}
+  .sidebar .side-nav{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px;scrollbar-width:thin}
+  .sidebar .side-link{height:36px;min-width:max-content;padding:0 9px;font-size:10px}
+  .main-area{margin-left:0}
+  .topbar{height:60px;padding:0 16px}
+  .content{padding:20px 16px}
+  .hero{height:auto;min-height:340px;padding:38px 25px}
+  .hero-art{right:-8%;width:45%;opacity:.35}
+  .hero-emblem{font-size:190px}
+  .stats-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;padding:20px 4px}
+  .stats-note{justify-content:flex-start!important;text-align:left}
+  .section-heading{align-items:flex-start;flex-direction:column}
+  .search-box{width:100%}
+  .game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .topbar{gap:8px}.breadcrumb{font-size:8px;letter-spacing:1px}.top-actions{gap:8px}.online-pill{display:none}.version-chip{font-size:7px;padding:6px}
+  .hero{min-height:320px;padding:30px 19px}.hero h1{font-size:58px}.hero-art{right:-22%;opacity:.22}.hero-actions{align-items:stretch;flex-direction:column;max-width:250px}
+  .stats-row>div{gap:8px}.stats-row strong{font-size:27px}.stats-row span{font-size:7px}
+  .game-grid{grid-template-columns:1fr}.section-heading h2{font-size:42px}
+  .filters{gap:5px}.filter{padding:8px 10px}
+  .library-banner{gap:12px;padding:22px 17px}.library-count strong{font-size:52px}
+  footer{gap:10px;flex-wrap:wrap}
+}
