@@ -4,6 +4,11 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
+## Version bêta 0.0.0.5
+- Page de préparation du compte joueur : inscription / connexion
+- Maquette explicitement indiquée comme inactive, sans collecte d’identifiants
+- Authentification en ligne à connecter à un fournisseur sécurisé avant activation
+
 ## Version bêta 0.0.0.4
 - Profil joueur local avec pseudo personnalisable
 - Favoris et pseudo conservés entre les visites sur le même navigateur et appareil
