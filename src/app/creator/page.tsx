@@ -56,18 +56,22 @@ export default function CreatorPage() {
 
   const move = useCallback((dx: number, dy: number) => {
     if (!playing) return;
-    setPlayer(current => {
-      const x = current % 10;
-      const y = Math.floor(current / 10);
-      const nx = Math.max(0, Math.min(9, x + dx));
-      const ny = Math.max(0, Math.min(6, y + dy));
-      const next = ny * 10 + nx;
-      if (tiles[next] === "platform" || tiles[next] === "enemy") return current;
-      if (tiles[next] === "coin") { setTiles(board => board.map((tile,index)=>index===next?"":tile)); setCoins(count=>count+1); }
-      if (tiles[next] === "goal") { setNotice("Niveau terminé ! Tu as récupéré "+coins+" pièce(s)."); setPlaying(false); }
-      return next;
-    });
-  }, [playing, tiles, coins]);
+    const x = player % 10;
+    const y = Math.floor(player / 10);
+    const nx = Math.max(0, Math.min(9, x + dx));
+    const ny = Math.max(0, Math.min(6, y + dy));
+    const next = ny * 10 + nx;
+    if (tiles[next] === "platform" || tiles[next] === "enemy") return;
+    if (tiles[next] === "coin") {
+      setTiles(board => board.map((tile, index) => index === next ? "" : tile));
+      setCoins(count => count + 1);
+    }
+    if (tiles[next] === "goal") {
+      setNotice("Niveau terminé ! Tu as récupéré " + coins + " pièce(s).");
+      setPlaying(false);
+    }
+    setPlayer(next);
+  }, [playing, player, tiles, coins]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -86,6 +90,7 @@ export default function CreatorPage() {
   const startPlay = () => {
     const start = tiles.findIndex(tile => tile === "player");
     setPlayer(start >= 0 ? start : 50);
+    setCoins(0);
     setPlaying(true);
     setNotice("Mode test actif : déplace ton personnage avec les flèches ou ZQSD.");
   };
