@@ -64,3 +64,11 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Export local de données allowlistées au format JSON versionné.
 - Documentation des prérequis de sécurité et des futures étapes backend.
 - Les comptes, sauvegardes cloud, galerie publique et classements mondiaux ne sont pas activés.
+
+
+## 2.6.0 — Multiplayer & Community Foundation
+- Ajout de /multiplayer pour présenter les futures expériences de salons, coopération et compétition.
+- Ajout de /community-share pour créer et échanger des fiches de créations JSON versionnées.
+- Validation stricte du format et limite de 500 Ko à l'import/export ; les données importées ne sont jamais exécutées.
+- Partage local par fichier uniquement, sans publication ni transfert serveur.
+- Aucun service de multijoueur réseau, compte, chat ou matchmaking n'est activé.

@@ -66,3 +66,14 @@
 - [ ] Vérifier que Nexus City, Neon Dodge, Creator Studio et les sauvegardes locales restent accessibles
 - [ ] Exécuter npm test et npm run build
 - [ ] Vérifier le déploiement Vercel
+
+
+## Contrôles 2.6.0
+- [ ] Vérifier /multiplayer sur mobile et ordinateur et confirmer les statuts non activés
+- [ ] Créer une fiche JSON depuis /community-share
+- [ ] Vérifier le refus d'un JSON invalide et d'un fichier supérieur à 500 Ko
+- [ ] Importer une fiche valide et vérifier que son contenu est affiché comme données, jamais exécuté
+- [ ] Vérifier que l'export reste local et qu'aucune requête d'envoi de fichier n'est effectuée
+- [ ] Confirmer que Nexus City, Neon Dodge, Creator Studio et les sauvegardes locales restent accessibles
+- [ ] Exécuter npm test et npm run build
+- [ ] Vérifier le déploiement Vercel

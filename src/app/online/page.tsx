@@ -67,7 +67,7 @@ export default function OnlinePage() {
   return <main className="network-page">
     <header className="network-top"><Link href="/" className="evo-brand">NEXUS<span>GAMES</span></Link><Link href="/" className="evo-back">← RETOUR À L'ACCUEIL</Link></header>
     <section className="network-hero">
-      <span>VERSION 2.5.0 · ONLINE FOUNDATION</span>
+      <span>VERSION 2.6.0 · NEXUS NETWORK</span>
       <h1>WELCOME TO<br/><em>NEXUS NETWORK.</em></h1>
       <p>Le socle technique de la future expérience connectée Nexus Games.</p>
     </section>
@@ -81,11 +81,15 @@ export default function OnlinePage() {
       <article className="network-card"><span>03 / COMMUNAUTÉ</span><b>Galerie partagée</b><p>La future API pourra recevoir des créations après ajout d'une authentification et de contrôles de sécurité.</p><small>NON ACTIVÉE</small></article>
       <article className="network-card"><span>04 / COMPÉTITION</span><b>Classements mondiaux</b><p>Structure réservée à une prochaine étape. Aucun score n'est transmis à un serveur.</p><small>NON ACTIVÉS</small></article>
     </section>
+    <section className="network-grid">
+      <article className="network-card"><span>05 / COMMUNAUTÉ</span><b>Partage de créations</b><p>Créer et vérifier des fiches JSON portables, sans publication serveur.</p><Link href="/community-share" className="evo-primary">OUVRIR LE PARTAGE</Link></article>
+      <article className="network-card"><span>06 / MULTIJOUEUR</span><b>Jouer ensemble</b><p>Découvrir les fondations des futurs salons et modes coopératifs.</p><Link href="/multiplayer" className="evo-primary">DÉCOUVRIR</Link></article>
+    </section>
     <section className="network-transfer">
       <div><span className="network-kicker">PORTABILITÉ DES DONNÉES</span><h2>Garde une copie de tes données.</h2><p>Exporte les données locales connues dans un fichier JSON versionné. Cet export ne crée pas de compte et ne synchronise rien en ligne.</p></div>
       <button className="evo-primary" onClick={exportLocalData}>EXPORTER MES DONNÉES JSON</button>
       {notice && <p className="network-notice" role="status">{notice}</p>}
     </section>
-    <footer className="evo-footer">NEXUS GAMES 2.5.0 · NETWORK FOUNDATION · AUCUNE CONNEXION CLOUD ACTIVE</footer>
+    <footer className="evo-footer">NEXUS GAMES 2.6.0 · NETWORK FOUNDATION · AUCUNE CONNEXION CLOUD ACTIVE</footer>
   </main>;
 }
