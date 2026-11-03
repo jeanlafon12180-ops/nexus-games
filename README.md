@@ -1,5 +1,13 @@
 # Nexus Games — BÊTA
 
+## Version bêta 0.0.1.6 — Partage de créations
+- Export d'un jeu au format de fichier Nexus Games JSON
+- Import d'un fichier de création et validation de sa structure avant chargement
+- Partage possible entre joueurs en s'envoyant le fichier exporté
+- Les créations restent stockées localement ; aucune galerie publique ni synchronisation en ligne n'est encore activée
+
+# Nexus Games — BÊTA
+
 ## Version bêta 0.0.1.5 — Nexus Creator Studio
 - Nouvel espace Creator Studio pour concevoir une petite scène de jeu 2D avec une grille et une palette d'objets
 - Aperçu jouable avec déplacement du personnage au clavier et sur les commandes tactiles
