@@ -345,3 +345,9 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 
 /* Nexus Creator Studio 0.0.2.0 — arrivée et objectifs */
 .creator-tile.tile-goal{background:#315b42;border-color:#9be564;color:#eaffd9}
+
+
+/* Nexus City 0.0.3.0 — gestion du carburant */
+.ncity-refuel{margin-top:10px;padding:10px 13px;border:1px solid #9be56455;border-radius:4px;background:#9be56412;color:#9be564;font-size:9px;font-weight:900;letter-spacing:.6px;cursor:pointer}
+.ncity-fuel-track{height:6px;margin-top:9px;overflow:hidden;border-radius:5px;background:#ffffff16}
+.ncity-fuel-track span{display:block;height:100%;border-radius:5px;background:#9be564;transition:width .2s}
