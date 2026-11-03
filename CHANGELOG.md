@@ -79,3 +79,12 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Recherche, filtres par genre, fiches détaillées et favoris persistants.
 - Connexion au stockage de la galerie locale existante, sans migration destructive.
 - Aucun achat, paiement, hébergement public ou transfert serveur n'est activé.
+
+
+## 2.8.0 — Game Studio
+- Ajout de /game-studio avec quatre modèles de conception de jeux.
+- Réglages personnalisables : nom, description, difficulté et thème visuel.
+- Aperçu de concept et objectifs de conception selon le modèle.
+- Bibliothèque locale avec ouverture, suppression et export JSON.
+- Import JSON versionné validé, limité à 200 Ko.
+- Aucun jeu compilé automatiquement ni publication en ligne n'est annoncé.

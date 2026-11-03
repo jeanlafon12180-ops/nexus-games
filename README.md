@@ -1,4 +1,4 @@
-# Nexus Games 2.7.0
+# Nexus Games 2.8.0
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
@@ -91,3 +91,11 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Favoris du Marketplace persistants dans une clé de stockage séparée.
 - Les créations sont chargées depuis la galerie locale existante ; aucune publication publique ni transfert serveur.
 - Aucun achat, paiement ou hébergement distant n'est activé.
+
+
+## Nouveautés 2.8.0 — Game Studio
+- Nouveau configurateur /game-studio avec quatre modèles : plateforme, arcade, puzzle et aventure.
+- Personnalisation du nom, de la description, de la difficulté et du thème visuel.
+- Aperçu de concept, objectifs de conception et bibliothèque locale.
+- Import/export JSON versionné avec validation et limite de 200 Ko.
+- Les projets restent locaux ; la génération automatique de jeux complets et la publication en ligne ne sont pas activées.
