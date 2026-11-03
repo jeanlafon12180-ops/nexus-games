@@ -6,6 +6,7 @@ import Link from "next/link";
 type Tile = "" | "player" | "platform" | "coin" | "tree" | "enemy";
 type Creation = { id: string; title: string; description: string; genre: string; tiles: Tile[]; publishedAt: string };
 const STORAGE = "nexus-creator-creations-v1";
+const COMMUNITY_STORAGE = "nexus-community-games-v1";
 const EMPTY = Array.from({ length: 70 }, (_, i): Tile => (i >= 60 ? "platform" : ""));
 const palette: { id: Tile; label: string; icon: string }[] = [
   { id: "player", label: "Joueur", icon: "🧑" },
@@ -89,7 +90,19 @@ export default function CreatorPage() {
     const item: Creation = { id: String(Date.now()), title: title.trim(), description: description.trim(), genre, tiles, publishedAt: new Date().toISOString() };
     const next = [item, ...creations.filter(c => c.title !== item.title)].slice(0, 30);
     persist(next);
-    setNotice(publish ? "Jeu publié dans ta bibliothèque locale. Il est visible uniquement sur cet appareil." : "Brouillon enregistré sur cet appareil.");
+    if (publish) {
+      try {
+        const raw = localStorage.getItem(COMMUNITY_STORAGE);
+        const existing: unknown = raw ? JSON.parse(raw) : [];
+        const community = Array.isArray(existing) ? existing as Creation[] : [];
+        localStorage.setItem(COMMUNITY_STORAGE, JSON.stringify([item, ...community.filter(entry => entry.title !== item.title)].slice(0, 50)));
+        setNotice("Création publiée dans la galerie communautaire de cet appareil. Elle n'est pas visible sur Internet.");
+      } catch {
+        setNotice("Création enregistrée dans ta bibliothèque, mais la galerie locale est indisponible.");
+      }
+    } else {
+      setNotice("Brouillon enregistré sur cet appareil.");
+    }
   };
   const exportCreation = (item: Creation) => {
     const payload = { format: "nexus-games-creation", version: 1, game: item };
@@ -133,7 +146,7 @@ export default function CreatorPage() {
 
   return <main className="creator-page">
     <div className="creator-top"><Link className="creator-brand" href="/">NEXUS<span>GAMES</span></Link><Link className="creator-back" href="/">← RETOUR À LA PLATEFORME</Link></div>
-    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · BETA 0.0.1.6</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
+    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · BETA 0.0.1.7</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
     <div className="creator-layout">
       <section className="creator-panel">
         <h2>01 / CONFIGURER TON JEU</h2>
@@ -157,6 +170,6 @@ export default function CreatorPage() {
         <section className="creator-panel"><h2>PARTAGE COMMUNAUTAIRE</h2><p>La publication publique, les profils créateurs et le téléchargement des jeux seront ajoutés avec le système de comptes et le serveur de Nexus Games.</p><div className="creator-status">Pour le moment, tes créations restent privées sur cet appareil. Aucun compte ni identifiant n'est demandé.</div></section>
       </aside>
     </div>
-    <p className="creator-note">NEXUS CREATOR STUDIO · BETA 0.0.1.5 · Les créations sont enregistrées localement dans ce navigateur. Le partage entre joueurs n'est pas encore activé.</p>
+    <p className="creator-note">NEXUS CREATOR STUDIO · BETA 0.0.1.7 · Les créations sont enregistrées localement dans ce navigateur. Le partage entre joueurs n'est pas encore activé.</p>
   </main>;
 }
