@@ -1,4 +1,4 @@
-# Nexus Games 2.1.0 — Checklist de pré-lancement
+# Nexus Games 2.2.0 — Checklist de pré-lancement
 
 **État : code source 2.1.0 préparé ; validation CI et déploiement de production encore requis.**
 
@@ -26,3 +26,12 @@
 - [ ] Publier les notes de version 2.1.0
 
 **Règle :** ne pas annoncer le lancement public tant que les tests et le déploiement ne sont pas validés.
+
+
+## Contrôles 2.2.0
+- [ ] Vérifier l'accès à /creator/evolution depuis un navigateur mobile et ordinateur
+- [ ] Tester les modes plateforme et évitement
+- [ ] Vérifier les commandes clavier et tactiles
+- [ ] Enregistrer, recharger, exporter puis importer un projet 2.2
+- [ ] Vérifier le basculement français / anglais
+- [ ] Confirmer que Nexus City, Neon Dodge et les clés localStorage historiques fonctionnent toujours

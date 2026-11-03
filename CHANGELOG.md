@@ -30,3 +30,13 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Import contrôlé : format/version, liste blanche des clés, types de données et tailles vérifiés avant restauration.
 - Les données existantes restent dans les mêmes clés de stockage ; les deux jeux et leurs routes sont conservés.
 - L'import remplace les clés présentes dans le fichier importé ; les autres données locales restent inchangées.
+
+
+## 2.2.0 — Nexus Creator Evolution
+- Ajout d'un nouvel éditeur 2D avec grille 12 × 8 et palette de construction.
+- Deux modes de test : plateforme avec objectif et évitement avec collecte de pièces.
+- Contrôles clavier (flèches, ZQSD/WASD) et commandes tactiles.
+- Bibliothèque locale de projets, sauvegarde, import et export JSON validés.
+- Interface Creator Evolution disponible en français et en anglais.
+- Les données du Creator Studio historique et les jeux Nexus City / Neon Dodge ne sont pas modifiés.
+- Les créations restent locales ; la publication publique nécessite un backend.
