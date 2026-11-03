@@ -1,5 +1,14 @@
 # Nexus Games — BÊTA
 
+## Version bêta 0.0.1.4
+- Nexus City ajoute des activités de monde ouvert et des objets interactifs
+- Un système de recherche à cinq étoiles réagit aux actions du joueur
+- Le métier Police permet de saisir les objets signalés et de reprendre le service au commissariat
+- Objets, crédits et niveau de recherche sont conservés localement sur l'appareil
+- Nexus City reste un prototype 2D ; la 3D est une étape ultérieure
+
+# Nexus Games — BÊTA
+
 ## Version bêta 0.0.1.3
 - Niveaux de joueur calculés à partir des XP gagnés dans les Défis Nexus
 - Quatre badges à débloquer selon les actions du joueur
