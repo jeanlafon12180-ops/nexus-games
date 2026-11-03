@@ -69,3 +69,58 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 @media(max-width:1100px){.sidebar{width:205px;padding:26px 16px}.main-area{margin-left:205px}.content{padding-left:4%;padding-right:4%}.hero{height:400px}.hero-art{right:0;width:48%}.hero-emblem{font-size:210px}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.sidebar{position:relative;width:auto;height:auto;inset:auto;padding:15px 18px;border-right:0;border-bottom:1px solid var(--line);display:block}.brand{margin:0;font-size:15px}.side-label,.side-nav,.sidebar-bottom{display:none}.main-area{margin:0}.topbar{height:57px;padding:0 18px}.online-pill{font-size:7px;padding:7px 9px}.content{padding:18px 16px}.hero{height:390px;padding:38px 25px}.hero h1{font-size:66px}.hero-art{width:100%;right:-25%;opacity:.5}.hero-emblem{font-size:190px}.hero-content{z-index:3}.hero-content p{font-size:12px}.hero-actions{align-items:flex-start;flex-direction:column}.primary-button,.secondary-button{height:40px}.stats-row{grid-template-columns:repeat(3,1fr);gap:8px;padding:20px 0}.stats-row>div{gap:6px}.stats-row strong{font-size:25px}.stats-row span{font-size:6px}.stats-note{display:none!important}.discover-section{padding:36px 0}.section-heading{align-items:flex-start;flex-direction:column}.section-heading h2{font-size:43px}.search-box{width:100%}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.game-art{height:130px}.game-symbol{font-size:62px}.game-info h3{font-size:11px}.game-description{font-size:8px}.library-banner{padding:23px 19px}.library-banner h2{font-size:34px}.library-count{padding:10px 13px}.library-count strong{font-size:36px}.library-count span{font-size:6px}footer{gap:10px;flex-wrap:wrap;font-size:7px}footer span:nth-child(2){display:none}}
 @media(max-width:390px){.game-grid{grid-template-columns:1fr}.game-art{height:165px}.hero h1{font-size:58px}}
+
+/* Nexus Games v0.0.0.3 */
+.version-chip{font-size:8px;letter-spacing:1.2px;color:var(--green);border:1px solid rgba(155,229,100,.25);padding:8px 10px;border-radius:4px}
+.section-subtitle{font-size:10px;color:#7f8b82;margin:9px 0 0}
+.game-art{width:100%;border:0;cursor:pointer;text-align:inherit}
+.game-art:hover .game-symbol{transform:scale(1.12) rotate(-5deg)}
+.game-symbol{transition:transform .25s}
+.art-open{position:absolute;bottom:12px;right:13px;font-size:8px;letter-spacing:1px;color:white;opacity:0;transition:opacity .2s}
+.game-art:hover .art-open{opacity:1}
+.status-tag{position:absolute;top:12px;right:12px;font-size:7px;letter-spacing:1px;padding:5px 7px;border-radius:3px;background:rgba(5,8,6,.55);color:#d3dcd4}
+.status-playable{background:var(--green);color:#10170d;font-weight:900}
+.favorite-inline{position:static;flex:none}
+.favorite-list{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.favorite-list button,.favorite-list span{font-size:9px;color:#a9b7aa;border:1px solid var(--line);background:rgba(0,0,0,.15);padding:7px 9px;border-radius:4px}
+.favorite-list button{cursor:pointer}
+.game-modal{position:relative;width:min(480px,100%);padding:27px;background:#111914;border:1px solid rgba(155,229,100,.3);border-radius:8px;box-shadow:0 20px 80px #000}
+.modal-game-art{height:150px;border-radius:6px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:23px;overflow:hidden}
+.modal-game-art span{font:100px 'Barlow Condensed';color:rgba(255,255,255,.8)}
+.modal-game-art b{position:absolute;top:12px;left:14px;font-size:9px;letter-spacing:2px}
+.game-modal h2{font:800 38px 'Barlow Condensed';margin:12px 0}
+.game-modal p{font-size:12px;line-height:1.8;color:#a6b2a8}
+.game-meta{display:flex;gap:9px;margin:17px 0 22px}
+.game-meta span{font-size:9px;padding:7px 10px;border:1px solid var(--line);border-radius:3px;color:#a7b3a9}
+.game-meta .meta-ready{color:var(--green);border-color:rgba(155,229,100,.35)}
+.modal-play{width:100%;text-align:center}
+.arcade-page{min-height:100vh;background:radial-gradient(ellipse at 50% 25%,rgba(54,105,63,.18),transparent 50%),#080b0a;padding:0 22px 50px}
+.arcade-top{height:78px;max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:14px}
+.arcade-top .brand{margin:0}
+.arcade-version,.back-link{font-size:8px;letter-spacing:1.3px;color:#87948a}
+.back-link:hover{color:var(--green)}
+.arcade-content{width:min(760px,100%);margin:50px auto}
+.arcade-content h1{font:900 clamp(54px,9vw,86px)/.9 'Barlow Condensed';margin:17px 0;color:#f3f7f3}
+.arcade-content h1 em{font-style:normal;color:var(--green)}
+.arcade-intro{font-size:12px;color:#9aa69d;line-height:1.7}
+.arcade-hud{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:28px 0 13px}
+.arcade-hud>div{border:1px solid var(--line);background:#101612;padding:13px 15px;border-radius:5px;display:grid;gap:6px}
+.arcade-hud span{font-size:8px;letter-spacing:1.5px;color:#78867c}
+.arcade-hud strong{font:700 24px 'Barlow Condensed';color:var(--green)}
+.arena-wrap{padding:9px;background:#111914;border:1px solid rgba(155,229,100,.23);border-radius:8px}
+.arena{height:430px;max-width:100%;position:relative;overflow:hidden;border-radius:4px;background:radial-gradient(ellipse at 50% 90%,rgba(59,147,75,.16),transparent 55%),#070d0a}
+.arena-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(155,229,100,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(155,229,100,.09) 1px,transparent 1px);background-size:34px 34px;transform:perspective(260px) rotateX(12deg) scale(1.3);transform-origin:bottom;opacity:.6}
+.arena-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 4px,rgba(0,0,0,.13) 5px 6px);pointer-events:none;z-index:4}
+.player-ship{position:absolute;bottom:8%;width:34px;height:27px;transform:translateX(-50%);background:var(--green);clip-path:polygon(50% 0,100% 100%,50% 76%,0 100%);filter:drop-shadow(0 0 10px var(--green));z-index:2}
+.player-ship span{position:absolute;left:13px;top:12px;width:8px;height:8px;background:#fff;border-radius:50%}
+.falling-block{position:absolute;height:22px;background:#ff6480;border:1px solid #ffb2c0;box-shadow:0 0 16px rgba(255,85,120,.55);border-radius:2px;z-index:2}
+.arena-overlay{position:absolute;inset:0;display:grid;place-items:center;background:rgba(3,8,5,.65);backdrop-filter:blur(3px);z-index:5;padding:20px}
+.overlay-panel{width:min(390px,100%);padding:26px;background:rgba(13,21,15,.94);border:1px solid rgba(155,229,100,.3);border-radius:7px;text-align:center}
+.overlay-panel .eyebrow{justify-content:center}
+.overlay-panel h2{font:900 37px 'Barlow Condensed';margin:17px 0 8px}
+.overlay-panel p{font-size:11px;line-height:1.8;color:#a6b2a8;margin:0 0 20px}
+.touch-controls{display:flex;align-items:center;justify-content:center;gap:25px;margin:17px auto}
+.touch-controls button{width:58px;height:44px;border:1px solid rgba(155,229,100,.3);background:#111914;color:var(--green);font-size:22px;border-radius:5px;cursor:pointer}
+.touch-controls span{font-size:8px;letter-spacing:2px;color:#7f8b82}
+.arcade-footnote{text-align:center;font-size:8px;letter-spacing:1.2px;color:#59665d;margin-top:27px}
+@media(max-width:600px){.arcade-top{height:65px;flex-wrap:wrap}.arcade-version{display:none}.arcade-top .brand{font-size:12px}.back-link{font-size:7px}.arcade-content{margin:35px auto}.arcade-hud{gap:6px}.arcade-hud>div{padding:10px 8px}.arcade-hud span{font-size:7px}.arcade-hud strong{font-size:19px}.arena{height:390px}.game-modal{padding:19px}.library-banner{gap:12px}}
