@@ -100,7 +100,7 @@ export default function Home() {
               <div className="eyebrow"><span /> TON PROCHAIN UNIVERS T'ATTEND</div>
               <h1>PLAY BEYOND<br /><em>LIMITS.</em></h1>
               <p>Découvre. Joue. Recommence.<br />Toute ta passion du jeu, au même endroit.</p>
-              <div className="hero-actions"><Link className="primary-button" href="/games/neon-dodge"><span>▶</span> JOUER À NEON DODGE</Link><a className="secondary-button" href="#discover">EXPLORER LE CATALOGUE <span>↗</span></a></div>
+              <div className="hero-actions"><Link className="primary-button" href="/games/nexus-city"><span>▶</span> DÉCOUVRIR NEXUS CITY</Link><a className="secondary-button" href="#discover">EXPLORER LE CATALOGUE <span>↗</span></a></div>
             </div>
             <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="hero-emblem">N</div><div className="hero-caption"><span>NG / 003</span><b>THE NEXT LEVEL</b></div></div>
             <div className="hero-index"><span>01</span> / 03</div>
