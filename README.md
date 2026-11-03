@@ -4,6 +4,12 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
+## Version bêta 0.0.0.8
+- Garage avec cinq choix : à pied, voiture, camion de pompier, voiture de police et avion
+- Déplacement des véhicules avec une vitesse adaptée
+- Commandes tactiles pour jouer sur mobile
+- Correction de la syntaxe du catalogue qui bloquait le déploiement
+
 ## Version bêta 0.0.0.7
 - Ajout de Nexus City, jeu de simulation intégré
 - Quatre métiers, missions et récompenses virtuelles
