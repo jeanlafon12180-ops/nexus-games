@@ -78,7 +78,7 @@ export default function NeonDodge() {
 
   return (
     <main className="arcade-page">
-      <header className="arcade-top"><Link className="brand" href="/"><span className="brand-mark">N</span><span>NEXUS<span className="brand-light">GAMES</span></span></Link><span className="arcade-version">ARCADE ORIGINAL · NEXUS GAMES 2.0</span><Link className="back-link" href="/">← RETOUR AU CATALOGUE</Link></header>
+      <header className="arcade-top"><Link className="brand" href="/"><span className="brand-mark">N</span><span>NEXUS<span className="brand-light">GAMES</span></span></Link><span className="arcade-version">ARCADE ORIGINAL · NEXUS GAMES 2.1</span><Link className="back-link" href="/">← RETOUR AU CATALOGUE</Link></header>
       <section className="arcade-content">
         <div className="eyebrow"><span /> NEXUS ARCADE · JEU HTML5</div>
         <h1>NEON <em>DODGE.</em></h1>
@@ -94,7 +94,7 @@ export default function NeonDodge() {
           </div>
         </div>
         <div className="touch-controls"><button onClick={() => movePlayer(-1)} aria-label="Aller à gauche">←</button><span>COMMANDES</span><button onClick={() => movePlayer(1)} aria-label="Aller à droite">→</button></div>
-        <div className="arcade-footnote">JEU ORIGINAL NEXUS GAMES · VERSION 2.0 · RECORD ENREGISTRÉ SUR CET APPAREIL</div>
+        <div className="arcade-footnote">JEU ORIGINAL NEXUS GAMES · VERSION 2.1 · RECORD ENREGISTRÉ SUR CET APPAREIL</div>
       </section>
     </main>
   );
