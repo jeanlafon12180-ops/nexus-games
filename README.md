@@ -1,5 +1,10 @@
 # Nexus Games — BÊTA
 
+## Version bêta 0.0.1.2
+- Cycle jour/nuit et météo évolutive dans Nexus City (ensoleillé, nuageux, pluie)
+- Ajout des Défis Nexus sur la plateforme : profil, collection de favoris et découverte de Nexus City
+- Points XP calculés automatiquement et progression locale sur l’appareil
+
 > **Nexus Games est actuellement en version bêta.** Certaines fonctionnalités sont expérimentales et peuvent évoluer.
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
