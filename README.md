@@ -1,4 +1,4 @@
-# Nexus Games 2.6.0
+# Nexus Games 2.7.0
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
@@ -84,3 +84,10 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Export local JSON versionné depuis la page Network, sans transfert réseau.
 - Comptes, synchronisation cloud, galerie publique et classements mondiaux explicitement non activés.
 - Documentation des prérequis de sécurité avant toute mise en service d'un backend.
+
+
+## Nouveautés 2.7.0 — Creator Marketplace
+- Nouveau catalogue local /marketplace avec recherche, filtres par genre et fiches détaillées.
+- Favoris du Marketplace persistants dans une clé de stockage séparée.
+- Les créations sont chargées depuis la galerie locale existante ; aucune publication publique ni transfert serveur.
+- Aucun achat, paiement ou hébergement distant n'est activé.
