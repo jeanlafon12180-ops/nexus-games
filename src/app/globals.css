@@ -389,3 +389,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
   .library-banner{gap:12px;padding:22px 17px}.library-count strong{font-size:52px}
   footer{gap:10px;flex-wrap:wrap}
 }
+
+
+/* Nexus Games 0.0.7.0 — sécurité des données locales */
+.community-cell.tile-goal{background:#315b42;border-color:#9be564}
