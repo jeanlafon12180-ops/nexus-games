@@ -56,7 +56,7 @@ export default function AccountPage() {
     save(next,selected);
   };
   return <main className="account-page">
-    <header className="account-top"><Link className="brand" href="/"><span className="brand-mark">N</span><span>NEXUS<span className="brand-light">GAMES</span></span></Link><span className="account-beta">BETA · 0.0.1.8</span><Link className="back-link" href="/">← RETOUR À L'ACCUEIL</Link></header>
+    <header className="account-top"><Link className="brand" href="/"><span className="brand-mark">N</span><span>NEXUS<span className="brand-light">GAMES</span></span></Link><span className="account-beta">BETA · 1.0.0</span><Link className="back-link" href="/">← RETOUR À L'ACCUEIL</Link></header>
     <section className="account-card">
       <div className="eyebrow"><span/> ESPACE JOUEUR NEXUS</div>
       <h1>TES PROFILS.<br/><em>TON UNIVERS.</em></h1>
@@ -68,6 +68,6 @@ export default function AccountPage() {
       <div className="community-notice" role="status">{notice}</div>
       <Link className="account-home" href="/">← Revenir à Nexus Games</Link>
     </section>
-    <footer className="account-footer">NEXUS GAMES · VERSION BÊTA 0.0.1.8</footer>
+    <footer className="account-footer">NEXUS GAMES · VERSION BÊTA 1.0.0</footer>
   </main>;
 }
