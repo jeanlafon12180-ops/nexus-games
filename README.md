@@ -1,3 +1,16 @@
+# Nexus Games 1.0.0
+
+**Version source : 1.0.0 — préparation de la première version majeure.**
+
+Nexus Games regroupe un catalogue de jeux, une bibliothèque de favoris, un espace joueur à profils locaux, Creator Studio, une galerie locale de créations et le jeu Nexus City.
+
+## Points importants
+- Les profils, commentaires, réactions, sauvegardes et progressions sont conservés localement dans le navigateur.
+- Il n'y a pas encore de comptes en ligne, de synchronisation cloud ni de galerie publique partagée.
+- Les fichiers de création Nexus Games peuvent être exportés et importés.
+- La sauvegarde joueur peut être exportée au format JSON.
+- Le lancement en production reste soumis à la validation de la CI et à un déploiement Vercel en état READY.
+
 # Nexus Games — RELEASE CANDIDATE
 
 ## Version 0.0.9.0 — Préparation de la version 1.0
