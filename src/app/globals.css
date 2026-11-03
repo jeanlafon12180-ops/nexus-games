@@ -176,3 +176,29 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 /* Nexus City 0.0.1.1 — progression des missions */
 .ncity-progress{display:block!important;color:#d6e5d8!important;font-size:8px!important;letter-spacing:.7px;margin-top:4px}
 .ncity-mission button:disabled{cursor:default}
+
+/* Nexus Games 0.0.1.2 — défis plateforme */
+.nexus-challenges{margin:18px 0 38px;padding:25px;border:1px solid rgba(155,229,100,.2);border-radius:8px;background:linear-gradient(120deg,rgba(155,229,100,.07),rgba(16,21,18,.9) 55%)}
+.nexus-challenge-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.nexus-challenge-heading h2{font:900 42px/.95 'Barlow Condensed';margin:12px 0}
+.nexus-challenge-heading h2 em{color:var(--green);font-style:normal}
+.nexus-challenge-heading p{max-width:520px;color:#9aa69d;font-size:11px;line-height:1.7}
+.nexus-xp{min-width:105px;display:grid;justify-items:center;padding:15px;border:1px solid #9be56455;border-radius:6px;background:#9be5640c}
+.nexus-xp strong{font:900 34px 'Barlow Condensed';color:var(--green)}
+.nexus-xp span,.nexus-challenge-status{font-size:8px;letter-spacing:1.3px;color:#a9b7aa;font-weight:800}
+.nexus-challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.nexus-challenge-card{padding:15px;border:1px solid var(--line);border-radius:5px;background:#0b100d}
+.nexus-challenge-card.completed{border-color:#9be56477;background:#9be5640b}
+.nexus-challenge-card h3{font-size:13px;margin:13px 0 7px}
+.nexus-challenge-card p{min-height:32px;font-size:10px;line-height:1.6;color:#89958d}
+.nexus-challenge-card>b{font-size:10px;color:var(--green)}
+.nexus-challenge-foot{margin-top:15px;color:#748177;font-size:8px;letter-spacing:.4px}
+.ncity-atmosphere{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:13px 0 0}
+.ncity-atmosphere span{padding:7px 10px;border:1px solid var(--line);border-radius:4px;background:#0b100d;color:#c8d6ca;font-size:8px;letter-spacing:1px}
+.ncity-map{isolation:isolate}
+.ncity-atmosphere-overlay{position:absolute;z-index:2;inset:0;pointer-events:none;transition:background .8s}
+.ncity-map.time-night .ncity-atmosphere-overlay{background:rgba(5,10,29,.38)}
+.ncity-map.weather-cloudy .ncity-atmosphere-overlay{background:rgba(105,116,124,.16)}
+.ncity-map.weather-rain .ncity-atmosphere-overlay{background:repeating-linear-gradient(112deg,transparent 0 17px,rgba(205,226,238,.22) 18px,transparent 19px 31px);animation:ncity-rain .65s linear infinite}
+@keyframes ncity-rain{to{background-position:0 31px}}
+@media(max-width:700px){.nexus-challenge-grid{grid-template-columns:1fr}.nexus-challenge-heading{align-items:flex-start}.nexus-challenge-heading h2{font-size:34px}.nexus-challenge-card p{min-height:0}.nexus-challenges{padding:17px}.ncity-atmosphere{justify-content:flex-start}}
