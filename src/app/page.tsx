@@ -34,6 +34,7 @@ const categories = ["Tout", "Action", "Aventure", "Course", "Réflexion", "Strat
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("Tout");
+  const [sortOrder, setSortOrder] = useState("featured");
   const [query, setQuery] = useState("");
   const [favorites, setFavorites] = useState<number[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
@@ -94,11 +95,20 @@ export default function Home() {
     { id: "xp", name: "Premier XP", icon: "★", detail: "Obtenir ses premiers points XP", earned: nexusXp > 0 }
   ];
   const earnedBadges = playerBadges.filter((badge) => badge.earned).length;
-  const filteredGames = useMemo(() => games.filter((game) => {
-    const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
-    const queryMatch = (game.title + " " + game.description).toLowerCase().includes(query.toLowerCase());
-    return categoryMatch && queryMatch;
-  }), [activeCategory, query, favorites]);
+  const filteredGames = useMemo(() => {
+    const filtered = games.filter((game) => {
+      const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
+      const queryMatch = (game.title + " " + game.description).toLowerCase().includes(query.toLowerCase());
+      return categoryMatch && queryMatch;
+    });
+    return [...filtered].sort((a,b) => {
+      if (sortOrder === "az") return a.title.localeCompare(b.title, "fr");
+      if (sortOrder === "za") return b.title.localeCompare(a.title, "fr");
+      if (sortOrder === "playable") return (a.status === "JOUABLE" ? 0 : 1) - (b.status === "JOUABLE" ? 0 : 1);
+      if (sortOrder === "category") return a.category.localeCompare(b.category, "fr");
+      return games.indexOf(a) - games.indexOf(b);
+    });
+  }, [activeCategory, query, favorites, sortOrder]);
 
   function toggleFavorite(id: number) {
     setFavorites((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
@@ -120,11 +130,11 @@ export default function Home() {
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.3.0</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.4.0</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.3.0</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.4.0</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
@@ -143,7 +153,7 @@ export default function Home() {
           </section>
 
           <section className="discover-section" id="discover">
-            <div className="section-heading"><div><div className="eyebrow"><span /> LE TERRAIN DE JEU</div><h2>À LA <em>DÉCOUVERTE</em></h2><p className="section-subtitle">Explore le catalogue et ouvre la fiche de chaque jeu.</p></div><label className="search-box"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un jeu..." aria-label="Rechercher un jeu" /><kbd>⌕</kbd></label></div>
+            <div className="section-heading"><div><div className="eyebrow"><span /> LE TERRAIN DE JEU</div><h2>À LA <em>DÉCOUVERTE</em></h2><p className="section-subtitle">Explore le catalogue et ouvre la fiche de chaque jeu.</p></div><label className="search-box"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un jeu..." aria-label="Rechercher un jeu" /><kbd>⌕</kbd></label><label className="library-sort">TRIER <select value={sortOrder} onChange={event=>setSortOrder(event.target.value)} aria-label="Trier les jeux"><option value="featured">À la une</option><option value="az">A → Z</option><option value="za">Z → A</option><option value="playable">Jeux jouables</option><option value="category">Catégorie</option></select></label></div>
             <div className="filters" role="group" aria-label="Filtrer par catégorie">{categories.map((category) => <button key={category} className={activeCategory === category ? "filter active-filter" : "filter"} onClick={() => setActiveCategory(category)}>{category}</button>)}<button className={activeCategory === "Favoris" ? "filter active-filter" : "filter"} onClick={() => setActiveCategory("Favoris")}>♥ Favoris ({favorites.length})</button></div>
             <div className="game-grid">
               {filteredGames.map((game, index) => (
@@ -184,8 +194,8 @@ export default function Home() {
             <div className="nexus-challenge-foot">Niveaux, badges et progression sauvegardés dans le navigateur de cet appareil. Les comptes en ligne et le classement mondial ne sont pas encore disponibles.</div>
           </section>
 
-          <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
-          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.3.0</span><span>© 2026 NEXUS GAMES</span></footer>
+          <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div><button className="library-clear" onClick={()=>setFavorites([])} disabled={favorites.length===0}>VIDER LES FAVORIS</button></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
+          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.4.0</span><span>© 2026 NEXUS GAMES</span></footer>
         </div>
       </section>
 
