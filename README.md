@@ -1,22 +1,13 @@
 # Nexus Games — BÊTA
 
-## Version bêta 0.0.1.8 — Profils joueurs locaux
-- Remplacement de la maquette de connexion par une gestion fonctionnelle de profils locaux
-- Création, sélection et suppression de profils avec pseudo
-- Jusqu'à huit profils conservés dans le navigateur
-- Aucun e-mail, mot de passe ou compte Internet collecté
-- Les favoris, XP et progressions restent partagés sur l'appareil à ce stade
+## Version bêta 0.0.1.9 — Interactions communautaires locales
+- Réactions « J'aime » sur les créations de la galerie
+- Commentaires avec pseudo du profil local actif
+- Jusqu'à 20 commentaires conservés par création
+- Export des jeux sans inclure les réactions/commentaires privés de l'appareil
+- Interactions enregistrées localement, sans publication publique ni synchronisation Internet
 
  Nexus Games — BÊTA
-
-## Version bêta 0.0.1.4
-- Nexus City ajoute des activités de monde ouvert et des objets interactifs
-- Un système de recherche à cinq étoiles réagit aux actions du joueur
-- Le métier Police permet de saisir les objets signalés et de reprendre le service au commissariat
-- Objets, crédits et niveau de recherche sont conservés localement sur l'appareil
-- Nexus City reste un prototype 2D ; la 3D est une étape ultérieure
-
-# Nexus Games — BÊTA
 
 ## Version bêta 0.0.1.3
 - Niveaux de joueur calculés à partir des XP gagnés dans les Défis Nexus
