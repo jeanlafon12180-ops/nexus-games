@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
-type Tile = "" | "player" | "platform" | "coin" | "tree" | "enemy";
+type Tile = "" | "player" | "platform" | "coin" | "tree" | "enemy" | "goal";
 type Creation = { id: string; title: string; description: string; genre: string; tiles: Tile[]; publishedAt: string };
 const STORAGE = "nexus-creator-creations-v1";
 const COMMUNITY_STORAGE = "nexus-community-games-v1";
@@ -14,6 +14,7 @@ const palette: { id: Tile; label: string; icon: string }[] = [
   { id: "coin", label: "Pièce", icon: "🪙" },
   { id: "tree", label: "Arbre", icon: "🌳" },
   { id: "enemy", label: "Obstacle", icon: "👾" },
+  { id: "goal", label: "Arrivée", icon: "🏁" },
   { id: "", label: "Gomme", icon: "⌫" }
 ];
 
@@ -27,6 +28,7 @@ export default function CreatorPage() {
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [player, setPlayer] = useState(0);
+  const [coins, setCoins] = useState(0);
   const [notice, setNotice] = useState("Place des objets dans la grille pour construire ton niveau.");
 
   useEffect(() => {
@@ -61,9 +63,11 @@ export default function CreatorPage() {
       const ny = Math.max(0, Math.min(6, y + dy));
       const next = ny * 10 + nx;
       if (tiles[next] === "platform" || tiles[next] === "enemy") return current;
+      if (tiles[next] === "coin") { setTiles(board => board.map((tile,index)=>index===next?"":tile)); setCoins(count=>count+1); }
+      if (tiles[next] === "goal") { setNotice("Niveau terminé ! Tu as récupéré "+coins+" pièce(s)."); setPlaying(false); }
       return next;
     });
-  }, [playing, tiles]);
+  }, [playing, tiles, coins]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -130,7 +134,7 @@ export default function CreatorPage() {
       const parsed: unknown = JSON.parse(await file.text());
       if (!parsed || typeof parsed !== "object" || !("format" in parsed) || parsed.format !== "nexus-games-creation" || !("game" in parsed)) throw new Error("Ce fichier n'est pas une création Nexus Games.");
       const game = parsed.game as Partial<Creation>;
-      const allowed: Tile[] = ["", "player", "platform", "coin", "tree", "enemy"];
+      const allowed: Tile[] = ["", "player", "platform", "coin", "tree", "enemy", "goal"];
       if (typeof game.title !== "string" || typeof game.description !== "string" || typeof game.genre !== "string" || !Array.isArray(game.tiles) || game.tiles.length !== 70 || !game.tiles.every(tile => allowed.includes(tile as Tile))) throw new Error("Le fichier ne contient pas un niveau valide.");
       const imported: Creation = { id: String(Date.now()), title: game.title.slice(0,40), description: game.description.slice(0,180), genre: game.genre.slice(0,30), tiles: game.tiles as Tile[], publishedAt: new Date().toISOString() };
       setTitle(imported.title); setDescription(imported.description); setGenre(imported.genre); setTiles(imported.tiles); setPlaying(false);
@@ -146,7 +150,7 @@ export default function CreatorPage() {
 
   return <main className="creator-page">
     <div className="creator-top"><Link className="creator-brand" href="/">NEXUS<span>GAMES</span></Link><Link className="creator-back" href="/">← RETOUR À LA PLATEFORME</Link></div>
-    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · BETA 0.0.1.7</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
+    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · BETA 0.0.2.0</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
     <div className="creator-layout">
       <section className="creator-panel">
         <h2>01 / CONFIGURER TON JEU</h2>
@@ -157,11 +161,11 @@ export default function CreatorPage() {
         </div>
         <h2>02 / CONSTRUIRE LE NIVEAU</h2>
         <div className="creator-toolbar"><span className="creator-label">PALETTE D'OBJETS</span><div className="creator-tools">{palette.map(item=><button key={item.label} className={tool===item.id?"active":""} onClick={()=>{setTool(item.id);setPlaying(false);}}>{item.icon} {item.label}</button>)}</div></div>
-        <div className="creator-grid" aria-label="Grille de création">{tiles.map((tile,index)=><button key={index} className={"creator-tile "+(tile?"tile-"+tile:"")} onClick={()=>place(index)} aria-label={"Case "+(index+1)}>{tile==="player"?"🧑":tile==="platform"?"":tile==="coin"?"🪙":tile==="tree"?"🌳":tile==="enemy"?"👾":""}</button>)}</div>
+        <div className="creator-grid" aria-label="Grille de création">{tiles.map((tile,index)=><button key={index} className={"creator-tile "+(tile?"tile-"+tile:"")} onClick={()=>place(index)} aria-label={"Case "+(index+1)}>{tile==="player"?"🧑":tile==="platform"?"":tile==="coin"?"🪙":tile==="tree"?"🌳":tile==="enemy"?"👾":tile==="goal"?"🏁":""}</button>)}</div>
         <p className="creator-hint">Choisis un objet dans la palette, puis touche une case pour le placer. Place le personnage, des plateformes et des objets pour composer ton niveau.</p>
-        <div className="creator-playbar"><span>{playing?"APERÇU EN COURS":"ÉDITEUR DE NIVEAU"}</span><button onClick={()=>setPlaying(false)}>MODE ÉDITION</button></div>
-        {playing && <div className="creator-grid" aria-label="Aperçu du jeu">{tiles.map((tile,index)=><div key={index} className={"creator-tile "+(tile?"tile-"+tile:"")}>{index===player?"🧑":tile==="platform"?"":tile==="coin"?"🪙":tile==="tree"?"🌳":tile==="enemy"?"👾":""}</div>)}</div>}
-        <div className="creator-actions"><button className="primary" onClick={startPlay}>▶ TESTER LE JEU</button><button onClick={()=>{setTiles(EMPTY);setPlaying(false);setNotice("Niveau réinitialisé.");}}>RÉINITIALISER</button></div>
+        <div className="creator-playbar"><span>{playing?"APERÇU EN COURS":"ÉDITEUR DE NIVEAU"}{playing?" · "+coins+" PIÈCE(S)":""}</span><button onClick={()=>setPlaying(false)}>MODE ÉDITION</button></div>
+        {playing && <div className="creator-grid" aria-label="Aperçu du jeu">{tiles.map((tile,index)=><div key={index} className={"creator-tile "+(tile?"tile-"+tile:"")}>{index===player?"🧑":tile==="platform"?"":tile==="coin"?"🪙":tile==="tree"?"🌳":tile==="enemy"?"👾":tile==="goal"?"🏁":""}</div>)}</div>}
+        <div className="creator-actions"><button className="primary" onClick={startPlay}>▶ TESTER LE JEU</button><button onClick={()=>{setTiles(EMPTY);setCoins(0);setPlaying(false);setNotice("Niveau réinitialisé.");}}>RÉINITIALISER</button></div>
         {playing && <div className="creator-playbar"><span>COMMANDES DE DÉPLACEMENT</span><div className="creator-actions"><button onClick={()=>move(0,-1)}>↑</button><button onClick={()=>move(-1,0)}>←</button><button onClick={()=>move(0,1)}>↓</button><button onClick={()=>move(1,0)}>→</button></div></div>}
       </section>
       <aside className="creator-side">
@@ -170,6 +174,6 @@ export default function CreatorPage() {
         <section className="creator-panel"><h2>PARTAGE COMMUNAUTAIRE</h2><p>La publication publique, les profils créateurs et le téléchargement des jeux seront ajoutés avec le système de comptes et le serveur de Nexus Games.</p><div className="creator-status">Pour le moment, tes créations restent privées sur cet appareil. Aucun compte ni identifiant n'est demandé.</div></section>
       </aside>
     </div>
-    <p className="creator-note">NEXUS CREATOR STUDIO · BETA 0.0.1.7 · Les créations sont enregistrées localement dans ce navigateur. Le partage entre joueurs n'est pas encore activé.</p>
+    <p className="creator-note">NEXUS CREATOR STUDIO · BETA 0.0.2.0 · Les créations sont enregistrées localement dans ce navigateur. Le partage entre joueurs n'est pas encore activé.</p>
   </main>;
 }
