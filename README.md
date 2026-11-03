@@ -1,30 +1,22 @@
 # Nexus Games
 
-**Nexus Games** is an independent gaming platform prototype.
+Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
-## Version
-0.0.0.2 — first web interface prototype.
+## Version 0.0.0.3
+- Catalogue de 9 jeux avec fiches détaillées
+- Recherche par nom et description, filtres par catégorie
+- Favoris locaux et bibliothèque personnelle
+- Premier mini-jeu HTML5 original jouable : Neon Dodge
+- Interface responsive ordinateur / mobile
 
-## Current features
-- Responsive Xbox-inspired dark interface
-- Game discovery cards
-- Search and category filters
-- Local favorites interaction
-- Responsive desktop and mobile layout
+## Lancer en local
+```bash
+npm install
+npm run dev
+``
 
-## Important
-The games shown in this prototype are illustrative catalog entries, not playable commercial titles. Real games will be added only when we have permission to distribute or embed them.
+## À savoir
+Les autres jeux du catalogue sont des fiches de présentation et ne sont pas encore jouables. Neon Dodge est le premier jeu original intégré à la plateforme. Les prochains jeux seront développés ou ajoutés avec les autorisations nécessaires.
 
-## Stack
-- Next.js
-- React
-- TypeScript
-- CSS
-
-## Roadmap
-1. Interface and navigation
-2. Catalog and game details
-3. User accounts and cloud-saved library
-4. Authorized browser games
-5. Desktop applications
-6. Cloud gaming research
+## Pile technique
+Next.js · React · TypeScript · CSS
