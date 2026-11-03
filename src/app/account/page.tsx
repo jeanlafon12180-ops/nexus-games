@@ -19,7 +19,7 @@ export default function AccountPage() {
       const parsed:unknown=raw?JSON.parse(raw):[];
       const safe=Array.isArray(parsed)?parsed.filter((p):p is PlayerProfile=>!!p&&typeof p.id==="string"&&typeof p.name==="string"):[];
       const current=localStorage.getItem(ACTIVE)||"Joueur Nexus";
-      const initial=safe.length?safe:[{id:"default",name:current,createdAt:new Date().toISOString()}];
+      const initial=(safe.length?safe:[{id:"default",name:current,createdAt:new Date().toISOString()}]).slice(0,8).map(p=>({...p,name:p.name.slice(0,24)}));
       setProfiles(initial); setActive(current); setName("");
       localStorage.setItem(STORAGE,JSON.stringify(initial));
     } catch { setNotice("Le stockage local est indisponible. Les profils ne pourront pas être conservés."); }
