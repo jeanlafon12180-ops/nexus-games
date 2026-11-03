@@ -157,7 +157,7 @@ export default function CreatorPage() {
 
   return <main className="creator-page">
     <div className="creator-top"><Link className="creator-brand" href="/">NEXUS<span>GAMES</span></Link><Link className="creator-back" href="/">← RETOUR À LA PLATEFORME</Link></div>
-    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · NEXUS GAMES 2.0.0</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
+    <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · NEXUS GAMES 2.1.0</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
     <div className="creator-layout">
       <section className="creator-panel">
         <h2>01 / CONFIGURER TON JEU</h2>
@@ -181,6 +181,6 @@ export default function CreatorPage() {
         <section className="creator-panel"><h2>PARTAGE COMMUNAUTAIRE</h2><p>La publication publique, les profils créateurs et le téléchargement des jeux seront ajoutés avec le système de comptes et le serveur de Nexus Games.</p><div className="creator-status">Pour le moment, tes créations restent privées sur cet appareil. Aucun compte ni identifiant n'est demandé.</div></section>
       </aside>
     </div>
-    <p className="creator-note">NEXUS CREATOR STUDIO · NEXUS GAMES 2.0.0 · Les créations sont enregistrées localement dans ce navigateur. Le partage entre joueurs n'est pas encore activé.</p>
+    <p className="creator-note">NEXUS CREATOR STUDIO · NEXUS GAMES 2.1.0 · Les créations sont enregistrées localement dans ce navigateur. Le partage entre joueurs n'est pas encore activé.</p>
   </main>;
 }
