@@ -331,3 +331,13 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 .account-profile-actions button{padding:7px 9px;border:1px solid var(--line);border-radius:4px;background:#101612;color:#d5dfd6;font-size:8px;cursor:pointer}
 .account-profile-actions button:disabled{opacity:.35;cursor:not-allowed}
 @media(max-width:520px){.account-profile{align-items:flex-start;flex-wrap:wrap}.account-profile-actions{width:100%;padding-left:46px}.account-profile-actions button{flex:1}}
+
+
+/* Nexus Games 0.0.1.9 — réactions et commentaires locaux */
+.community-comments{display:grid;gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid var(--line)}
+.community-comments>b{color:#9be564;font-size:8px;letter-spacing:1px}
+.community-comment{display:grid;gap:3px;padding:8px;border-radius:4px;background:#0b100d}
+.community-comment strong{font-size:9px;color:#dbe8dc}.community-comment span{font-size:10px;color:#a5b2a7;line-height:1.5;overflow-wrap:anywhere}
+.community-comment-form{display:flex;gap:6px;margin-top:4px}
+.community-comment-form input{min-width:0;flex:1;padding:9px;border:1px solid var(--line);border-radius:4px;background:#080d0a;color:#f3f7f3;font:10px 'DM Sans'}
+.community-comment-form button{padding:8px 10px;border:1px solid #9be56466;border-radius:4px;background:#9be56412;color:#9be564;font-size:8px;font-weight:900;cursor:pointer}
