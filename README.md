@@ -1,5 +1,14 @@
 # Nexus Games — BÊTA
 
+## Version bêta 0.0.3.0 — Nexus City : gestion du carburant
+- Ajout d'une jauge de carburant sauvegardée avec la progression
+- Les déplacements consomment du carburant, avec une consommation plus élevée en avion
+- Le véhicule s'arrête lorsque le réservoir est vide
+- Possibilité de faire le plein au garage contre 50 crédits virtuels
+- Interface de jeu mise à jour avec indicateur de carburant
+
+# Nexus Games — BÊTA
+
 ## Version bêta 0.0.2.0 — Creator Studio avancé
 - Nouvel objet Arrivée pour définir la fin d'un niveau
 - Les pièces sont récupérées lorsque le joueur passe dessus
