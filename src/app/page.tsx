@@ -108,7 +108,7 @@ export default function Home() {
           </section>
 
           <section className="stats-row" aria-label="Informations sur la plateforme">
-            <div><strong>10</strong><span>JEUX AU<br />CATALOGUE</span></div><div><strong>01</strong><span>JEU HTML5<br />JOUABLE</span></div><div><strong>0€</strong><span>ACCÈS AU<br />PROTOTYPE</span></div><div className="stats-note">UNE PLATEFORME INDÉPENDANTE.<br /><b>PROPULSÉE PAR NEXUS.</b></div>
+            <div><strong>10</strong><span>JEUX AU<br />CATALOGUE</span></div><div><strong>02</strong><span>JEUX<br />JOUABLES</span></div><div><strong>0€</strong><span>ACCÈS AU<br />PROTOTYPE</span></div><div className="stats-note">UNE PLATEFORME INDÉPENDANTE.<br /><b>PROPULSÉE PAR NEXUS.</b></div>
           </section>
 
           <section className="discover-section" id="discover">
