@@ -156,7 +156,7 @@ export default function CreatorPage() {
   };
 
   return <main className="creator-page">
-    <div className="creator-top"><Link className="creator-brand" href="/">NEXUS<span>GAMES</span></Link><Link className="creator-back" href="/">← RETOUR À LA PLATEFORME</Link></div>
+    <div className="creator-top"><Link className="creator-brand" href="/">NEXUS<span>GAMES</span></Link><div style={{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}}><Link className="creator-back" href="/creator/evolution">✦ CREATOR EVOLUTION 2.2</Link><Link className="creator-back" href="/">← RETOUR À LA PLATEFORME</Link></div></div>
     <section className="creator-hero"><div className="creator-kicker">NEXUS GAMES · OUTIL DE CRÉATION · NEXUS GAMES 2.1.0</div><h1>NEXUS <em>CREATOR</em><br/>STUDIO.</h1><p>Imagine ton jeu, construis un niveau, teste-le et enregistre ta création. Un premier atelier de création 2D directement dans ton navigateur.</p></section>
     <div className="creator-layout">
       <section className="creator-panel">
