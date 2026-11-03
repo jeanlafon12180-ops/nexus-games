@@ -172,3 +172,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 .ncity-destinations button.selected,.ncity-destinations button:hover{border-color:var(--green);color:var(--green);background:rgba(155,229,100,.1)}
 .ncity-objective{display:block!important;color:var(--green)!important;margin-top:4px}
 @media(max-width:700px){.ncity-destinations button{flex:1 1 42%}.ncity-explore{padding:13px}}
+
+/* Nexus City 0.0.1.1 — progression des missions */
+.ncity-progress{display:block!important;color:#d6e5d8!important;font-size:8px!important;letter-spacing:.7px;margin-top:4px}
+.ncity-mission button:disabled{cursor:default}
