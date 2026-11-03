@@ -4,6 +4,11 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
+## Version bêta 0.0.0.6
+- Filtre dédié pour afficher uniquement les jeux favoris
+- Compteur de favoris intégré au filtre
+- Catalogue, favoris et pseudo restent utilisables sans compte en ligne
+
 ## Version bêta 0.0.0.5
 - Page de préparation du compte joueur : inscription / connexion
 - Maquette explicitement indiquée comme inactive, sans collecte d’identifiants
