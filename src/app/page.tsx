@@ -236,7 +236,7 @@ export default function Home() {
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 2 JEUX JOUABLES</span><span className="version-chip">VERSION · 2.7.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 2 JEUX JOUABLES</span><span className="version-chip">VERSION · 2.8.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
@@ -278,6 +278,7 @@ export default function Home() {
               <Link href="/creator" className="hub-card"><span>＋</span><div><b>CREATOR STUDIO</b><small>Construis et teste tes propres niveaux.</small></div><strong>↗</strong></Link>
               <Link href="/community" className="hub-card"><span>◇</span><div><b>GALERIE COMMUNAUTAIRE</b><small>Retrouve tes créations locales et importe des jeux.</small></div><strong>↗</strong></Link>
               <a href="#player-rank" className="hub-card"><span>♛</span><div><b>NEXUS PLAYER CLUB</b><small>Défis, XP, badges et progression personnelle.</small></div><strong>↗</strong></a>
+              <Link href="/game-studio" className="hub-card"><span>✦</span><div><b>GAME STUDIO</b><small>Configure tes prochains concepts de jeux.</small></div><strong>↗</strong></Link>
               <Link href="/marketplace" className="hub-card"><span>◇</span><div><b>CREATOR MARKETPLACE</b><small>Explore les créations locales et tes favoris.</small></div><strong>↗</strong></Link>
               <Link href="/online" className="hub-card"><span>⌁</span><div><b>NEXUS NETWORK</b><small>Découvre les fondations de la future plateforme en ligne.</small></div><strong>↗</strong></Link>
             </div>
