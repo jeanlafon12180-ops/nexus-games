@@ -1,3 +1,12 @@
+# Nexus Games — RELEASE CANDIDATE
+
+## Version 0.0.9.0 — Préparation de la version 1.0
+- Export JSON des données locales du joueur
+- Sauvegarde des profils, favoris, créations, progression et données Nexus City
+- Limite de taille de sauvegarde : 1 Mo
+- Liste de vérification de pré-lancement ajoutée dans RELEASE_CHECKLIST.md
+- La version finale reste conditionnée à la réussite des tests et au déploiement Vercel
+
 # Nexus Games — BÊTA
 
 ## Version bêta 0.0.8.0 — Tests automatisés
