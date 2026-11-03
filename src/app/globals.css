@@ -202,3 +202,38 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:34p
 .ncity-map.weather-rain .ncity-atmosphere-overlay{background:repeating-linear-gradient(112deg,transparent 0 17px,rgba(205,226,238,.22) 18px,transparent 19px 31px);animation:ncity-rain .65s linear infinite}
 @keyframes ncity-rain{to{background-position:0 31px}}
 @media(max-width:700px){.nexus-challenge-grid{grid-template-columns:1fr}.nexus-challenge-heading{align-items:flex-start}.nexus-challenge-heading h2{font-size:34px}.nexus-challenge-card p{min-height:0}.nexus-challenges{padding:17px}.ncity-atmosphere{justify-content:flex-start}}
+
+
+/* Nexus Games 0.0.1.3 — badges, niveaux et classement local */
+.nexus-rank-section{margin:18px 0 38px;padding:25px;border:1px solid rgba(155,229,100,.2);border-radius:8px;background:linear-gradient(145deg,rgba(18,29,21,.96),rgba(9,14,11,.96))}
+.nexus-rank-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.nexus-rank-heading h2{font:900 42px/.95 'Barlow Condensed';margin:12px 0}
+.nexus-rank-heading h2 em,.nexus-local-leaderboard h3 em{font-style:normal;color:var(--green)}
+.nexus-rank-heading p,.nexus-local-leaderboard p{max-width:560px;color:#9aa69d;font-size:11px;line-height:1.7}
+.nexus-level-emblem{width:112px;height:112px;flex:0 0 112px;border:1px solid #9be56466;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,#9be56418,transparent 68%)}
+.nexus-level-emblem span,.nexus-level-emblem b{font-size:8px;letter-spacing:1.3px;color:#a9b7aa}
+.nexus-level-emblem strong{font:900 35px 'Barlow Condensed';color:var(--green);line-height:1.05}
+.nexus-level-progress{margin:22px 0 27px}
+.nexus-level-progress-label{display:flex;justify-content:space-between;gap:12px;margin-bottom:9px;color:#aab8ac;font-size:9px}
+.nexus-level-track{height:9px;border-radius:20px;background:#263128;overflow:hidden}
+.nexus-level-track span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#6da84c,var(--green));transition:width .3s}
+.nexus-badge-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.nexus-badge-heading h3,.nexus-local-leaderboard h3{font:800 21px 'Barlow Condensed';margin:0}
+.nexus-badge-heading>span{font-size:8px;letter-spacing:1px;color:var(--green)}
+.nexus-badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.nexus-badge-card{display:flex;align-items:center;gap:11px;min-height:90px;padding:12px;border:1px solid var(--line);border-radius:5px;background:#0b100d}
+.nexus-badge-card.unlocked{border-color:#9be56466;background:#9be5640b}
+.nexus-badge-card.locked{opacity:.58}
+.nexus-badge-icon{width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;border:1px solid #9be56455;border-radius:50%;color:var(--green);font-size:20px}
+.nexus-badge-card b{font-size:10px;color:#e8f0e9}
+.nexus-badge-card p{font-size:8px;line-height:1.5;color:#87948a;margin:4px 0}
+.nexus-badge-card small{font-size:7px;letter-spacing:.7px;color:var(--green)}
+.nexus-local-leaderboard{display:grid;grid-template-columns:1fr minmax(220px,.7fr);gap:18px;align-items:center;margin-top:22px;padding:17px;border:1px solid var(--line);border-radius:5px;background:#090e0b}
+.nexus-local-leaderboard h3{margin:9px 0}
+.nexus-local-player{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:9px;padding:12px;border:1px solid #9be56444;border-radius:4px;background:#9be56409}
+.nexus-local-player>span{font:800 20px 'Barlow Condensed';color:var(--green)}
+.nexus-local-player>b{font-size:10px;overflow-wrap:anywhere}
+.nexus-local-player>strong{font-size:11px;color:var(--green)}
+.nexus-local-player>small{grid-column:2/4;font-size:7px;letter-spacing:1px;color:#87948a}
+@media(max-width:760px){.nexus-rank-section{padding:17px}.nexus-rank-heading{align-items:flex-start}.nexus-rank-heading h2{font-size:34px}.nexus-badge-grid{grid-template-columns:1fr 1fr}.nexus-local-leaderboard{grid-template-columns:1fr}.nexus-level-emblem{width:88px;height:88px;flex-basis:88px}.nexus-level-progress-label{font-size:8px}}
+@media(max-width:420px){.nexus-badge-grid{grid-template-columns:1fr}.nexus-badge-card{min-height:75px}.nexus-rank-heading{gap:10px}.nexus-level-emblem{width:76px;height:76px;flex-basis:76px}.nexus-level-emblem strong{font-size:28px}}
