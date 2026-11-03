@@ -38,6 +38,17 @@ export default function AccountPage() {
     const item={id:String(Date.now()),name:clean,createdAt:new Date().toISOString()};
     save([item,...profiles],clean);setName("");
   };
+  const exportBackup=()=>{
+    const keys=["nexus-games-favorites","nexus-games-player-name","nexus-platform-city-visited","nexus-creator-creations-v1","nexus-community-games-v1","nexus-community-liked-v1","nexus-challenges","nexus-xp","nexus-local-leaderboard","nexus-city-save-v1","nexus-player-profiles-v1"];
+    const data:Record<string,unknown>={};
+    try {
+      for(const key of keys){const value=localStorage.getItem(key);if(value!==null){try{data[key]=JSON.parse(value);}catch{data[key]=value;}}}
+      const content=JSON.stringify({format:"nexus-games-backup",version:1,exportedAt:new Date().toISOString(),data},null,2);
+      if(content.length>1000000){setNotice("La sauvegarde dépasse 1 Mo. Supprime quelques créations avant de recommencer.");return;}
+      const blob=new Blob([content],{type:"application/json"});const url=URL.createObjectURL(blob);const link=document.createElement("a");link.href=url;link.download="nexus-games-backup.json";link.click();URL.revokeObjectURL(url);
+      setNotice("Sauvegarde locale exportée. Garde le fichier en lieu sûr.");
+    } catch {setNotice("Impossible de créer la sauvegarde dans ce navigateur.");}
+  };
   const remove=(id:string)=>{
     if(profiles.length<=1){setNotice("Conserve au moins un profil sur cet appareil.");return;}
     const next=profiles.filter(p=>p.id!==id);
@@ -53,7 +64,7 @@ export default function AccountPage() {
       <div className="account-local-active"><span>PROFIL ACTIF</span><strong>{active||"Chargement…"}</strong></div>
       <div className="account-fields"><label>NOUVEAU PSEUDO<input value={name} maxLength={24} onChange={e=>setName(e.target.value)} placeholder="Ton pseudo" onKeyDown={e=>{if(e.key==="Enter")create();}}/></label><button className="primary-button account-submit" onClick={create} disabled={!ready||profiles.length>=8}>＋ CRÉER UN PROFIL</button></div>
       <div className="account-profile-list">{profiles.map(profile=><article className="account-profile" key={profile.id}><div className="account-profile-avatar">{profile.name.charAt(0).toUpperCase()}</div><div className="account-profile-info"><strong>{profile.name}</strong><small>{profile.name===active?"PROFIL ACTIF":"PROFIL LOCAL"}</small></div><div className="account-profile-actions">{profile.name!==active&&<button onClick={()=>save(profiles,profile.name)}>UTILISER</button>}<button onClick={()=>remove(profile.id)} disabled={profiles.length<=1}>SUPPRIMER</button></div></article>)}</div>
-      <div className="account-notice"><strong>🔒 Profils locaux uniquement</strong><p>Cette version ne crée pas de compte Internet. Aucun e-mail ni mot de passe n'est demandé. Les profils sont enregistrés dans le navigateur de cet appareil ; favoris, XP et progression restent partagés localement pour le moment.</p></div>
+      <div className="account-backup"><button className="primary-button" onClick={exportBackup}>↓ SAUVEGARDER MES DONNÉES</button><small>Export JSON des profils, favoris, créations, progression et sauvegarde Nexus City. Taille maximale : 1 Mo.</small></div><div className="account-notice"><strong>🔒 Profils locaux uniquement</strong><p>Cette version ne crée pas de compte Internet. Aucun e-mail ni mot de passe n'est demandé. Les profils sont enregistrés dans le navigateur de cet appareil ; favoris, XP et progression restent partagés localement pour le moment.</p></div>
       <div className="community-notice" role="status">{notice}</div>
       <Link className="account-home" href="/">← Revenir à Nexus Games</Link>
     </section>
