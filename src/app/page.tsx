@@ -75,6 +75,25 @@ export default function Home() {
     { id: "city", title: "Explorer Nexus City", detail: "Lance le jeu de simulation.", points: 75, complete: cityVisited }
   ];
   const nexusXp = challenges.filter((challenge) => challenge.complete).reduce((total, challenge) => total + challenge.points, 0);
+  const playerLevels = [
+    { name: "Recrue", minXp: 0, nextXp: 75 },
+    { name: "Explorateur", minXp: 75, nextXp: 150 },
+    { name: "Aventurier", minXp: 150, nextXp: 225 },
+    { name: "Vétéran", minXp: 225, nextXp: 350 },
+    { name: "Légende", minXp: 350, nextXp: 350 }
+  ];
+  const currentLevel = [...playerLevels].reverse().find((level) => nexusXp >= level.minXp) ?? playerLevels[0];
+  const nextLevel = playerLevels.find((level) => level.minXp > nexusXp);
+  const levelProgress = nextLevel
+    ? Math.min(100, Math.round(((nexusXp - currentLevel.minXp) / (nextLevel.minXp - currentLevel.minXp)) * 100))
+    : 100;
+  const playerBadges = [
+    { id: "profile", name: "Identité Nexus", icon: "✦", detail: "Personnaliser son pseudo", earned: playerName.trim().length > 0 && playerName !== "Joueur Nexus" },
+    { id: "collector", name: "Collectionneur", icon: "♥", detail: "Ajouter 3 jeux favoris", earned: favorites.length >= 3 },
+    { id: "explorer", name: "Explorateur", icon: "⌖", detail: "Visiter Nexus City", earned: cityVisited },
+    { id: "xp", name: "Premier XP", icon: "★", detail: "Obtenir ses premiers points XP", earned: nexusXp > 0 }
+  ];
+  const earnedBadges = playerBadges.filter((badge) => badge.earned).length;
   const filteredGames = useMemo(() => games.filter((game) => {
     const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
     const queryMatch = (game.title + " " + game.description).toLowerCase().includes(query.toLowerCase());
@@ -94,15 +113,15 @@ export default function Home() {
           <a className="side-link active" href="#home"><span>⌂</span> Accueil</a>
           <a className="side-link" href="#discover"><span>◈</span> Découvrir</a>
           <a className="side-link" href="#library"><span>▤</span> Ma bibliothèque <small>{favorites.length}</small></a>
-          <a className="side-link" href="#challenges"><span>✧</span> Défis Nexus</a>
+          <a className="side-link" href="#challenges"><span>✧</span> Défis Nexus</a>\n          <a className="side-link" href="#player-rank"><span>♛</span> Badges & niveaux</a>
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.1.2</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.1.3</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.1.2</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.1.3</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
@@ -144,8 +163,26 @@ export default function Home() {
             <div className="nexus-challenge-foot">Progression enregistrée sur cet appareil · Les points ne sont pas transférables entre appareils pour le moment.</div>
           </section>
 
+          <section className="nexus-rank-section" id="player-rank">
+            <div className="nexus-rank-heading">
+              <div><div className="eyebrow"><span /> NEXUS PLAYER CLUB</div><h2>BADGES & <em>NIVEAUX</em></h2><p>Fais progresser ton profil en réalisant les défis de la plateforme.</p></div>
+              <div className="nexus-level-emblem"><span>NIVEAU</span><strong>{playerLevels.indexOf(currentLevel) + 1}</strong><b>{currentLevel.name}</b></div>
+            </div>
+            <div className="nexus-level-progress">
+              <div className="nexus-level-progress-label"><span>{nexusXp} XP · {currentLevel.name}</span><span>{nextLevel ? nextLevel.nextXp + " XP pour le niveau suivant" : "Niveau maximum atteint"}</span></div>
+              <div className="nexus-level-track"><span style={{ width: levelProgress + "%" }} /></div>
+            </div>
+            <div className="nexus-badge-heading"><h3>COLLECTION DE BADGES</h3><span>{earnedBadges}/{playerBadges.length} DÉBLOQUÉS</span></div>
+            <div className="nexus-badge-grid">{playerBadges.map((badge) => <article className={"nexus-badge-card " + (badge.earned ? "unlocked" : "locked")} key={badge.id}><div className="nexus-badge-icon">{badge.earned ? badge.icon : "?"}</div><div><b>{badge.name}</b><p>{badge.detail}</p><small>{badge.earned ? "BADGE DÉBLOQUÉ" : "À DÉBLOQUER"}</small></div></article>)}</div>
+            <div className="nexus-local-leaderboard">
+              <div><div className="eyebrow"><span /> CLASSEMENT PERSONNEL</div><h3>TON <em>TABLEAU DE PROGRESSION</em></h3><p>Ce classement est local : il affiche uniquement le profil de cet appareil. Il ne s'agit pas encore d'un classement mondial ou multijoueur.</p></div>
+              <div className="nexus-local-player"><span>01</span><b>{playerName.trim() || "Joueur Nexus"}</b><strong>{nexusXp} XP</strong><small>NIVEAU {playerLevels.indexOf(currentLevel) + 1}</small></div>
+            </div>
+            <div className="nexus-challenge-foot">Niveaux, badges et progression sauvegardés dans le navigateur de cet appareil. Les comptes en ligne et le classement mondial ne sont pas encore disponibles.</div>
+          </section>
+
           <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
-          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.1.2</span><span>© 2026 NEXUS GAMES</span></footer>
+          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.1.3</span><span>© 2026 NEXUS GAMES</span></footer>
         </div>
       </section>
 
