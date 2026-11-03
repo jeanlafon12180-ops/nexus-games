@@ -22,3 +22,11 @@ Les données restent locales au navigateur. Les comptes en ligne, sauvegardes cl
 
 ## 1.0.0
 Première version majeure préparant le catalogue, les fonctionnalités joueur locales, Creator Studio, la galerie locale et Nexus City.
+
+
+## 2.1.0 — Nexus Save Center
+- Ajout d'un centre de sauvegarde dans le profil joueur.
+- Export JSON des données locales Nexus Games : favoris, pseudo, Nexus City, record Neon Dodge, Creator Studio et galerie communautaire.
+- Import contrôlé : format/version, liste blanche des clés, types de données et tailles vérifiés avant restauration.
+- Les données existantes restent dans les mêmes clés de stockage ; les deux jeux et leurs routes sont conservés.
+- L'import remplace les clés présentes dans le fichier importé ; les autres données locales restent inchangées.

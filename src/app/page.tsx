@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import Link from "next/link";
 
 type Game = {
@@ -32,6 +32,37 @@ const games: Game[] = [
 
 const categories = ["Tout", "Action", "Aventure", "Course", "Réflexion", "Stratégie", "Simulation"];
 
+const BACKUP_FORMAT = "nexus-games-player-backup";
+const BACKUP_STORAGE_KEYS = [
+  "nexus-games-favorites", "nexus-games-player-name", "nexus-platform-city-visited",
+  "nexus-city-save-v1", "nexus-neon-dodge-best", "nexus-creator-creations-v1",
+  "nexus-community-games-v1", "nexus-community-liked-v1"
+] as const;
+
+function validateBackupData(data: unknown): data is Record<string, string> {
+  if (!data || typeof data !== "object" || Array.isArray(data)) return false;
+  const entries = Object.entries(data as Record<string, unknown>);
+  if (entries.length === 0 || entries.length > BACKUP_STORAGE_KEYS.length) return false;
+  for (const [key, value] of entries) {
+    if (!BACKUP_STORAGE_KEYS.includes(key as typeof BACKUP_STORAGE_KEYS[number]) || typeof value !== "string" || value.length > 600000) return false;
+    if (key === "nexus-games-player-name") { if (value.length > 24) return false; continue; }
+    if (key === "nexus-platform-city-visited") { if (value !== "1") return false; continue; }
+    if (key === "nexus-neon-dodge-best") { if (!Number.isFinite(Number(value)) || Number(value) < 0) return false; continue; }
+    let parsed: unknown;
+    try { parsed = JSON.parse(value); } catch { return false; }
+    if (key === "nexus-games-favorites" && (!Array.isArray(parsed) || !parsed.every(item => Number.isInteger(item)))) return false;
+    if ((key === "nexus-creator-creations-v1" || key === "nexus-community-games-v1") && (!Array.isArray(parsed) || parsed.length > 100)) return false;
+    if (key === "nexus-community-liked-v1" && (!Array.isArray(parsed) || !parsed.every(item => typeof item === "string"))) return false;
+    if (key === "nexus-city-save-v1") {
+      if (!parsed || typeof parsed !== "object" || !("job" in parsed) || !("vehicle" in parsed) || !("cash" in parsed) || !("level" in parsed) || !("pos" in parsed) || !("done" in parsed)) return false;
+      const save = parsed as { cash: unknown; level: unknown; pos: unknown; done: unknown };
+      if (typeof save.cash !== "number" || !Number.isFinite(save.cash) || typeof save.level !== "number" || !Number.isFinite(save.level) || !Array.isArray(save.done) || !save.pos || typeof save.pos !== "object") return false;
+    }
+  }
+  return true;
+}
+
+
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("Tout");
   const [sortOrder, setSortOrder] = useState("featured");
@@ -44,6 +75,7 @@ export default function Home() {
   const [cityVisited, setCityVisited] = useState(false);
   const [createdGames, setCreatedGames] = useState(0);
   const [communityGames, setCommunityGames] = useState(0);
+  const [backupNotice, setBackupNotice] = useState("");
 
   useEffect(() => {
     try {
@@ -107,6 +139,45 @@ export default function Home() {
     { id: "collector-plus", name: "Super collection", icon: "♥", detail: "Ajouter 5 jeux en favoris", earned: favorites.length >= 5 }
   ];
   const earnedBadges = playerBadges.filter((badge) => badge.earned).length;
+
+  function exportPlayerBackup() {
+    try {
+      const data: Record<string, string> = {};
+      for (const key of BACKUP_STORAGE_KEYS) {
+        const value = window.localStorage.getItem(key);
+        if (value !== null) data[key] = value;
+      }
+      const backup = { format: BACKUP_FORMAT, version: 1, createdAt: new Date().toISOString(), data };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "nexus-games-sauvegarde.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setBackupNotice("Sauvegarde exportée. Garde le fichier dans un endroit sûr.");
+    } catch {
+      setBackupNotice("Impossible d'exporter la sauvegarde sur cet appareil.");
+    }
+  }
+
+  async function importPlayerBackup(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (file.size > 5000000) { setBackupNotice("Fichier trop volumineux : limite de 5 Mo."); return; }
+    try {
+      const parsed: unknown = JSON.parse(await file.text());
+      if (!parsed || typeof parsed !== "object" || !("format" in parsed) || parsed.format !== BACKUP_FORMAT || !("version" in parsed) || parsed.version !== 1 || !("data" in parsed) || !validateBackupData(parsed.data)) throw new Error("Sauvegarde invalide");
+      for (const [key, value] of Object.entries(parsed.data)) window.localStorage.setItem(key, value);
+      window.location.reload();
+    } catch {
+      setBackupNotice("Import refusé : ce fichier n'est pas une sauvegarde Nexus Games valide.");
+    }
+  }
+
   const filteredGames = useMemo(() => {
     const filtered = games.filter((game) => {
       const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
@@ -142,17 +213,17 @@ export default function Home() {
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 2.0.0</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 2.1.0</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 2 JEUX JOUABLES</span><span className="version-chip">VERSION · 2.0.0</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 2 JEUX JOUABLES</span><span className="version-chip">VERSION · 2.1.0</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
             <div className="hero-content">
               <div className="eyebrow"><span /> TON PROCHAIN UNIVERS T'ATTEND</div>
-              <h1>PLAY BEYOND<br /><em>LIMITS.</em></h1><div className="hero-release">NEXUS GAMES <b>2.0</b> · NOUVELLE EXPÉRIENCE</div>
+              <h1>PLAY BEYOND<br /><em>LIMITS.</em></h1><div className="hero-release">NEXUS GAMES <b>2.1</b> · NOUVELLE EXPÉRIENCE</div>
               <p>Découvre. Joue. Recommence.<br />Toute ta passion du jeu, au même endroit.</p>
               <div className="hero-actions"><Link className="primary-button" href="/games/nexus-city"><span>▶</span> JOUER À NEXUS CITY</Link><Link className="secondary-button" href="/games/neon-dodge">JOUER À NEON DODGE <span>↗</span></Link><a className="text-button" href="#discover">EXPLORER LE STORE ↓</a></div>
             </div>
@@ -233,11 +304,21 @@ export default function Home() {
           </section>
 
           <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div><button className="library-clear" onClick={()=>setFavorites([])} disabled={favorites.length===0}>VIDER LES FAVORIS</button></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
-          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>NEXUS GAMES · VERSION 2.0.0</span><span>© 2026 NEXUS GAMES</span></footer>
+          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>NEXUS GAMES · VERSION 2.1.0</span><span>© 2026 NEXUS GAMES</span></footer>
         </div>
       </section>
 
-      {profileOpen && <div className="modal-backdrop" role="presentation" onClick={() => setProfileOpen(false)}><div className="game-modal profile-modal" role="dialog" aria-modal="true" aria-label="Mon profil joueur" onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setProfileOpen(false)} aria-label="Fermer">×</button><div className="eyebrow"><span /> ESPACE JOUEUR</div><h2>MON <em>PROFIL</em></h2><p>Choisis un pseudo pour personnaliser ton espace sur cet appareil.</p><p><a className="account-home" href="/account">Créer un compte en ligne — bientôt disponible ↗</a></p><label className="profile-label" htmlFor="player-name">PSEUDO JOUEUR</label><input id="player-name" className="profile-input" maxLength={24} value={playerName} onChange={(event) => setPlayerName(event.target.value)} placeholder="Ton pseudo" /><div className="profile-note">Tes favoris et ton pseudo sont enregistrés dans le navigateur de cet appareil. Aucun compte en ligne n'est créé pour le moment.</div><button className="primary-button modal-play" onClick={() => setProfileOpen(false)}>ENREGISTRER</button></div></div>}
+      {profileOpen && <div className="modal-backdrop" role="presentation" onClick={() => setProfileOpen(false)}><div className="game-modal profile-modal" role="dialog" aria-modal="true" aria-label="Mon profil joueur" onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setProfileOpen(false)} aria-label="Fermer">×</button><div className="eyebrow"><span /> ESPACE JOUEUR</div><h2>MON <em>PROFIL</em></h2><p>Choisis un pseudo pour personnaliser ton espace sur cet appareil.</p><p><a className="account-home" href="/account">Créer un compte en ligne — bientôt disponible ↗</a></p><label className="profile-label" htmlFor="player-name">PSEUDO JOUEUR</label><input id="player-name" className="profile-input" maxLength={24} value={playerName} onChange={(event) => setPlayerName(event.target.value)} placeholder="Ton pseudo" /><div className="profile-note">Tes favoris, ton pseudo et tes sauvegardes sont enregistrés dans le navigateur de cet appareil. Aucun compte en ligne n'est créé pour le moment.</div>
+          <section className="backup-panel" aria-label="Centre de sauvegarde">
+            <div className="eyebrow"><span /> NEXUS SAVE CENTER</div>
+            <h3>PROTÈGE TA <em>PROGRESSION</em></h3>
+            <p>Exporte tes données pour les conserver ou les importer sur un autre appareil. L'import remplace les données locales correspondantes.</p>
+            <div className="backup-actions">
+              <button type="button" className="primary-button" onClick={exportPlayerBackup}>↓ EXPORTER MA SAUVEGARDE</button>
+              <label className="secondary-button backup-import">↑ IMPORTER UN FICHIER<input type="file" accept="application/json,.json" onChange={importPlayerBackup} /></label>
+            </div>
+            {backupNotice && <p className="backup-notice" role="status">{backupNotice}</p>}
+          </section><button className="primary-button modal-play" onClick={() => setProfileOpen(false)}>ENREGISTRER</button></div></div>}
       {selectedGame && <div className="modal-backdrop" role="presentation" onClick={() => setSelectedGame(null)}><div className="game-modal" role="dialog" aria-modal="true" aria-label={"Fiche de " + selectedGame.title} onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedGame(null)} aria-label="Fermer">×</button><div className={"modal-game-art art-" + selectedGame.color}><span>{selectedGame.icon}</span><b>{selectedGame.label}</b></div><div className="eyebrow"><span /> FICHE DU JEU · {selectedGame.category.toUpperCase()}</div><h2>{selectedGame.title}</h2><p>{selectedGame.details}</p><div className="game-meta"><span>{selectedGame.players}</span><span className={selectedGame.status === "JOUABLE" ? "meta-ready" : ""}>{selectedGame.status}</span></div>{selectedGame.slug ? <Link className="primary-button modal-play" href={selectedGame.slug}>▶ LANCER LE JEU</Link> : <button className="secondary-button modal-play" onClick={() => setSelectedGame(null)}>RETOUR AU CATALOGUE</button>}</div></div>}
     </main>
   );
