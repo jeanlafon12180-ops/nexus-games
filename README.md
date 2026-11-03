@@ -1,4 +1,4 @@
-# Nexus Games 2.5.0
+# Nexus Games 2.6.0
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
@@ -27,6 +27,13 @@ Les autres entrées du catalogue sont des fiches de jeux en préparation et ne s
 
 ## Limites actuelles
 Les profils, sauvegardes, réactions, commentaires et créations restent enregistrés dans le navigateur de l'appareil. Les comptes en ligne, la synchronisation cloud, le classement mondial et une galerie publique partagée nécessitent encore un backend sécurisé. Aucun paiement ni achat réel n'est activé dans le catalogue.
+
+## Nouveautés 2.6.0 — Multiplayer & Community Foundation
+- Nouvelle page /multiplayer pour présenter les futures expériences de salons, coopération et compétition.
+- Page /community-share pour créer, exporter, importer et vérifier des fiches de créations JSON versionnées.
+- Validation du format, des champs et d'une limite de 500 Ko ; le contenu importé n'est jamais exécuté.
+- Les échanges restent locaux par fichier : aucun hébergement public ni transfert automatique.
+- Aucun compte, salon réseau, matchmaking, chat ou multijoueur en ligne n'est activé.
 
 ## Développement
 ```bash
