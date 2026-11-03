@@ -40,11 +40,13 @@ export default function Home() {
   const [playerName, setPlayerName] = useState("Joueur Nexus");
   const [profileOpen, setProfileOpen] = useState(false);
   const [storageReady, setStorageReady] = useState(false);
+  const [cityVisited, setCityVisited] = useState(false);
 
   useEffect(() => {
     try {
       const savedFavorites = window.localStorage.getItem("nexus-games-favorites");
       const savedName = window.localStorage.getItem("nexus-games-player-name");
+      setCityVisited(window.localStorage.getItem("nexus-platform-city-visited") === "1");
       if (savedFavorites) {
         const parsed: unknown = JSON.parse(savedFavorites);
         if (Array.isArray(parsed) && parsed.every((item) => typeof item === "number")) setFavorites(parsed);
@@ -67,6 +69,12 @@ export default function Home() {
     }
   }, [favorites, playerName, storageReady]);
 
+  const challenges = [
+    { id: "profile", title: "Personnaliser ton pseudo", detail: "Choisis une identité de joueur.", points: 50, complete: playerName.trim().length > 0 && playerName !== "Joueur Nexus" },
+    { id: "favorites", title: "Créer ta collection", detail: "Ajoute au moins 3 jeux en favoris.", points: 100, complete: favorites.length >= 3 },
+    { id: "city", title: "Explorer Nexus City", detail: "Lance le jeu de simulation.", points: 75, complete: cityVisited }
+  ];
+  const nexusXp = challenges.filter((challenge) => challenge.complete).reduce((total, challenge) => total + challenge.points, 0);
   const filteredGames = useMemo(() => games.filter((game) => {
     const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
     const queryMatch = (game.title + " " + game.description).toLowerCase().includes(query.toLowerCase());
@@ -86,14 +94,15 @@ export default function Home() {
           <a className="side-link active" href="#home"><span>⌂</span> Accueil</a>
           <a className="side-link" href="#discover"><span>◈</span> Découvrir</a>
           <a className="side-link" href="#library"><span>▤</span> Ma bibliothèque <small>{favorites.length}</small></a>
+          <a className="side-link" href="#challenges"><span>✧</span> Défis Nexus</a>
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.1.1</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · BETA 0.0.1.2</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.1.0</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 1 JEU DISPONIBLE</span><span className="version-chip">BETA · V 0.0.1.2</span><button className="avatar" onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
@@ -129,8 +138,14 @@ export default function Home() {
             </div>
           </section>
 
+          <section className="nexus-challenges" id="challenges">
+            <div className="nexus-challenge-heading"><div><div className="eyebrow"><span /> NEXUS PLAYER CLUB</div><h2>TES <em>DÉFIS NEXUS</em></h2><p>Des objectifs sur la plateforme, en dehors des jeux. Chaque défi validé te rapporte des points d'expérience.</p></div><div className="nexus-xp"><strong>{nexusXp}</strong><span>XP NEXUS</span></div></div>
+            <div className="nexus-challenge-grid">{challenges.map((challenge) => <article className={"nexus-challenge-card "+(challenge.complete?"completed":"")} key={challenge.id}><div className="nexus-challenge-status">{challenge.complete?"✓ VALIDÉ":"À FAIRE"}</div><h3>{challenge.title}</h3><p>{challenge.detail}</p><b>+{challenge.points} XP</b></article>)}</div>
+            <div className="nexus-challenge-foot">Progression enregistrée sur cet appareil · Les points ne sont pas transférables entre appareils pour le moment.</div>
+          </section>
+
           <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
-          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.1.0</span><span>© 2026 NEXUS GAMES</span></footer>
+          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>UN PROJET EN CONSTRUCTION · VERSION BETA 0.0.1.2</span><span>© 2026 NEXUS GAMES</span></footer>
         </div>
       </section>
 
