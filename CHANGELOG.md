@@ -40,3 +40,11 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Interface Creator Evolution disponible en français et en anglais.
 - Les données du Creator Studio historique et les jeux Nexus City / Neon Dodge ne sont pas modifiés.
 - Les créations restent locales ; la publication publique nécessite un backend.
+
+
+## 2.3.0 — Nexus Player Identity
+- Carte de joueur personnalisable avec pseudo, statut et cinq couleurs d'accent.
+- Aperçu du profil affichant le niveau, les XP et les badges débloqués.
+- Historique local des jeux récemment lancés (Nexus City et Neon Dodge).
+- Les nouvelles préférences du profil et l'historique sont inclus dans Nexus Save Center avec validation à l'import.
+- Les données restent locales au navigateur ; aucune identité publique ou synchronisation en ligne n'est annoncée.

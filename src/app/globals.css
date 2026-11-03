@@ -508,3 +508,27 @@ body{background:#070a0f;color:var(--text)}
 .evo-footer{padding:25px 0 0;text-align:center;color:#66788d;font-size:9px;letter-spacing:1.2px}
 @media(max-width:850px){.evo-layout{grid-template-columns:1fr}.evo-side{display:grid;grid-template-columns:1fr 1fr;gap:12px}.evo-side .evo-panel{margin:0}}
 @media(max-width:600px){.evo-page{padding:0 4vw 30px}.evo-top{height:62px}.evo-top>div{gap:9px}.evo-back{font-size:8px}.evo-hero{padding:35px 0 25px}.evo-panel{padding:14px}.evo-fields{grid-template-columns:1fr}.evo-side{grid-template-columns:1fr}.evo-grid{gap:2px;padding:4px}.evo-cell{font-size:11px}.evo-palette button{font-size:9px;padding:9px 8px}}
+
+
+/* Nexus Games 2.3.0 — Player Identity */
+.avatar-green{border-color:#9be45c!important;color:#9be45c!important}
+.avatar-blue{border-color:#60a5fa!important;color:#60a5fa!important}
+.avatar-violet{border-color:#b59cff!important;color:#b59cff!important}
+.avatar-orange{border-color:#ffad66!important;color:#ffad66!important}
+.avatar-cyan{border-color:#5ee7ee!important;color:#5ee7ee!important}
+.player-card-preview{display:flex;align-items:center;gap:14px;margin:16px 0;padding:16px;border:1px solid #33465b;border-radius:6px;background:linear-gradient(120deg,#152334,#0c1420)}
+.player-card-preview.accent-green{border-color:rgba(155,228,92,.55);background:linear-gradient(120deg,rgba(87,135,52,.22),#0c1420 70%)}
+.player-card-preview.accent-blue{border-color:rgba(96,165,250,.55);background:linear-gradient(120deg,rgba(44,94,151,.25),#0c1420 70%)}
+.player-card-preview.accent-violet{border-color:rgba(181,156,255,.55);background:linear-gradient(120deg,rgba(111,79,165,.25),#0c1420 70%)}
+.player-card-preview.accent-orange{border-color:rgba(255,173,102,.55);background:linear-gradient(120deg,rgba(159,91,43,.25),#0c1420 70%)}
+.player-card-preview.accent-cyan{border-color:rgba(94,231,238,.55);background:linear-gradient(120deg,rgba(36,128,136,.25),#0c1420 70%)}
+.player-card-avatar{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%;font-size:22px;font-weight:900;color:#9be45c;background:#0b1420}
+.accent-blue .player-card-avatar{color:#60a5fa}.accent-violet .player-card-avatar{color:#b59cff}.accent-orange .player-card-avatar{color:#ffad66}.accent-cyan .player-card-avatar{color:#5ee7ee}
+.player-card-preview>div:last-child{display:grid;gap:4px;min-width:0}
+.player-card-preview b{font-size:14px;color:#f4f7fb}.player-card-preview span{font-size:10px;color:#aab9c8;overflow-wrap:anywhere}.player-card-preview small{font-size:9px;color:#9be45c;letter-spacing:.6px}
+.player-accent-picker{display:flex;gap:10px;margin:10px 0 16px}
+.accent-choice{width:29px;height:29px;border:3px solid #101a27;border-radius:50%;cursor:pointer;box-shadow:0 0 0 1px #63758a}
+.accent-choice.selected{box-shadow:0 0 0 2px #fff}
+.accent-green{background:#9be45c}.accent-blue{background:#60a5fa}.accent-violet{background:#b59cff}.accent-orange{background:#ffad66}.accent-cyan{background:#5ee7ee}
+.recent-play-panel{display:grid;gap:7px;margin:12px 0 5px;padding:12px;border:1px solid rgba(145,164,185,.2);border-radius:5px;background:#0b1420}
+.recent-play-panel b{font-size:9px;letter-spacing:1px;color:#9be45c}.recent-play-panel span{font-size:10px;color:#b4c1cf}

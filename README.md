@@ -53,3 +53,11 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Bibliothèque locale de projets avec import/export JSON et validation des fichiers.
 - Interface française et anglaise.
 - Les deux jeux originaux et les anciennes données du Creator Studio restent inchangés.
+
+
+## Nouveautés 2.3.0 — Nexus Player Identity
+- Carte de joueur personnalisable : pseudo, statut et cinq couleurs.
+- Aperçu du niveau, des XP et des badges dans le profil.
+- Historique local des derniers jeux lancés.
+- Export/import de sauvegarde étendu aux nouvelles préférences du profil et à l'historique.
+- Fonctionnalités locales uniquement, sans compte serveur.

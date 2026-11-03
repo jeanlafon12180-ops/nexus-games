@@ -35,3 +35,13 @@
 - [ ] Enregistrer, recharger, exporter puis importer un projet 2.2
 - [ ] Vérifier le basculement français / anglais
 - [ ] Confirmer que Nexus City, Neon Dodge et les clés localStorage historiques fonctionnent toujours
+
+
+## Contrôles 2.3.0
+- [ ] Modifier le pseudo et le statut puis recharger la page
+- [ ] Tester les cinq couleurs de profil
+- [ ] Vérifier l'aperçu du niveau, des XP et des badges
+- [ ] Lancer Nexus City et Neon Dodge puis vérifier l'historique récent
+- [ ] Exporter puis importer une sauvegarde avec les nouvelles clés
+- [ ] Vérifier qu'un accent ou un historique invalide est refusé
+- [ ] Confirmer que Nexus City, Neon Dodge et Creator Evolution restent accessibles
