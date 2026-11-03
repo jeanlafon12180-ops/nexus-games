@@ -1,127 +1,40 @@
-# Nexus Games 1.0.0
+# Nexus Games 2.0
 
-**Version source : 1.0.0 — préparation de la première version majeure.**
+**Version majeure 2.0.0 — interface joueur Xbox / Steam inspirée.**
 
-Nexus Games regroupe un catalogue de jeux, une bibliothèque de favoris, un espace joueur à profils locaux, Creator Studio, une galerie locale de créations et le jeu Nexus City.
+Nexus Games rassemble un catalogue de jeux, deux jeux originaux jouables, une bibliothèque locale, le Nexus Player Club, Creator Studio et une galerie locale de créations.
 
-## Points importants
-- Les profils, commentaires, réactions, sauvegardes et progressions sont conservés localement dans le navigateur.
-- Il n'y a pas encore de comptes en ligne, de synchronisation cloud ni de galerie publique partagée.
-- Les fichiers de création Nexus Games peuvent être exportés et importés.
-- La sauvegarde joueur peut être exportée au format JSON.
-- Le lancement en production reste soumis à la validation de la CI et à un déploiement Vercel en état READY.
+## Les deux jeux jouables
+- **Nexus City** : simulation en monde ouvert avec métiers, véhicules, missions, météo, cycle jour/nuit, carburant et progression locale.
+- **Neon Dodge** : jeu d'arcade avec commandes clavier/tactiles, score et record local.
 
-# Nexus Games — RELEASE CANDIDATE
+Les autres entrées du catalogue sont des fiches de jeux en préparation et ne sont pas annoncées comme jouables.
 
-## Version 0.0.9.0 — Préparation de la version 1.0
-- Export JSON des données locales du joueur
-- Sauvegarde des profils, favoris, créations, progression et données Nexus City
-- Limite de taille de sauvegarde : 1 Mo
-- Liste de vérification de pré-lancement ajoutée dans RELEASE_CHECKLIST.md
-- La version finale reste conditionnée à la réussite des tests et au déploiement Vercel
+## Nouveautés 2.0.0
+- Nouvelle expérience d'accueil inspirée des interfaces Xbox et Steam.
+- Accès direct aux deux jeux depuis l'accueil avec des cartes « Reprendre ta partie ».
+- Hub central vers Nexus Creator Studio, la galerie communautaire et le Nexus Player Club.
+- Catalogue clarifié : deux jeux jouables et les futurs jeux clairement identifiés.
+- Thème visuel rafraîchi, navigation plus lisible et mise en page responsive.
+- Conservation des clés de stockage local existantes afin de préserver les favoris, profils, créations, commentaires et progressions sur le même navigateur.
 
-# Nexus Games — BÊTA
+## Fonctionnalités existantes conservées
+- Recherche, filtres, tri et favoris dans le catalogue.
+- Profils joueurs locaux, défis, XP, badges et niveaux.
+- Creator Studio : création de niveaux 2D, test, brouillons, import et export.
+- Galerie communautaire locale : créations importées/publiées localement, réactions et commentaires.
+- Export JSON de sauvegarde joueur.
 
-## Version bêta 0.0.8.0 — Tests automatisés
-- Ajout d'une suite de tests Node.js pour les fichiers de création Nexus Games
-- Vérification du format, de la version, des métadonnées et des 70 tuiles
-- Workflow GitHub Actions : installation, tests automatisés et compilation Next.js
-- La validation de la compilation reste nécessaire avant chaque promotion de version
+## Limites actuelles
+Les profils, sauvegardes, réactions, commentaires et créations restent enregistrés dans le navigateur de l'appareil. Les comptes en ligne, la synchronisation cloud, le classement mondial et une galerie publique partagée nécessitent encore un backend sécurisé. Aucun paiement ni achat réel n'est activé dans le catalogue.
 
- Nexus Games — BÊTA
-
-## Version bêta 0.0.6.0 — Expérience mobile
-- Navigation compacte et défilante sur petit écran
-- Réorganisation du tableau de bord, des statistiques et du catalogue sur mobile
-- Ajustements des tailles de texte, boutons et espacements pour écran tactile
-- Correction du seuil du niveau Mythique afin qu'il soit atteignable avec tous les défis
-- Les commandes tactiles de Nexus City et Creator Studio restent disponibles
-
- Nexus Games — BÊTA
-
-## Version bêta 0.0.4.0 — Bibliothèque améliorée
-- Tri du catalogue par ordre alphabétique, catégorie ou disponibilité
-- Gestion rapide des favoris depuis la bibliothèque personnelle
-- Conservation des filtres et de la recherche pendant le tri
-- Contrôles adaptés aux petits écrans
-
- Nexus Games — BÊTA
-
-## Version bêta 0.0.2.0 — Creator Studio avancé
-- Nouvel objet Arrivée pour définir la fin d'un niveau
-- Les pièces sont récupérées lorsque le joueur passe dessus
-- Les obstacles bloquent le déplacement ; l'arrivée termine la partie
-- Compteur de pièces dans le mode test, commandes clavier et tactiles conservées
-- Import/export Nexus Games accepte le nouvel objet Arrivée
-
- Nexus Games — BÊTA
-
-## Version bêta 0.0.1.2
-- Cycle jour/nuit et météo évolutive dans Nexus City (ensoleillé, nuageux, pluie)
-- Ajout des Défis Nexus sur la plateforme : profil, collection de favoris et découverte de Nexus City
-- Points XP calculés automatiquement et progression locale sur l’appareil
-
-> **Nexus Games est actuellement en version bêta.** Certaines fonctionnalités sont expérimentales et peuvent évoluer.
-
-Plateforme de découverte et de jeux indépendants — prototype Next.js.
-
-## Version bêta 0.0.1.1
-- Missions avec parcours en deux étapes entre plusieurs lieux de la ville
-- Progression automatique lorsqu’un joueur rejoint la zone demandée
-- Mission en cours et étape actuelle conservées dans la sauvegarde locale
-- Possibilité d’abandonner une mission et de la reprendre plus tard
-
-## Version bêta 0.0.1.0
-- Repères de destination visibles sur la carte et sélection de lieux à explorer
-- Missions désormais liées à une zone : il faut rejoindre le lieu indiqué pour les valider
-- Guide des cinq destinations : terminal, secours, commissariat, hangar et centre-ville
-
-## Version bêta 0.0.0.9
-- Sauvegarde locale du métier, véhicule, crédits, missions, niveau d'aéroport et position
-- Interactions contextuelles avec le terminal, le centre de secours, le commissariat, le hangar et le centre-ville
-- Les interactions des bâtiments sélectionnent le métier correspondant
-
-## Version bêta 0.0.0.8
-- Garage avec cinq choix : à pied, voiture, camion de pompier, voiture de police et avion
-- Déplacement des véhicules avec une vitesse adaptée
-- Commandes tactiles pour jouer sur mobile
-- Correction de la syntaxe du catalogue qui bloquait le déploiement
-
-## Version bêta 0.0.0.7
-- Ajout de Nexus City, jeu de simulation intégré
-- Quatre métiers, missions et récompenses virtuelles
-- Carte 2D interactive avec déplacement clavier
-
-## Version bêta 0.0.0.6
-- Filtre dédié pour afficher uniquement les jeux favoris
-- Compteur de favoris intégré au filtre
-- Catalogue, favoris et pseudo restent utilisables sans compte en ligne
-
-## Version bêta 0.0.0.5
-- Page de préparation du compte joueur : inscription / connexion
-- Maquette explicitement indiquée comme inactive, sans collecte d’identifiants
-- Authentification en ligne à connecter à un fournisseur sécurisé avant activation
-
-## Version bêta 0.0.0.4
-- Profil joueur local avec pseudo personnalisable
-- Favoris et pseudo conservés entre les visites sur le même navigateur et appareil
-- Indication claire : pas encore de compte en ligne ni de synchronisation multi-appareils
-
-## Version 0.0.0.3
-- Catalogue de 9 jeux avec fiches détaillées
-- Recherche par nom et description, filtres par catégorie
-- Favoris locaux et bibliothèque personnelle
-- Premier mini-jeu HTML5 original jouable : Neon Dodge
-- Interface responsive ordinateur / mobile
-
-## Lancer en local
+## Développement
 ```bash
 npm install
 npm run dev
+npm test
+npm run build
 ``
 
-## À savoir
-Les autres jeux du catalogue sont des fiches de présentation et ne sont pas encore jouables. Neon Dodge est le premier jeu original intégré à la plateforme. Les prochains jeux seront développés ou ajoutés avec les autorisations nécessaires.
-
-## Pile technique
-Next.js · React · TypeScript · CSS
+## Stack
+Next.js 15 · React 19 · TypeScript · CSS
