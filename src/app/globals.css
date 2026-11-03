@@ -466,3 +466,16 @@ body{background:#070a0f;color:var(--text)}
 @media(max-width:900px){.hub-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.continue-heading{align-items:flex-start;flex-direction:column}.continue-grid{grid-template-columns:1fr}.continue-card{min-height:195px}.hub-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.continue-heading h2{font-size:34px}.playable-count{font-size:7px}.continue-card{min-height:185px;padding:18px}.continue-card-title{font-size:30px}.continue-symbol{font-size:80px;right:16px}.hub-grid{grid-template-columns:1fr}.hero-actions{align-items:flex-start}.text-button{padding:8px 2px}}
+
+
+/* Nexus Games 2.1 — Save Center */
+.backup-panel{margin:20px 0 8px;padding:17px;border:1px solid rgba(139,220,69,.24);border-radius:6px;background:linear-gradient(145deg,rgba(139,220,69,.07),rgba(16,23,34,.94))}
+.backup-panel h3{margin:9px 0 7px;color:#f3f7fb;font:900 23px/.98 'Barlow Condensed';letter-spacing:.3px}
+.backup-panel h3 em{color:var(--green);font-style:normal}
+.backup-panel>p{margin:0;color:#9eacbb;font-size:10px;line-height:1.65}
+.backup-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.backup-actions .primary-button,.backup-import{min-height:39px;padding:0 12px;font-size:8px;letter-spacing:.6px}
+.backup-import{position:relative;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
+.backup-import input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.backup-panel .backup-notice{margin-top:12px;color:var(--green);font-size:10px}
+@media(max-width:520px){.backup-actions{display:grid;grid-template-columns:1fr}.backup-actions>*{width:100%;justify-content:center}}
