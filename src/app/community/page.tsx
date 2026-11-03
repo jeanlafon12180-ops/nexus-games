@@ -14,6 +14,8 @@ const icons: Record<string,string> = { player:"🧑", coin:"🪙", tree:"🌳", 
 export default function CommunityPage() {
   const [games,setGames] = useState<Creation[]>([]);
   const [ready,setReady] = useState(false);
+  const [liked,setLiked]=useState<string[]>([]);
+  const [drafts,setDrafts]=useState<Record<string,string>>({});
   const [notice,setNotice] = useState("Les créations publiées depuis Creator Studio apparaissent ici sur cet appareil.");
   useEffect(() => {
     try {
