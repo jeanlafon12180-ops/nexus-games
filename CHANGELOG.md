@@ -88,3 +88,12 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Bibliothèque locale avec ouverture, suppression et export JSON.
 - Import JSON versionné validé, limité à 200 Ko.
 - Aucun jeu compilé automatiquement ni publication en ligne n'est annoncé.
+
+
+## 2.9.0 — Nexus Game Engine
+- Ajout de `/game-engine`, un éditeur de scènes 2D sur grille 10 × 8.
+- Placement et inspection des objets : joueur, plateforme, pièce, obstacle et arrivée.
+- Mode test avec déplacements par clavier et commandes tactiles, collecte et objectif.
+- Bibliothèque locale de scènes et échanges JSON versionnés, validés et limités à 200 Ko.
+- Stockage isolé dans `nexus-engine-scenes-v1` ; aucune modification des anciennes sauvegardes.
+- Moteur expérimental : pas de compilation autonome, de physique avancée ni de publication en ligne.
