@@ -4,6 +4,11 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
+## Version bêta 0.0.1.0
+- Repères de destination visibles sur la carte et sélection de lieux à explorer
+- Missions désormais liées à une zone : il faut rejoindre le lieu indiqué pour les valider
+- Guide des cinq destinations : terminal, secours, commissariat, hangar et centre-ville
+
 ## Version bêta 0.0.0.9
 - Sauvegarde locale du métier, véhicule, crédits, missions, niveau d'aéroport et position
 - Interactions contextuelles avec le terminal, le centre de secours, le commissariat, le hangar et le centre-ville
