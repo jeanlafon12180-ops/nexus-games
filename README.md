@@ -4,7 +4,7 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
-## Version bêta 0.0.0.6
+## Version bêta 0.0.0.7\n- Ajout de Nexus City, jeu de simulation intégré\n- Quatre métiers, missions et récompenses virtuelles\n- Carte 2D interactive avec déplacement clavier\n\n## Version bêta 0.0.0.6
 - Filtre dédié pour afficher uniquement les jeux favoris
 - Compteur de favoris intégré au filtre
 - Catalogue, favoris et pseudo restent utilisables sans compte en ligne
