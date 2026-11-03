@@ -279,6 +279,7 @@ export default function Home() {
               <Link href="/community" className="hub-card"><span>◇</span><div><b>GALERIE COMMUNAUTAIRE</b><small>Retrouve tes créations locales et importe des jeux.</small></div><strong>↗</strong></Link>
               <a href="#player-rank" className="hub-card"><span>♛</span><div><b>NEXUS PLAYER CLUB</b><small>Défis, XP, badges et progression personnelle.</small></div><strong>↗</strong></a>
               <Link href="/game-studio" className="hub-card"><span>✦</span><div><b>GAME STUDIO</b><small>Configure tes prochains concepts de jeux.</small></div><strong>↗</strong></Link>
+              <Link href="/game-engine" className="hub-card"><span>▦</span><div><b>NEXUS GAME ENGINE</b><small>Construis une scène 2D et teste ton niveau.</small></div><strong>↗</strong></Link>
               <Link href="/marketplace" className="hub-card"><span>◇</span><div><b>CREATOR MARKETPLACE</b><small>Explore les créations locales et tes favoris.</small></div><strong>↗</strong></Link>
               <Link href="/online" className="hub-card"><span>⌁</span><div><b>NEXUS NETWORK</b><small>Découvre les fondations de la future plateforme en ligne.</small></div><strong>↗</strong></Link>
             </div>
