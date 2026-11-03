@@ -2,6 +2,11 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
+## Version 0.0.0.4
+- Profil joueur local avec pseudo personnalisable
+- Favoris et pseudo conservés entre les visites sur le même navigateur et appareil
+- Indication claire : pas encore de compte en ligne ni de synchronisation multi-appareils
+
 ## Version 0.0.0.3
 - Catalogue de 9 jeux avec fiches détaillées
 - Recherche par nom et description, filtres par catégorie
