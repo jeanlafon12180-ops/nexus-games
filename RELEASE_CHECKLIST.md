@@ -88,3 +88,15 @@
 - [ ] Confirmer qu'aucun achat, paiement ou transfert de création vers un serveur n'est proposé
 - [ ] Exécuter npm test et npm run build
 - [ ] Vérifier le déploiement Vercel
+
+
+## Contrôles 2.8.0
+- [ ] Vérifier /game-studio sur mobile et ordinateur
+- [ ] Tester les quatre modèles et les réglages de personnalisation
+- [ ] Vérifier que l'aperçu et les objectifs suivent le modèle sélectionné
+- [ ] Enregistrer, recharger, ouvrir, supprimer et exporter un projet
+- [ ] Importer un JSON valide et vérifier le refus d'un fichier invalide ou supérieur à 200 Ko
+- [ ] Confirmer que les projets utilisent une clé localStorage distincte
+- [ ] Vérifier l'accès depuis le hub et préserver les jeux et sauvegardes existants
+- [ ] Exécuter npm test et npm run build
+- [ ] Vérifier le déploiement Vercel
