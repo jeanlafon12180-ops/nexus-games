@@ -1,4 +1,6 @@
-# Nexus Games — Checklist de pré-lancement 1.0.0
+# Nexus Games 1.0.0 — Checklist de pré-lancement
+
+**État : code source 1.0.0 préparé ; validation CI et déploiement de production encore requis.**
 
 ## Tests fonctionnels
 - [ ] Accueil : recherche, filtres, tri et favoris
