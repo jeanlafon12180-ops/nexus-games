@@ -6,6 +6,8 @@ import Link from "next/link";
 type Tile = "" | "player" | "platform" | "coin" | "tree" | "enemy" | "goal";
 type Creation = { id: string; title: string; description: string; genre: string; tiles: Tile[]; publishedAt: string };
 const STORAGE = "nexus-creator-creations-v1";
+const validTiles: Tile[] = ["", "player", "platform", "coin", "tree", "enemy", "goal"];
+const isCreation = (value: unknown): value is Creation => !!value && typeof value === "object" && "id" in value && typeof value.id === "string" && "title" in value && typeof value.title === "string" && value.title.length <= 40 && "description" in value && typeof value.description === "string" && value.description.length <= 180 && "genre" in value && typeof value.genre === "string" && "tiles" in value && Array.isArray(value.tiles) && value.tiles.length === 70 && value.tiles.every(tile => validTiles.includes(tile as Tile));
 const COMMUNITY_STORAGE = "nexus-community-games-v1";
 const EMPTY = Array.from({ length: 70 }, (_, i): Tile => (i >= 60 ? "platform" : ""));
 const palette: { id: Tile; label: string; icon: string }[] = [
@@ -36,7 +38,7 @@ export default function CreatorPage() {
       const raw = localStorage.getItem(STORAGE);
       if (raw) {
         const parsed: unknown = JSON.parse(raw);
-        if (Array.isArray(parsed)) setCreations(parsed as Creation[]);
+        if (Array.isArray(parsed)) setCreations(parsed.filter(isCreation).slice(0, 30));
       }
     } catch { /* stockage indisponible : l'éditeur reste utilisable en mémoire */ }
     setReady(true);
