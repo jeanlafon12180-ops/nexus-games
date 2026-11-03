@@ -4,6 +4,12 @@
 
 Plateforme de découverte et de jeux indépendants — prototype Next.js.
 
+## Version bêta 0.0.1.1
+- Missions avec parcours en deux étapes entre plusieurs lieux de la ville
+- Progression automatique lorsqu’un joueur rejoint la zone demandée
+- Mission en cours et étape actuelle conservées dans la sauvegarde locale
+- Possibilité d’abandonner une mission et de la reprendre plus tard
+
 ## Version bêta 0.0.1.0
 - Repères de destination visibles sur la carte et sélection de lieux à explorer
 - Missions désormais liées à une zone : il faut rejoindre le lieu indiqué pour les valider
