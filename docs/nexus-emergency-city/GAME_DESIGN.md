@@ -48,8 +48,11 @@ A large original European-inspired metropolis for a grounded emergency-services 
 - Third-person follow camera and first-person in-car camera are supported.
 - Driving remains an early arcade prototype: no suspension simulation, traffic AI, damage system, detailed interior or final vehicle asset yet.
 
-### 0.4 — First role loop
-- Dispatch UI and one safe, non-graphic, repeatable mission per role.
+### 0.4 — Emergency services and first missions (implemented prototype)
+- Added a dispatch panel with three selectable, non-graphic tasks: police traffic coordination, fire-safety prevention check and citizen assistance.
+- Each task has a destination coordinate; walking or driving within 9 metres completes the intervention.
+- Added a completed-intervention counter and feedback toast.
+- These are navigation and interaction prototypes, not full emergency-service simulations; no injury, fire-fighting or tactical mechanics are implemented.
 ### 0.5 — Multiplayer prototype
 - Authoritative server, player sessions, synchronization and abuse prevention.
 ### 1.0 — Public release candidate
