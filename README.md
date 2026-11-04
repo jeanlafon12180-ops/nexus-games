@@ -2,11 +2,11 @@
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
-Nexus Games rassemble un catalogue de jeux, deux jeux originaux jouables, une bibliothèque locale, le Nexus Player Club, Creator Studio et une galerie locale de créations.
+Nexus Games rassemble un catalogue de jeux, trois jeux originaux jouables, une bibliothèque locale, le Nexus Player Club, Creator Studio et une galerie locale de créations.
 
-## Les deux jeux jouables
+## Les trois jeux jouables
 - **Nexus City** : simulation en monde ouvert avec métiers, véhicules, missions, météo, cycle jour/nuit, carburant et progression locale.
-- **Neon Dodge** : jeu d'arcade avec commandes clavier/tactiles, score et record local.
+- **Neon Dodge** : jeu d'arcade avec commandes clavier/tactiles, score et record local.\n- **Nexus Racing** : course arcade à trois voies avec trafic, crédits à collecter, turbo, commandes tactiles et record local.
 
 Les autres entrées du catalogue sont des fiches de jeux en préparation et ne sont pas annoncées comme jouables.
 
@@ -115,3 +115,4 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Interactions de jeu : collecte de pièces, interrupteur ouvrant/fermant une porte, obstacles et sorties reliant les niveaux.
 - Import/export JSON versionné, validation des scènes et limite de 300 Ko.
 - Le Game Engine 2.9 reste disponible ; aucune compilation autonome ni publication en ligne n'est activée.
+\n\n## Nouveautés 3.0.1 — Nexus Racing\n- Ajout d'un jeu de course arcade jouable avec trois voies, trafic généré, collecte de crédits et jauge de turbo.\n- Commandes clavier et tactiles, score et record conservé localement.\n- Le jeu est accessible depuis le catalogue et son record est inclus dans les sauvegardes joueur.\n
