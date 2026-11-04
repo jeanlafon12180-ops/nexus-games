@@ -49,11 +49,11 @@ function validateBackupData(data: unknown): data is Record<string, string> {
     if (key === "nexus-platform-city-visited") { if (value !== "1") return false; continue; }
     if (key === "nexus-player-accent-v1") { if (!["green","blue","violet","orange","cyan"].includes(value)) return false; continue; }
     if (key === "nexus-player-status-v1") { if (value.length > 60) return false; continue; }
-    if (key === "nexus-neon-dodge-best") { if (!Number.isFinite(Number(value)) || Number(value) < 0) return false; continue; }
+    if (key === "nexus-neon-dodge-best" || key === "nexus-racing-best") { if (!Number.isFinite(Number(value)) || Number(value) < 0) return false; continue; }
     let parsed: unknown;
     try { parsed = JSON.parse(value); } catch { return false; }
     if (key === "nexus-games-favorites" && (!Array.isArray(parsed) || !parsed.every(item => Number.isInteger(item)))) return false;
-    if (key === "nexus-recent-games-v1" && (!Array.isArray(parsed) || parsed.length > 20 || !parsed.every(item => item === "Nexus City" || item === "Neon Dodge"))) return false;
+    if (key === "nexus-recent-games-v1" && (!Array.isArray(parsed) || parsed.length > 20 || !parsed.every(item => item === "Nexus City" || item === "Neon Dodge" || item === "Nexus Racing"))) return false;
     if ((key === "nexus-creator-creations-v1" || key === "nexus-community-games-v1") && (!Array.isArray(parsed) || parsed.length > 100)) return false;
     if (key === "nexus-community-liked-v1" && (!Array.isArray(parsed) || !parsed.every(item => typeof item === "string"))) return false;
     if (key === "nexus-city-save-v1") {
