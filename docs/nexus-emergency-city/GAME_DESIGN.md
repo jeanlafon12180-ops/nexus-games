@@ -33,8 +33,13 @@ A large original European-inspired metropolis for a grounded emergency-services 
 - Babylon.js runtime loads in a dedicated route.
 - Procedural blockout demonstrates scale, streets, camera modes and movement.
 - Clearly label placeholder geometry as a blockout; it is not the final visual quality.
-### 0.2 — City blockout
-- Road network, districts, landmarks, pedestrian areas and navigation.
+### 0.2 — Metropolitan blockout (implemented)
+- 5 × 5 urban blocks arranged around a six-by-six avenue grid.
+- Distinct downtown, business, residential, industrial and civic building profiles.
+- Sidewalks, curbs, lane markings, zebra crossings and boulevard lighting.
+- Two green public spaces, a waterfront canal and promenades.
+- Central civic / transit landmark and expanded walkable bounds.
+- Development-project spotlight and direct prototype route from the Nexus Games homepage.
 ### 0.3 — Vehicle foundation
 - One original civilian vehicle, then emergency vehicle variants; driving physics and camera.
 ### 0.4 — First role loop
@@ -45,4 +50,4 @@ A large original European-inspired metropolis for a grounded emergency-services 
 - Performance, accessibility, QA, privacy and security review; only then publish on Nexus Games.
 
 ## Current limitations
-The 0.1 scene is a technical greybox. It does not yet contain finished art, vehicles, NPCs, missions, multiplayer, or production-quality graphics. The empty Nexus Games catalogue remains unchanged until a real release candidate is tested.
+The 0.2 scene is still a technical greybox. It does not yet contain finished art assets, vehicles, NPCs, missions, multiplayer, or production-quality graphics. The city layout is procedural and intended to validate scale and navigation, not represent the final art direction. The empty Nexus Games catalogue remains unchanged until a real release candidate is tested.
