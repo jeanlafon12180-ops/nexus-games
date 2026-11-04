@@ -265,6 +265,64 @@ export default function EmergencyCityPage() {
           rim.parent = carRoot; rim.position.copyFrom(wheel.position); rim.rotation.z = Math.PI / 2; rim.material = rimMat; wheels.push(rim);
         }
 
+        // 0.5: three original procedural emergency-service vehicles, parked at the civic hub.
+        const serviceFleet: B.TransformNode[] = [];
+        const serviceVehicle = (name: string, x: number, z: number, color: B.Color3, length: number, width: number, roofColor: B.Color3) => {
+          const root = new B.TransformNode(name, world);
+          root.position.set(x, 0, z);
+          const paint = mat(name + "-paint", color, 0.34, 0.42);
+          const roofPaint = mat(name + "-roof", roofColor, 0.38, 0.25);
+          const wheelPaint = tireMat;
+          const part = (label: string, w: number, h: number, d: number, px: number, py: number, pz: number, material: B.Material) => {
+            const mesh = B.MeshBuilder.CreateBox(name + "-" + label, { width: w, height: h, depth: d }, world);
+            mesh.parent = root; mesh.position.set(px, py, pz); mesh.material = material; return mesh;
+          };
+          part("chassis", width, 0.72, length, 0, 0.72, 0, paint);
+          part("cabin", width * 0.82, 0.82, length * 0.48, 0, 1.48, -length * 0.08, roofPaint);
+          part("windscreen", width * 0.72, 0.5, 0.06, 0, 1.48, length * 0.17, darkGlass);
+          for (const side of [-1, 1]) for (const axle of [-1, 1]) {
+            const wheel = B.MeshBuilder.CreateCylinder(name + "-wheel", { diameter: 0.72, height: 0.25, tessellation: 16 }, world);
+            wheel.parent = root; wheel.position.set(side * (width / 2 + 0.02), 0.4, axle * length * 0.31); wheel.rotation.z = Math.PI / 2; wheel.material = wheelPaint;
+          }
+          const bar = part("lightbar", width * 0.55, 0.16, 0.38, 0, 1.98, -length * 0.08, metal);
+          const blue = mat(name + "-blue-beacon", new B.Color3(0.035, 0.22, 1), 0.2, 0.2);
+          const red = mat(name + "-red-beacon", new B.Color3(1, 0.035, 0.025), 0.2, 0.2);
+          part("blue-beacon", 0.28, 0.18, 0.25, -width * 0.18, 2.12, -length * 0.08, blue);
+          part("red-beacon", 0.28, 0.18, 0.25, width * 0.18, 2.12, -length * 0.08, red);
+          bar.isPickable = false;
+          serviceFleet.push(root);
+          return root;
+        };
+        serviceVehicle("police-cruiser", -18, 19, new B.Color3(0.025, 0.07, 0.16), 4.5, 2.05, new B.Color3(0.88, 0.9, 0.94));
+        serviceVehicle("fire-engine", 0, 21, new B.Color3(0.72, 0.045, 0.025), 7.2, 2.45, new B.Color3(0.82, 0.08, 0.035));
+        serviceVehicle("medical-ambulance", 19, 19, new B.Color3(0.83, 0.86, 0.82), 5.6, 2.15, new B.Color3(0.9, 0.92, 0.88));
+
+        // Lightweight civilian pedestrians follow short, safe sidewalk loops.
+        const pedestrians: { mesh: B.Mesh; originX: number; originZ: number; phase: number }[] = [];
+        const pedestrianMat = mat("pedestrian-jacket", new B.Color3(0.72, 0.48, 0.22));
+        const skinMat = mat("pedestrian-face", new B.Color3(0.72, 0.52, 0.39));
+        for (let i = 0; i < 8; i++) {
+          const x = -28 + (i % 4) * 18;
+          const z = -28 + Math.floor(i / 4) * 54;
+          const person = B.MeshBuilder.CreateCapsule("city-pedestrian-" + i, { height: 1.65, radius: 0.28 }, world);
+          person.position.set(x, 0.82, z); person.material = pedestrianMat;
+          const head = B.MeshBuilder.CreateSphere("pedestrian-head-" + i, { diameter: 0.42, segments: 8 }, world);
+          head.parent = person; head.position.y = 0.88; head.material = skinMat;
+          pedestrians.push({ mesh: person, originX: x, originZ: z, phase: i * 0.82 });
+        }
+
+        // Ambient traffic uses simple lane-following loops on the main avenues.
+        const trafficCars: { root: B.TransformNode; origin: number; lane: number; speed: number; phase: number }[] = [];
+        const trafficPaints = [new B.Color3(0.18, 0.42, 0.62), new B.Color3(0.62, 0.62, 0.58), new B.Color3(0.22, 0.38, 0.24)];
+        for (let i = 0; i < 3; i++) {
+          const root = new B.TransformNode("ambient-traffic-" + i, world);
+          const body = B.MeshBuilder.CreateBox("traffic-body-" + i, { width: 1.8, height: 0.62, depth: 3.8 }, world);
+          body.parent = root; body.position.y = 0.68; body.material = mat("traffic-paint-" + i, trafficPaints[i], 0.42, 0.28);
+          const cabin = B.MeshBuilder.CreateBox("traffic-cabin-" + i, { width: 1.48, height: 0.65, depth: 1.8 }, world);
+          cabin.parent = root; cabin.position.set(0, 1.22, -0.15); cabin.material = darkGlass;
+          trafficCars.push({ root, origin: -145 + i * 125, lane: i % 2 ? 5 : -5, speed: i % 2 ? -8 : 6, phase: i * 23 });
+        }
+
         const third = new B.ArcRotateCamera("third-person", -Math.PI / 2, 1.12, 13, player.position.clone(), world);
         third.lowerRadiusLimit = 4;
         third.upperRadiusLimit = 24;
@@ -293,6 +351,18 @@ export default function EmergencyCityPage() {
           const forward = (keys.has("w") || keys.has("z") || keys.has("arrowup") ? 1 : 0) - (keys.has("s") || keys.has("arrowdown") ? 1 : 0);
           const strafe = (keys.has("d") || keys.has("arrowright") ? 1 : 0) - (keys.has("a") || keys.has("q") || keys.has("arrowleft") ? 1 : 0);
           let followed = player.position;
+          const elapsed = performance.now() / 1000;
+          pedestrians.forEach((person) => {
+            person.mesh.position.x = person.originX + Math.sin(elapsed * 0.32 + person.phase) * 5;
+            person.mesh.position.z = person.originZ + Math.cos(elapsed * 0.24 + person.phase) * 2;
+            person.mesh.rotation.y = Math.sin(elapsed * 0.32 + person.phase) * 0.55;
+          });
+          trafficCars.forEach((traffic) => {
+            const travel = ((traffic.origin + elapsed * traffic.speed + 210) % 420 + 420) % 420 - 210;
+            traffic.root.position.set(traffic.lane, 0, travel);
+            traffic.root.rotation.y = traffic.speed > 0 ? 0 : Math.PI;
+          });
+
           if (drivingRef.current) {
             const throttle = (keys.has("w") || keys.has("z") || keys.has("arrowup") ? 1 : 0) - (keys.has("s") || keys.has("arrowdown") ? 1 : 0);
             const steering = (keys.has("d") || keys.has("arrowright") ? 1 : 0) - (keys.has("a") || keys.has("q") || keys.has("arrowleft") ? 1 : 0);
@@ -363,11 +433,11 @@ export default function EmergencyCityPage() {
     <main className={styles.shell}>
       <header className={styles.topbar}>
         <a href="/" className={styles.brand}><span>N</span> NEXUS <b>EMERGENCY CITY</b></a>
-        <div className={styles.build}>CITY UPDATE <i /> 0.4.0</div>
+        <div className={styles.build}>CITY UPDATE <i /> 0.5.0</div>
       </header>
       <section className={styles.viewport}>
         <canvas ref={canvasRef} className={styles.canvas} aria-label="Aperçu 3D de la métropole Nexus Emergency City" />
-        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.4</span><span>POLICE · POMPIERS · SECOURS · MISSIONS</span></div>
+        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.5</span><span>POLICE · POMPIERS · SECOURS · VILLE VIVANTE</span></div>
         <div className={styles.titleCard}><small>NEXUS SIMULATION PROJECT</small><h1>EMERGENCY<br /><em>CITY</em></h1><p>UNE MÉTROPOLE. DES MILLIERS D'HISTOIRES.</p></div>
         <aside className={styles.dispatchPanel}>
           <div className={styles.dispatchHeader}><span>DISPATCH CENTRAL</span><b>{completedMissions} TERMINÉE(S)</b></div>
@@ -391,7 +461,7 @@ export default function EmergencyCityPage() {
         </div>
         {error && <div className={styles.errorPanel}>Le moteur 3D n'a pas pu démarrer : {error}</div>}
       </section>
-      <footer className={styles.footer}><span>BUILD 0.4 — EMERGENCY SERVICES & MISSIONS</span><span>CENTRE DE DISPATCH · 3 MISSIONS GUIDÉES · OBJECTIFS À REJOINDRE À PIED OU EN VOITURE.</span></footer>
+      <footer className={styles.footer}><span>BUILD 0.5 — EMERGENCY FLEET & LIVING CITY</span><span>3 VÉHICULES DE SERVICE · PIÉTONS · CIRCULATION AMBIANTE · 3 MISSIONS.</span></footer>
     </main>
   );
 }
