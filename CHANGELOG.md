@@ -1,4 +1,4 @@
-# Nexus Games — Changelog
+## 3.0.1 — Nexus Racing\n- Ajout d'un jeu de course arcade jouable à trois voies.\n- Trafic, collisions, collecte de crédits, turbo rechargeable et progression du score.\n- Commandes clavier et tactiles ; record local sauvegardé et inclus dans les sauvegardes joueur.\n- Le catalogue présente désormais Nexus Racing comme jouable.\n\n# Nexus Games — Changelog
 
 ## 2.0.0 — The Next Level
 - Nouvelle interface d'accueil inspirée des hubs Xbox et Steam.
