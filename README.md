@@ -1,4 +1,4 @@
-# Nexus Games 3.0.0
+# Nexus Games 4.0.0
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
@@ -116,3 +116,14 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Import/export JSON versionné, validation des scènes et limite de 300 Ko.
 - Le Game Engine 2.9 reste disponible ; aucune compilation autonome ni publication en ligne n'est activée.
 \n\n## Nouveautés 3.0.1 — Nexus Racing\n- Ajout d'un jeu de course arcade jouable avec trois voies, trafic généré, collecte de crédits et jauge de turbo.\n- Commandes clavier et tactiles, score et record conservé localement.\n- Le jeu est accessible depuis le catalogue et son record est inclus dans les sauvegardes joueur.\n
+
+## Nouveautés 4.0.0 — Ultimate Hub
+- L'accueil annonce une version et un nombre de jeux jouables cohérents avec le catalogue.
+- Les trois jeux jouables disposent chacun d'un accès direct depuis le tableau de bord.
+- Ajout de Nexus Racing à la rangée « Reprendre ta partie » et au raccourci principal.
+- L'historique local accepte maintenant les trois jeux et propose des raccourcis de reprise.
+- Ajout d'une présentation responsive à trois cartes sur grand écran, deux sur tablette et une sur mobile.
+- Les clés de stockage existantes et les sauvegardes de joueur sont conservées.
+
+## Transparence
+Les comptes, la synchronisation cloud, les classements mondiaux et le multijoueur réseau ne sont pas activés par cette mise à jour. Les favoris, profils et historiques restent locaux au navigateur.
