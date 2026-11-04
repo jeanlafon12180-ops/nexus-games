@@ -266,7 +266,6 @@ export default function EmergencyCityPage() {
         }
 
         // 0.5: three original procedural emergency-service vehicles, parked at the civic hub.
-        const serviceFleet: B.TransformNode[] = [];
         const serviceVehicle = (name: string, x: number, z: number, color: B.Color3, length: number, width: number, roofColor: B.Color3) => {
           const root = new B.TransformNode(name, world);
           root.position.set(x, 0, z);
@@ -290,7 +289,6 @@ export default function EmergencyCityPage() {
           part("blue-beacon", 0.28, 0.18, 0.25, -width * 0.18, 2.12, -length * 0.08, blue);
           part("red-beacon", 0.28, 0.18, 0.25, width * 0.18, 2.12, -length * 0.08, red);
           bar.isPickable = false;
-          serviceFleet.push(root);
           return root;
         };
         serviceVehicle("police-cruiser", -18, 19, new B.Color3(0.025, 0.07, 0.16), 4.5, 2.05, new B.Color3(0.88, 0.9, 0.94));
