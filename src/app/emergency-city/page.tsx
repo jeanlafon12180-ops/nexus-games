@@ -10,6 +10,7 @@ export default function EmergencyCityPage() {
   const [mode, setMode] = useState<CameraMode>("third");
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
+  const cameraBundleRef = useRef<{ world: import("@babylonjs/core").Scene; first: import("@babylonjs/core").UniversalCamera; third: import("@babylonjs/core").ArcRotateCamera } | null>(null);
 
   useEffect(() => {
     let disposed = false;
@@ -23,8 +24,6 @@ export default function EmergencyCityPage() {
         const B = await import("@babylonjs/core");
         if (disposed) return;
 
-        const scene = new B.Scene(new B.NullEngine());
-        scene.dispose();
         const webEngine = new B.Engine(canvas, true, {
           preserveDrawingBuffer: false,
           stencil: true,
@@ -137,6 +136,7 @@ export default function EmergencyCityPage() {
         first.attachControl(canvas, true);
         first.inputs.clear();
         world.activeCamera = third;
+        cameraBundleRef.current = { world, first, third };
 
         const keys = new Set<string>();
         const onDown = (event: KeyboardEvent) => { keys.add(event.key.toLowerCase()); };
@@ -189,7 +189,11 @@ export default function EmergencyCityPage() {
   }, []);
 
   const modeRef = useRef<CameraMode>("third");
-  useEffect(() => { modeRef.current = mode; }, [mode]);
+  useEffect(() => {
+    modeRef.current = mode;
+    const cameras = cameraBundleRef.current;
+    if (cameras) cameras.world.activeCamera = mode === "third" ? cameras.third : cameras.first;
+  }, [mode]);
 
   return (
     <main className={styles.shell}>
