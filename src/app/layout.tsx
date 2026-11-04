@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nexus Games 4.0 — Play beyond limits",
-  description: "Nexus Games 4.0 : découvre Nexus City, Neon Dodge et Nexus Racing, retrouve tes jeux récents et explore les outils de création.",
+  title: "Nexus Games 5.0 — Play beyond limits",
+  description: "Nexus Games 5.0 : joue à dix univers 3D WebGL, explore le catalogue et retrouve tes jeux récents.",
   icons: { icon: "/icon.svg", shortcut: "/icon.svg" },
 };
 

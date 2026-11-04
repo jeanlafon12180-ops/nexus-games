@@ -113,3 +113,13 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Historique local enrichi avec raccourcis vers les parties récentes.
 - Présentation responsive adaptée aux écrans larges, tablettes et mobiles.
 - Préservation des sauvegardes et des clés de stockage existantes.
+
+
+## Nouveautés 5.0.0 — Nexus 3D Universe
+- Ajout d'un moteur de rendu 3D temps réel WebGL sans dépendance externe.
+- Création d'un monde 3D jouable pour les dix entrées du catalogue.
+- Déplacements clavier ZQSD/WASD/flèches et commandes tactiles.
+- Objectif de collecte, progression de niveau et écran de fin.
+- Les univers disposent de palettes et d'identités visuelles distinctes.
+- Les jeux 3D sont accessibles directement depuis le catalogue.
+- Le moteur nécessite un navigateur compatible WebGL.

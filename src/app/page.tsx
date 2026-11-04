@@ -18,16 +18,16 @@ type Game = {
 };
 
 const games: Game[] = [
-  { id: 10, title: "Nexus City", category: "Simulation", label: "ROLEPLAY", color: "green", icon: "✈", description: "Une ville à explorer et un aéroport à développer.", players: "1 joueur", status: "JOUABLE", slug: "/games/nexus-city", details: "Un univers de simulation original avec métiers, missions et gestion aéroportuaire." },
-  { id: 1, title: "Neon Dodge", category: "Action", label: "ARCADE", color: "violet", icon: "✦", description: "Esquive les obstacles et bats ton meilleur score.", players: "1 joueur", status: "JOUABLE", slug: "/games/neon-dodge", details: "Un mini-jeu d'arcade original créé pour Nexus Games. Déplace ton vaisseau, évite les blocs et essaie de survivre le plus longtemps possible." },
-  { id: 2, title: "Pixel Raiders", category: "Action", label: "ACTION", color: "orange", icon: "⚔", description: "Une aventure rétro pleine de défis.", players: "1 joueur", status: "BIENTÔT", details: "Une aventure d'action au style rétro. La fiche est prête, le jeu est encore en développement." },
-  { id: 3, title: "Orbital", category: "Réflexion", label: "PUZZLE", color: "blue", icon: "◉", description: "Trouve ton chemin parmi les astres.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de réflexion spatial en préparation." },
-  { id: 4, title: "Skybound", category: "Aventure", label: "AVENTURE", color: "teal", icon: "⬡", description: "Explore des mondes suspendus dans le ciel.", players: "1 joueur", status: "BIENTÔT", details: "Une aventure d'exploration en préparation." },
-  { id: 5, title: "Nexus Racing", category: "Course", label: "ARCADE", color: "red", icon: "🏎", description: "Évite le trafic, ramasse des crédits et déclenche le turbo.", players: "1 joueur", status: "JOUABLE", slug: "/games/nexus-racing", details: "Un jeu de course arcade original avec trois voies, trafic, crédits à collecter, turbo, commandes tactiles et record local." },
-  { id: 6, title: "Little Kingdom", category: "Stratégie", label: "STRATÉGIE", color: "green", icon: "♜", description: "Construis et développe ton royaume.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de stratégie et de construction en préparation." },
-  { id: 7, title: "Deep Space", category: "Aventure", label: "EXPLORATION", color: "blue", icon: "✧", description: "Pars à la découverte d'une galaxie inconnue.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu d'exploration spatiale en préparation." },
-  { id: 8, title: "Drift City", category: "Course", label: "ARCADE", color: "violet", icon: "⌁", description: "Maîtrise les virages dans une ville futuriste.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de course et de drift en préparation." },
-  { id: 9, title: "Green Valley", category: "Stratégie", label: "SIMULATION", color: "green", icon: "♧", description: "Développe une vallée et ses villages.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de gestion paisible en préparation." }
+  { id: 10, title: "Nexus City", category: "Simulation", label: "ROLEPLAY", color: "green", icon: "✈", description: "Une ville à explorer et un aéroport à développer.", players: "1 joueur", status: "JOUABLE", slug: "/play/nexus-city", details: "Un univers de simulation original avec métiers, missions et gestion aéroportuaire." },
+  { id: 1, title: "Neon Dodge", category: "Action", label: "ARCADE", color: "violet", icon: "✦", description: "Esquive les obstacles et bats ton meilleur score.", players: "1 joueur", status: "JOUABLE", slug: "/play/neon-dodge", details: "Un mini-jeu d'arcade original créé pour Nexus Games. Déplace ton vaisseau, évite les blocs et essaie de survivre le plus longtemps possible." },
+  { id: 2, title: "Pixel Raiders", category: "Action", label: "ACTION", color: "orange", icon: "⚔", description: "Une aventure rétro pleine de défis.", players: "1 joueur", status: "JOUABLE", slug: "/play/pixel-raiders", details: "Une aventure d'action au style rétro. La fiche est prête, le jeu est encore en développement." },
+  { id: 3, title: "Orbital", category: "Réflexion", label: "PUZZLE", color: "blue", icon: "◉", description: "Trouve ton chemin parmi les astres.", players: "1 joueur", status: "JOUABLE", slug: "/play/orbital", details: "Un jeu de réflexion spatial en préparation." },
+  { id: 4, title: "Skybound", category: "Aventure", label: "AVENTURE", color: "teal", icon: "⬡", description: "Explore des mondes suspendus dans le ciel.", players: "1 joueur", status: "JOUABLE", slug: "/play/skybound", details: "Une aventure d'exploration en préparation." },
+  { id: 5, title: "Nexus Racing", category: "Course", label: "ARCADE", color: "red", icon: "🏎", description: "Évite le trafic, ramasse des crédits et déclenche le turbo.", players: "1 joueur", status: "JOUABLE", slug: "/play/nexus-racing", details: "Un jeu de course arcade original avec trois voies, trafic, crédits à collecter, turbo, commandes tactiles et record local." },
+  { id: 6, title: "Little Kingdom", category: "Stratégie", label: "STRATÉGIE", color: "green", icon: "♜", description: "Construis et développe ton royaume.", players: "1 joueur", status: "JOUABLE", slug: "/play/little-kingdom", details: "Un jeu de stratégie et de construction en préparation." },
+  { id: 7, title: "Deep Space", category: "Aventure", label: "EXPLORATION", color: "blue", icon: "✧", description: "Pars à la découverte d'une galaxie inconnue.", players: "1 joueur", status: "JOUABLE", slug: "/play/deep-space", details: "Un jeu d'exploration spatiale en préparation." },
+  { id: 8, title: "Drift City", category: "Course", label: "ARCADE", color: "violet", icon: "⌁", description: "Maîtrise les virages dans une ville futuriste.", players: "1 joueur", status: "JOUABLE", slug: "/play/drift-city", details: "Un jeu de course et de drift en préparation." },
+  { id: 9, title: "Green Valley", category: "Stratégie", label: "SIMULATION", color: "green", icon: "♧", description: "Développe une vallée et ses villages.", players: "1 joueur", status: "JOUABLE", slug: "/play/green-valley", details: "Un jeu de gestion paisible en préparation." }
 ];
 
 const categories = ["Tout", "Action", "Aventure", "Course", "Réflexion", "Stratégie", "Simulation"];
@@ -245,19 +245,19 @@ export default function Home() {
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 4.0.0</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 5.0.0</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><button className="command-trigger" onClick={() => setCommandOpen(true)} aria-label="Ouvrir la recherche rapide">⌕ <span>RECHERCHE RAPIDE</span> <kbd>Ctrl K</kbd></button><span className="online-pill"><i /> 3 JEUX JOUABLES</span><span className="version-chip">VERSION · 4.0.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><button className="command-trigger" onClick={() => setCommandOpen(true)} aria-label="Ouvrir la recherche rapide">⌕ <span>RECHERCHE RAPIDE</span> <kbd>Ctrl K</kbd></button><span className="online-pill"><i /> 10 JEUX 3D JOUABLES</span><span className="version-chip">VERSION · 5.0.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
             <div className="hero-content">
               <div className="eyebrow"><span /> TON PROCHAIN UNIVERS T'ATTEND</div>
-              <h1>PLAY BEYOND<br /><em>LIMITS.</em></h1><div className="hero-release">NEXUS GAMES <b>4.0</b> · ÉDITION MAJEURE</div>
+              <h1>PLAY BEYOND<br /><em>LIMITS.</em></h1><div className="hero-release">NEXUS GAMES <b>5.0</b> · ÉDITION MAJEURE</div>
               <p>Découvre. Joue. Recommence.<br />Toute ta passion du jeu, au même endroit.</p>
-              <div className="hero-actions"><Link className="primary-button" href="/games/nexus-city"><span>▶</span> JOUER À NEXUS CITY</Link><Link className="secondary-button" href="/games/nexus-racing" onClick={() => recordPlayed("Nexus Racing")}>JOUER À NEXUS RACING <span>↗</span></Link><a className="text-button" href="#discover">EXPLORER LE STORE ↓</a></div>
+              <div className="hero-actions"><Link className="primary-button" href="/play/nexus-city"><span>▶</span> JOUER À NEXUS CITY</Link><Link className="secondary-button" href="/play/nexus-racing" onClick={() => recordPlayed("Nexus Racing")}>JOUER À NEXUS RACING <span>↗</span></Link><a className="text-button" href="#discover">EXPLORER LE STORE ↓</a></div>
             </div>
             <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="hero-emblem">N</div><div className="hero-caption"><span>NG / 020</span><b>PLAY YOUR WAY</b></div></div>
             <div className="hero-index"><span>01</span> / 03</div>
@@ -273,17 +273,17 @@ export default function Home() {
               <span className="playable-count">03 JEUX DISPONIBLES</span>
             </div>
             <div className="continue-grid">
-              <Link className="continue-card continue-city" href="/games/nexus-city" onClick={() => recordPlayed("Nexus City")}>
+              <Link className="continue-card continue-city" href="/play/nexus-city" onClick={() => recordPlayed("Nexus City")}>
                 <span className="continue-kicker">SIMULATION · JOUABLE</span><span className="continue-symbol">✈</span>
                 <span className="continue-card-title">NEXUS CITY</span><span className="continue-card-copy">Explore la ville, choisis un métier, conduis des véhicules et accomplis tes missions.</span>
                 <span className="continue-launch">LANCER LE JEU <b>↗</b></span>
               </Link>
-              <Link className="continue-card continue-neon" href="/games/neon-dodge" onClick={() => recordPlayed("Neon Dodge")}>
+              <Link className="continue-card continue-neon" href="/play/neon-dodge" onClick={() => recordPlayed("Neon Dodge")}>
                 <span className="continue-kicker">ARCADE · JOUABLE</span><span className="continue-symbol">✦</span>
                 <span className="continue-card-title">NEON DODGE</span><span className="continue-card-copy">Évite les obstacles, améliore ton score et bats ton record personnel.</span>
                 <span className="continue-launch">LANCER LE JEU <b>↗</b></span>
               </Link>
-              <Link className="continue-card continue-racing" href="/games/nexus-racing" onClick={() => recordPlayed("Nexus Racing")}>
+              <Link className="continue-card continue-racing" href="/play/nexus-racing" onClick={() => recordPlayed("Nexus Racing")}>
                 <span className="continue-kicker">COURSE · JOUABLE</span><span className="continue-symbol">🏎</span>
                 <span className="continue-card-title">NEXUS RACING</span><span className="continue-card-copy">Faufile-toi dans le trafic, collecte des crédits et utilise ton turbo.</span>
                 <span className="continue-launch">LANCER LE JEU <b>↗</b></span>
