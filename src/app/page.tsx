@@ -102,9 +102,9 @@ export default function Home() {
               <span className="project-visual-caption">NEXUS ORIGINAL / PROJECT 001</span>
             </div>
             <div className="project-details">
-              <span className="project-status"><i /> AU CATALOGUE · PROTOTYPE EN DÉVELOPPEMENT · BUILD 0.6</span>
+              <span className="project-status"><i /> AU CATALOGUE · PROTOTYPE EN DÉVELOPPEMENT · BUILD 0.7</span>
               <h3>NEXUS EMERGENCY<br /><em>CITY.</em></h3>
-              <p>Le premier univers de Nexus Games : une métropole originale à explorer à pied, avec une vue à la première ou à la troisième personne, et une première voiture civile pilotable trois missions guidées, une flotte de véhicules d'urgence, des piétons animés, des feux tricolores et une circulation régulée. Le prototype est accessible, tandis que le jeu complet reste en développement.</p>
+              <p>Le premier univers de Nexus Games : une métropole originale à explorer à pied, avec une vue à la première ou à la troisième personne, et une première voiture civile pilotable trois missions guidées, une flotte de véhicules d'urgence, des piétons animés, des feux tricolores, une circulation régulée et un premier intérieur accessible. Le prototype est accessible, tandis que le jeu complet reste en développement.</p>
               <div className="project-tags"><span>OPEN CITY</span><span>DRIVABLE CAR</span><span>FIRST / THIRD PERSON</span><span>POLICE · FIRE · MEDICAL</span><span>NPC · TRAFFIC AI</span></div>
               <a className="button-primary" href="/emergency-city">Jouer au prototype <span>↗</span></a>
             </div>
