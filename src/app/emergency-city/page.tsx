@@ -309,6 +309,24 @@ export default function EmergencyCityPage() {
           pedestrians.push({ mesh: person, originX: x, originZ: z, phase: i * 0.82 });
         }
 
+        // 0.6: a compact signal installation at the central avenue crossing.
+        const signalRed = mat("signal-red", new B.Color3(0.95, 0.045, 0.025), 0.24, 0.1);
+        const signalAmber = mat("signal-amber", new B.Color3(1, 0.52, 0.025), 0.24, 0.1);
+        const signalGreen = mat("signal-green", new B.Color3(0.08, 0.85, 0.22), 0.24, 0.1);
+        const signalDark = mat("signal-housing", new B.Color3(0.025, 0.03, 0.035), 0.65, 0.2);
+        const signalLamps: { red: B.Mesh; amber: B.Mesh; green: B.Mesh }[] = [];
+        for (const x of [-13, 13]) {
+          const pole = B.MeshBuilder.CreateCylinder("traffic-signal-pole", { height: 6, diameter: 0.18 }, world);
+          pole.position.set(x, 3, -13); pole.material = metal;
+          const housing = B.MeshBuilder.CreateBox("traffic-signal-housing", { width: 0.72, height: 1.85, depth: 0.48 }, world);
+          housing.position.set(x, 5.8, -13); housing.material = signalDark;
+          const lamp = (name: string, y: number, material: B.Material) => {
+            const mesh = B.MeshBuilder.CreateSphere(name, { diameter: 0.38, segments: 10 }, world);
+            mesh.position.set(x, y, -12.72); mesh.material = material; return mesh;
+          };
+          signalLamps.push({ red: lamp("traffic-red-lamp", 6.35, signalRed), amber: lamp("traffic-amber-lamp", 5.8, signalDark), green: lamp("traffic-green-lamp", 5.25, signalDark) });
+        }
+
         // Ambient traffic uses simple lane-following loops on the main avenues.
         const trafficCars: { root: B.TransformNode; origin: number; lane: number; speed: number; phase: number }[] = [];
         const trafficPaints = [new B.Color3(0.18, 0.42, 0.62), new B.Color3(0.62, 0.62, 0.58), new B.Color3(0.22, 0.38, 0.24)];
@@ -350,13 +368,27 @@ export default function EmergencyCityPage() {
           const strafe = (keys.has("d") || keys.has("arrowright") ? 1 : 0) - (keys.has("a") || keys.has("q") || keys.has("arrowleft") ? 1 : 0);
           let followed = player.position;
           const elapsed = performance.now() / 1000;
+          // Pedestrians follow rounded rectangular sidewalk circuits and face their direction of travel.
           pedestrians.forEach((person) => {
-            person.mesh.position.x = person.originX + Math.sin(elapsed * 0.32 + person.phase) * 5;
-            person.mesh.position.z = person.originZ + Math.cos(elapsed * 0.24 + person.phase) * 2;
-            person.mesh.rotation.y = Math.sin(elapsed * 0.32 + person.phase) * 0.55;
+            const angle = elapsed * 0.22 + person.phase;
+            person.mesh.position.x = person.originX + Math.cos(angle) * 5.5;
+            person.mesh.position.z = person.originZ + Math.sin(angle) * 3.2;
+            person.mesh.rotation.y = -angle;
+          });
+          // 10 seconds green, 2 seconds amber, 6 seconds red; traffic queues at the stop line.
+          const signalPhase = elapsed % 18;
+          const signalState = signalPhase < 10 ? "green" : signalPhase < 12 ? "amber" : "red";
+          signalLamps.forEach((lamps) => {
+            lamps.red.material = signalState === "red" ? signalRed : signalDark;
+            lamps.amber.material = signalState === "amber" ? signalAmber : signalDark;
+            lamps.green.material = signalState === "green" ? signalGreen : signalDark;
           });
           trafficCars.forEach((traffic) => {
-            const travel = ((traffic.origin + elapsed * traffic.speed + 210) % 420 + 420) % 420 - 210;
+            let travel = ((traffic.origin + elapsed * traffic.speed + 210) % 420 + 420) % 420 - 210;
+            if (signalState !== "green") {
+              if (traffic.speed > 0 && travel < -12 && travel > -34) travel = Math.min(travel, -12);
+              if (traffic.speed < 0 && travel > 12 && travel < 34) travel = Math.max(travel, 12);
+            }
             traffic.root.position.set(traffic.lane, 0, travel);
             traffic.root.rotation.y = traffic.speed > 0 ? 0 : Math.PI;
           });
@@ -431,11 +463,11 @@ export default function EmergencyCityPage() {
     <main className={styles.shell}>
       <header className={styles.topbar}>
         <a href="/" className={styles.brand}><span>N</span> NEXUS <b>EMERGENCY CITY</b></a>
-        <div className={styles.build}>CITY UPDATE <i /> 0.5.0</div>
+        <div className={styles.build}>CITY UPDATE <i /> 0.6.0</div>
       </header>
       <section className={styles.viewport}>
         <canvas ref={canvasRef} className={styles.canvas} aria-label="Aperçu 3D de la métropole Nexus Emergency City" />
-        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.5</span><span>POLICE · POMPIERS · SECOURS · VILLE VIVANTE</span></div>
+        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.6</span><span>POLICE · POMPIERS · SECOURS · CIRCULATION</span></div>
         <div className={styles.titleCard}><small>NEXUS SIMULATION PROJECT</small><h1>EMERGENCY<br /><em>CITY</em></h1><p>UNE MÉTROPOLE. DES MILLIERS D'HISTOIRES.</p></div>
         <aside className={styles.dispatchPanel}>
           <div className={styles.dispatchHeader}><span>DISPATCH CENTRAL</span><b>{completedMissions} TERMINÉE(S)</b></div>
@@ -459,7 +491,7 @@ export default function EmergencyCityPage() {
         </div>
         {error && <div className={styles.errorPanel}>Le moteur 3D n'a pas pu démarrer : {error}</div>}
       </section>
-      <footer className={styles.footer}><span>BUILD 0.5 — EMERGENCY FLEET & LIVING CITY</span><span>3 VÉHICULES DE SERVICE · PIÉTONS · CIRCULATION AMBIANTE · 3 MISSIONS.</span></footer>
+      <footer className={styles.footer}><span>BUILD 0.6 — TRAFFIC SYSTEMS & PEDESTRIANS</span><span>FEUX TRICOLORES · PIÉTONS EN CIRCUIT · CIRCULATION RÉGULÉE · 3 MISSIONS.</span></footer>
     </main>
   );
 }
