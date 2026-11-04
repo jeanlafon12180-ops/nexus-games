@@ -1,4 +1,4 @@
-# Nexus Games 2.9.0
+# Nexus Games 3.0.0
 
 **Version majeure 2.2.0 — interface joueur Xbox / Steam inspirée.**
 
@@ -107,3 +107,11 @@ Next.js 15 · React 19 · TypeScript · CSS
 - Inspecteur d'objets, déplacement par cases et mode test clavier/tactile.
 - Scènes enregistrées localement dans une clé dédiée ; import/export JSON versionné, validation stricte et limite de 200 Ko.
 - Les jeux et sauvegardes précédents restent indépendants. Le moteur ne compile pas encore de jeux autonomes et ne fournit pas de physique avancée.
+
+
+## Nouveautés 3.0.0 — Game Builder
+- Nouvel atelier `/game-builder` pour composer un jeu en plusieurs niveaux (jusqu'à 20).
+- Personnalisation de la couleur du personnage et bibliothèque de projets locale.
+- Interactions de jeu : collecte de pièces, interrupteur ouvrant/fermant une porte, obstacles et sorties reliant les niveaux.
+- Import/export JSON versionné, validation des scènes et limite de 300 Ko.
+- Le Game Engine 2.9 reste disponible ; aucune compilation autonome ni publication en ligne n'est activée.

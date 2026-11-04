@@ -97,3 +97,11 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Bibliothèque locale de scènes et échanges JSON versionnés, validés et limités à 200 Ko.
 - Stockage isolé dans `nexus-engine-scenes-v1` ; aucune modification des anciennes sauvegardes.
 - Moteur expérimental : pas de compilation autonome, de physique avancée ni de publication en ligne.
+
+
+## 3.0.0 — Game Builder
+- Ajout de `/game-builder`, atelier de création de jeux à plusieurs niveaux (jusqu'à 20).
+- Personnalisation de la couleur du personnage.
+- Interactions : pièces à collecter, interrupteurs, portes, obstacles et sorties avec passage au niveau suivant.
+- Bibliothèque locale et import/export JSON versionné, validé et limité à 300 Ko.
+- Le moteur 2D reste expérimental ; pas de compilation autonome ou de publication en ligne.
