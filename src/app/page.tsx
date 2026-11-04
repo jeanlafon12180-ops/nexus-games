@@ -23,6 +23,7 @@ const games: Game[] = [
   { id: 2, title: "Pixel Raiders", category: "Action", label: "ACTION", color: "orange", icon: "⚔", description: "Une aventure rétro pleine de défis.", players: "1 joueur", status: "JOUABLE", slug: "/play/pixel-raiders", details: "Une aventure d'action au style rétro. La fiche est prête, le jeu est encore en développement." },
   { id: 3, title: "Orbital", category: "Réflexion", label: "PUZZLE", color: "blue", icon: "◉", description: "Trouve ton chemin parmi les astres.", players: "1 joueur", status: "JOUABLE", slug: "/play/orbital", details: "Un jeu de réflexion spatial en préparation." },
   { id: 4, title: "Skybound", category: "Aventure", label: "AVENTURE", color: "teal", icon: "⬡", description: "Explore des mondes suspendus dans le ciel.", players: "1 joueur", status: "JOUABLE", slug: "/play/skybound", details: "Une aventure d'exploration en préparation." },
+  { id: 11, title: "Nexus Battle Royale", category: "Action", label: "BATTLE ROYALE", color: "orange", icon: "🏝", description: "Atterris sur une île 3D, récupère des boucliers et sois le dernier joueur debout.", players: "1 joueur + 7 bots", status: "JOUABLE", slug: "/battle-royale", details: "Un prototype battle royale 3D à la troisième personne : île explorable, bots, zone sûre qui rétrécit, capsules de bouclier et impulsions d’énergie non réalistes." },
   { id: 5, title: "Nexus Racing", category: "Course", label: "ARCADE", color: "red", icon: "🏎", description: "Évite le trafic, ramasse des crédits et déclenche le turbo.", players: "1 joueur", status: "JOUABLE", slug: "/play/nexus-racing", details: "Un jeu de course arcade original avec trois voies, trafic, crédits à collecter, turbo, commandes tactiles et record local." },
   { id: 6, title: "Little Kingdom", category: "Stratégie", label: "STRATÉGIE", color: "green", icon: "♜", description: "Construis et développe ton royaume.", players: "1 joueur", status: "JOUABLE", slug: "/play/little-kingdom", details: "Un jeu de stratégie et de construction en préparation." },
   { id: 7, title: "Deep Space", category: "Aventure", label: "EXPLORATION", color: "blue", icon: "✧", description: "Pars à la découverte d'une galaxie inconnue.", players: "1 joueur", status: "JOUABLE", slug: "/play/deep-space", details: "Un jeu d'exploration spatiale en préparation." },
@@ -53,7 +54,7 @@ function validateBackupData(data: unknown): data is Record<string, string> {
     let parsed: unknown;
     try { parsed = JSON.parse(value); } catch { return false; }
     if (key === "nexus-games-favorites" && (!Array.isArray(parsed) || !parsed.every(item => Number.isInteger(item)))) return false;
-    if (key === "nexus-recent-games-v1" && (!Array.isArray(parsed) || parsed.length > 20 || !parsed.every(item => item === "Nexus City" || item === "Neon Dodge" || item === "Nexus Racing"))) return false;
+    if (key === "nexus-recent-games-v1" && (!Array.isArray(parsed) || parsed.length > 20 || !parsed.every(item => item === "Nexus City" || item === "Neon Dodge" || item === "Nexus Racing" || item === "Nexus Battle Royale"))) return false;
     if ((key === "nexus-creator-creations-v1" || key === "nexus-community-games-v1") && (!Array.isArray(parsed) || parsed.length > 100)) return false;
     if (key === "nexus-community-liked-v1" && (!Array.isArray(parsed) || !parsed.every(item => typeof item === "string"))) return false;
     if (key === "nexus-city-save-v1") {
@@ -245,7 +246,7 @@ export default function Home() {
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 5.0.0</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 6.0.0</small></div>
       </aside>
 
       <section className="main-area" id="home">
@@ -269,8 +270,8 @@ export default function Home() {
 
           <section className="continue-section" aria-labelledby="continue-title">
             <div className="continue-heading">
-              <div><div className="eyebrow"><span /> REPRENDRE TA PARTIE</div><h2 id="continue-title">TES JEUX <em>JOUABLES</em></h2><p>Trois expériences sont disponibles. Choisis ton univers et lance ta partie.</p></div>
-              <span className="playable-count">03 JEUX DISPONIBLES</span>
+              <div><div className="eyebrow"><span /> REPRENDRE TA PARTIE</div><h2 id="continue-title">TES JEUX <em>JOUABLES</em></h2><p>Quatre expériences sont disponibles. Choisis ton univers et lance ta partie.</p></div>
+              <span className="playable-count">04 JEUX DISPONIBLES</span>
             </div>
             <div className="continue-grid">
               <Link className="continue-card continue-city" href="/play/nexus-city" onClick={() => recordPlayed("Nexus City")}>
@@ -282,6 +283,11 @@ export default function Home() {
                 <span className="continue-kicker">ARCADE · JOUABLE</span><span className="continue-symbol">✦</span>
                 <span className="continue-card-title">NEON DODGE</span><span className="continue-card-copy">Évite les obstacles, améliore ton score et bats ton record personnel.</span>
                 <span className="continue-launch">LANCER LE JEU <b>↗</b></span>
+              </Link>
+              <Link className="continue-card continue-battle" href="/battle-royale" onClick={() => recordPlayed("Nexus Battle Royale")}>
+                <span className="continue-kicker">BATTLE ROYALE · 3D</span><span className="continue-symbol">🏝</span>
+                <span className="continue-card-title">NEXUS BATTLE ROYALE</span><span className="continue-card-copy">Explore l'île, récupère des boucliers et évite la zone qui rétrécit.</span>
+                <span className="continue-launch">JOUER MAINTENANT <b>↗</b></span>
               </Link>
               <Link className="continue-card continue-racing" href="/play/nexus-racing" onClick={() => recordPlayed("Nexus Racing")}>
                 <span className="continue-kicker">COURSE · JOUABLE</span><span className="continue-symbol">🏎</span>

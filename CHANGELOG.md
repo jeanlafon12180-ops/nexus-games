@@ -123,3 +123,11 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Les univers disposent de palettes et d'identités visuelles distinctes.
 - Les jeux 3D sont accessibles directement depuis le catalogue.
 - Le moteur nécessite un navigateur compatible WebGL.
+
+
+## Nouveautés 6.0.0 — Nexus Battle Royale
+- Nouveau prototype battle royale 3D à la troisième personne sur une île explorable.
+- Sept bots locaux, zone sûre rétrécissante, capsules de bouclier et système de vie.
+- Impulsions d'énergie arcade non réalistes pour marquer les bots.
+- Commandes clavier et tactiles, HUD, compte à rebours et écran de victoire/défaite.
+- Prototype solo hors ligne : aucun serveur multijoueur n'est activé.
