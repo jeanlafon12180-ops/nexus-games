@@ -42,6 +42,12 @@ A large original European-inspired metropolis for a grounded emergency-services 
 - Development-project spotlight and direct prototype route from the Nexus Games homepage.
 ### 0.3 — Vehicle foundation
 - One original civilian vehicle, then emergency vehicle variants; driving physics and camera.
+### 0.3 — Vehicle foundation (implemented prototype)
+- Added an original procedural civilian hatchback with body, cabin glazing, headlights, tail lights, tires and alloy wheels.
+- Added an enter/exit driving toggle and keyboard throttle, reverse, steering and rolling wheel animation.
+- Third-person follow camera and first-person in-car camera are supported.
+- Driving remains an early arcade prototype: no suspension simulation, traffic AI, damage system, detailed interior or final vehicle asset yet.
+
 ### 0.4 — First role loop
 - Dispatch UI and one safe, non-graphic, repeatable mission per role.
 ### 0.5 — Multiplayer prototype
