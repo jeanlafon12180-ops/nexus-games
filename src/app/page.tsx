@@ -82,6 +82,17 @@ export default function Home() {
   const [playerAccent, setPlayerAccent] = useState("green");
   const [playerStatus, setPlayerStatus] = useState("Prêt à jouer.");
   const [recentGames, setRecentGames] = useState<string[]>([]);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [commandQuery, setCommandQuery] = useState("");
+
+  useEffect(() => {
+    const onShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") { event.preventDefault(); setCommandOpen(true); }
+      if (event.key === "Escape") setCommandOpen(false);
+    };
+    window.addEventListener("keydown", onShortcut);
+    return () => window.removeEventListener("keydown", onShortcut);
+  }, []);
 
   useEffect(() => {
     try {
@@ -193,6 +204,8 @@ export default function Home() {
     }
   }
 
+  const commandResults = games.filter((game) => (game.title + " " + game.category + " " + game.description).toLowerCase().includes(commandQuery.trim().toLowerCase())).slice(0, 7);
+
   const filteredGames = useMemo(() => {
     const filtered = games.filter((game) => {
       const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
@@ -236,7 +249,7 @@ export default function Home() {
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 3 JEUX JOUABLES</span><span className="version-chip">VERSION · 4.0.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><button className="command-trigger" onClick={() => setCommandOpen(true)} aria-label="Ouvrir la recherche rapide">⌕ <span>RECHERCHE RAPIDE</span> <kbd>Ctrl K</kbd></button><span className="online-pill"><i /> 3 JEUX JOUABLES</span><span className="version-chip">VERSION · 4.0.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
@@ -354,7 +367,8 @@ export default function Home() {
             </div>
             {backupNotice && <p className="backup-notice" role="status">{backupNotice}</p>}
           </section><button className="primary-button modal-play" onClick={() => setProfileOpen(false)}>ENREGISTRER</button></div></div>}
-      {selectedGame && <div className="modal-backdrop" role="presentation" onClick={() => setSelectedGame(null)}><div className="game-modal" role="dialog" aria-modal="true" aria-label={"Fiche de " + selectedGame.title} onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedGame(null)} aria-label="Fermer">×</button><div className={"modal-game-art art-" + selectedGame.color}><span>{selectedGame.icon}</span><b>{selectedGame.label}</b></div><div className="eyebrow"><span /> FICHE DU JEU · {selectedGame.category.toUpperCase()}</div><h2>{selectedGame.title}</h2><p>{selectedGame.details}</p><div className="game-meta"><span>{selectedGame.players}</span><span className={selectedGame.status === "JOUABLE" ? "meta-ready" : ""}>{selectedGame.status}</span></div>{selectedGame.slug ? <Link className="primary-button modal-play" href={selectedGame.slug}>▶ LANCER LE JEU</Link> : <button className="secondary-button modal-play" onClick={() => setSelectedGame(null)}>RETOUR AU CATALOGUE</button>}</div></div>}
+      {selectedGame && <div className="modal-backdrop" role="presentation" onClick={() => setSelectedGame(null)}><div className="game-modal" role="dialog" aria-modal="true" aria-label={"Fiche de " + selectedGame.title} onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedGame(null)} aria-label="Fermer">×</button><div className={"modal-game-art art-" + selectedGame.color}><span>{selectedGame.icon}</span><b>{selectedGame.label}</b></div><div className="eyebrow"><span /> FICHE DU JEU · {selectedGame.category.toUpperCase()}</div><h2>{selectedGame.title}</h2><p>{selectedGame.details}</p><div className="game-meta"><span>{selectedGame.players}</span><span className={selectedGame.status === "JOUABLE" ? "meta-ready" : ""}>{selectedGame.status}</span></div>{selectedGame.slug ? <Link className="primary-button modal-play" href={selectedGame.slug} onClick={() => recordPlayed(selectedGame.title)}>▶ LANCER LE JEU</Link> : <button className="secondary-button modal-play" onClick={() => setSelectedGame(null)}>RETOUR AU CATALOGUE</button>}</div></div>}
+      {commandOpen && <div className="command-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCommandOpen(false); }}><section className="command-dialog" role="dialog" aria-modal="true" aria-label="Recherche rapide Nexus Games"><div className="command-head"><span>⌕</span><input autoFocus value={commandQuery} onChange={(event) => setCommandQuery(event.target.value)} placeholder="Rechercher un jeu, un genre..." aria-label="Rechercher un jeu" /><kbd>ESC</kbd><button onClick={() => setCommandOpen(false)} aria-label="Fermer la recherche">×</button></div><div className="command-caption">LANCEMENT RAPIDE · {commandResults.length} RÉSULTAT(S)</div><div className="command-results">{commandResults.map((game) => game.slug ? <Link key={game.id} href={game.slug} onClick={() => { recordPlayed(game.title); setCommandOpen(false); }}><span className={"command-game-icon art-"+game.color}>{game.icon}</span><span><b>{game.title}</b><small>{game.category} · {game.players}</small></span><strong>{game.status === "JOUABLE" ? "JOUER ↗" : "À VENIR"}</strong></Link> : <button key={game.id} onClick={() => { setSelectedGame(game); setCommandOpen(false); }}><span className={"command-game-icon art-"+game.color}>{game.icon}</span><span><b>{game.title}</b><small>{game.category} · {game.players}</small></span><strong>VOIR LA FICHE ↗</strong></button>)}</div>{commandResults.length===0 && <p className="command-empty">Aucun jeu trouvé. Essaie un autre mot-clé.</p>}<div className="command-foot">ASTUCE : CTRL + K POUR OUVRIR CETTE RECHERCHE DEPUIS LE CLAVIER</div></section></div>}
     </main>
   );
 }
