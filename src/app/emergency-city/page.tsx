@@ -53,7 +53,7 @@ export default function EmergencyCityPage() {
         sun.position = new B.Vector3(120, 160, -90);
         sun.intensity = 1.45;
 
-        const mat = (name: string, color: B.Color3, rough = 0.8, metallic = 0.04) => {
+        const mat = (name: string, color: import("@babylonjs/core").Color3, rough = 0.8, metallic = 0.04) => {
           const m = new B.PBRMaterial(name, world);
           m.albedoColor = color;
           m.metallic = metallic;
@@ -82,7 +82,7 @@ export default function EmergencyCityPage() {
           const x = Math.sin(n * 127.1 + 17.7) * 43758.5453;
           return x - Math.floor(x);
         };
-        const box = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: B.Material) => {
+        const box = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: import("@babylonjs/core").Material) => {
           const mesh = B.MeshBuilder.CreateBox(name, { width: w, height: h, depth: d }, world);
           mesh.position.set(x, y, z);
           mesh.material = material;
@@ -239,7 +239,7 @@ export default function EmergencyCityPage() {
         interiorFloor.parent = interiorRoot; interiorFloor.position.set(178, 0.04, 178); interiorFloor.material = sidewalk;
         const interiorWall = mat("hub-interior-wall", new B.Color3(0.62, 0.66, 0.68), 0.92);
         const interiorTrim = mat("hub-interior-trim", new B.Color3(0.12, 0.18, 0.22), 0.6);
-        const interiorPart = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: B.Material) => {
+        const interiorPart = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: import("@babylonjs/core").Material) => {
           const mesh = B.MeshBuilder.CreateBox(name, { width: w, height: h, depth: d }, world);
           mesh.parent = interiorRoot; mesh.position.set(178 + x, y, 178 + z); mesh.material = material; return mesh;
         };
@@ -266,7 +266,7 @@ export default function EmergencyCityPage() {
         const rimMat = mat("car-alloy", new B.Color3(0.48, 0.53, 0.57), 0.24, 0.86);
         const lampMat = mat("car-headlights", new B.Color3(0.92, 0.86, 0.65), 0.22, 0.18);
         const tailMat = mat("car-tail-lights", new B.Color3(0.62, 0.025, 0.018), 0.3, 0.12);
-        const carPart = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: B.Material) => {
+        const carPart = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: import("@babylonjs/core").Material) => {
           const mesh = B.MeshBuilder.CreateBox(name, { width: w, height: h, depth: d }, world);
           mesh.parent = carRoot; mesh.position.set(x, y, z); mesh.material = material; return mesh;
         };
@@ -279,7 +279,7 @@ export default function EmergencyCityPage() {
           carPart("car-headlamp", 0.42, 0.2, 0.08, side * 0.67, 0.82, 2.1, lampMat);
           carPart("car-tail-lamp", 0.38, 0.22, 0.08, side * 0.68, 0.84, -2.1, tailMat);
         }
-        const wheels: B.Mesh[] = [];
+        const wheels: import("@babylonjs/core").Mesh[] = [];
         for (const x of [-1.02, 1.02]) for (const z of [-1.35, 1.35]) {
           const wheel = B.MeshBuilder.CreateCylinder("car-wheel", { diameter: 0.78, height: 0.28, tessellation: 20 }, world);
           wheel.parent = carRoot; wheel.position.set(x, 0.42, z); wheel.rotation.z = Math.PI / 2; wheel.material = tireMat; wheels.push(wheel);
@@ -288,13 +288,13 @@ export default function EmergencyCityPage() {
         }
 
         // 0.5: three original procedural emergency-service vehicles, parked at the civic hub.
-        const serviceVehicle = (name: string, x: number, z: number, color: B.Color3, length: number, width: number, roofColor: B.Color3) => {
+        const serviceVehicle = (name: string, x: number, z: number, color: import("@babylonjs/core").Color3, length: number, width: number, roofColor: import("@babylonjs/core").Color3) => {
           const root = new B.TransformNode(name, world);
           root.position.set(x, 0, z);
           const paint = mat(name + "-paint", color, 0.34, 0.42);
           const roofPaint = mat(name + "-roof", roofColor, 0.38, 0.25);
           const wheelPaint = tireMat;
-          const part = (label: string, w: number, h: number, d: number, px: number, py: number, pz: number, material: B.Material) => {
+          const part = (label: string, w: number, h: number, d: number, px: number, py: number, pz: number, material: import("@babylonjs/core").Material) => {
             const mesh = B.MeshBuilder.CreateBox(name + "-" + label, { width: w, height: h, depth: d }, world);
             mesh.parent = root; mesh.position.set(px, py, pz); mesh.material = material; return mesh;
           };
@@ -318,7 +318,7 @@ export default function EmergencyCityPage() {
         serviceVehicle("medical-ambulance", 19, 19, new B.Color3(0.83, 0.86, 0.82), 5.6, 2.15, new B.Color3(0.9, 0.92, 0.88));
 
         // Lightweight civilian pedestrians follow short, safe sidewalk loops.
-        const pedestrians: { mesh: B.Mesh; originX: number; originZ: number; phase: number }[] = [];
+        const pedestrians: { mesh: import("@babylonjs/core").Mesh; originX: number; originZ: number; phase: number }[] = [];
         const pedestrianMat = mat("pedestrian-jacket", new B.Color3(0.72, 0.48, 0.22));
         const skinMat = mat("pedestrian-face", new B.Color3(0.72, 0.52, 0.39));
         for (let i = 0; i < 8; i++) {
@@ -336,13 +336,13 @@ export default function EmergencyCityPage() {
         const signalAmber = mat("signal-amber", new B.Color3(1, 0.52, 0.025), 0.24, 0.1);
         const signalGreen = mat("signal-green", new B.Color3(0.08, 0.85, 0.22), 0.24, 0.1);
         const signalDark = mat("signal-housing", new B.Color3(0.025, 0.03, 0.035), 0.65, 0.2);
-        const signalLamps: { red: B.Mesh; amber: B.Mesh; green: B.Mesh }[] = [];
+        const signalLamps: { red: import("@babylonjs/core").Mesh; amber: import("@babylonjs/core").Mesh; green: import("@babylonjs/core").Mesh }[] = [];
         for (const x of [-13, 13]) {
           const pole = B.MeshBuilder.CreateCylinder("traffic-signal-pole", { height: 6, diameter: 0.18 }, world);
           pole.position.set(x, 3, -13); pole.material = metal;
           const housing = B.MeshBuilder.CreateBox("traffic-signal-housing", { width: 0.72, height: 1.85, depth: 0.48 }, world);
           housing.position.set(x, 5.8, -13); housing.material = signalDark;
-          const lamp = (name: string, y: number, material: B.Material) => {
+          const lamp = (name: string, y: number, material: import("@babylonjs/core").Material) => {
             const mesh = B.MeshBuilder.CreateSphere(name, { diameter: 0.38, segments: 10 }, world);
             mesh.position.set(x, y, -12.72); mesh.material = material; return mesh;
           };
@@ -350,7 +350,7 @@ export default function EmergencyCityPage() {
         }
 
         // Ambient traffic uses simple lane-following loops on the main avenues.
-        const trafficCars: { root: B.TransformNode; origin: number; lane: number; speed: number; phase: number }[] = [];
+        const trafficCars: { root: import("@babylonjs/core").TransformNode; origin: number; lane: number; speed: number; phase: number }[] = [];
         const trafficPaints = [new B.Color3(0.18, 0.42, 0.62), new B.Color3(0.62, 0.62, 0.58), new B.Color3(0.22, 0.38, 0.24)];
         for (let i = 0; i < 3; i++) {
           const root = new B.TransformNode("ambient-traffic-" + i, world);
