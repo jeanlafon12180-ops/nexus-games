@@ -92,19 +92,23 @@ export default function Home() {
         <div className="section-wrap">
           <div className="section-kicker"><span>02 / LE CATALOGUE</span><i /></div>
           <div className="catalog-heading">
-            <div><h2>YOUR NEXT<br /><em>ADVENTURE.</em></h2><p>Un catalogue vide aujourd'hui. Des créations originales demain.</p></div>
-            <div className="catalog-counter"><strong>00</strong><span>JEU PUBLIÉ</span></div>
+            <div><h2>YOUR NEXT<br /><em>ADVENTURE.</em></h2><p>Découvrez les univers originaux de Nexus Games, avec leur statut de développement clairement indiqué.</p></div>
+            <div className="catalog-counter"><strong>01</strong><span>PROJET AU CATALOGUE</span></div>
           </div>
-          <div className="empty-catalogue">
-            <div className="empty-symbol"><span>+</span><i /></div>
-            <div className="empty-copy">
-              <span className="empty-label">NEXUS LIBRARY / 000</span>
-              <h3>LE PREMIER JEU<br />N'EST PAS ENCORE LÀ.</h3>
-              <p>Et c'est volontaire. Nous préférons prendre le temps de créer une vraie expérience plutôt que de remplir le catalogue avec des jeux inachevés.</p>
+          <div className="project-spotlight">
+            <div className="project-visual">
+              <span className="project-orbit" />
+              <span className="project-city-mark">EC</span>
+              <span className="project-visual-caption">NEXUS ORIGINAL / PROJECT 001</span>
             </div>
-            <div className="empty-status"><span /> EMPLACEMENT RÉSERVÉ<br /><b>PROCHAINEMENT</b></div>
+            <div className="project-details">
+              <span className="project-status"><i /> AU CATALOGUE · PROTOTYPE EN DÉVELOPPEMENT · BUILD 0.7</span>
+              <h3>NEXUS EMERGENCY<br /><em>CITY.</em></h3>
+              <p>Le premier univers de Nexus Games : une métropole originale à explorer à pied, avec une vue à la première ou à la troisième personne, et une première voiture civile pilotable trois missions guidées, une flotte de véhicules d'urgence, des piétons animés, des feux tricolores, une circulation régulée et un premier intérieur accessible. Le prototype est accessible, tandis que le jeu complet reste en développement.</p>
+              <div className="project-tags"><span>OPEN CITY</span><span>DRIVABLE CAR</span><span>FIRST / THIRD PERSON</span><span>POLICE · FIRE · MEDICAL</span><span>NPC · TRAFFIC AI</span></div>
+              <a className="button-primary" href="/emergency-city">Jouer au prototype <span>↗</span></a>
+            </div>
           </div>
-          <p className="catalog-note"><span>*</span> Aucun jeu n'est actuellement publié sur cette nouvelle plateforme.</p>
         </div>
       </section>
 
