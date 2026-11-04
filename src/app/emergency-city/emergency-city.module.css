@@ -17,3 +17,8 @@
 
 /* 0.6 — clearer dispatch and HUD focus states */
 .dispatchPanel{border-color:rgba(181,255,100,.48)}.missionList button:hover{transform:translateX(2px);transition:transform .16s ease,background .16s ease}
+
+.buildingAccess{position:absolute;left:4vw;top:86px;z-index:4;display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(7,11,17,.88);border:1px solid #b5ff6466;backdrop-filter:blur(12px);font-size:8px;letter-spacing:1px;color:#dce5ef}
+.buildingAccess button{border:0;background:#b5ff64;color:#10140c;padding:9px 11px;font-size:8px;font-weight:800;letter-spacing:.8px;cursor:pointer}
+.buildingAccess button:focus-visible{outline:2px solid white;outline-offset:2px}
+@media(max-width:650px){.buildingAccess{top:66px;left:4vw;right:4vw;justify-content:space-between;font-size:7px}.buildingAccess button{font-size:7px;padding:8px}}
