@@ -378,7 +378,6 @@ export default function EmergencyCityPage() {
         const keys = new Set<string>();
         let carSpeed = 0;
         const missionTarget = { current: null as { x: number; z: number } | null };
-        const buildingAccess = { current: ((inside: boolean) => {}) as (inside: boolean) => void };
         const missionComplete = { current: (() => {}) as () => void };
         buildingBridgeRef.current = (inside) => {
           if (inside) { interiorRoot.setEnabled(true); player.position.set(178, 0.9, 176); carRoot.setEnabled(false); }
@@ -512,7 +511,7 @@ export default function EmergencyCityPage() {
         {completedMissions > 0 && <div className={styles.missionToast}>INTERVENTION VALIDÉE · +1 EXPÉRIENCE</div>}
         <div className={styles.buildingAccess}>
           <span>{insideBuilding ? "CENTRE DE SERVICES · INTÉRIEUR" : "CENTRE DE SERVICES · ENTRÉE"}</span>
-          <button onClick={() => buildingBridgeRef.current?.(!insideBuilding)}>{insideBuilding ? "SORTIR DU BÂTIMENT" : "ENTRER DANS LE BÂTIMENT"}</button>
+          <button disabled={driving} onClick={() => buildingBridgeRef.current?.(!insideBuilding)}>{driving ? "SORTEZ DU VÉHICULE" : insideBuilding ? "SORTIR DU BÂTIMENT" : "ENTRER DANS LE BÂTIMENT"}</button>
         </div>
         <div className={styles.hudBottom}>
           <div className={styles.status}>{error ? "3D ENGINE ERROR" : loaded ? "CITY ONLINE" : "LOADING CITY"} <i className={error ? styles.error : ""} /></div>
