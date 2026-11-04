@@ -4,11 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./emergency-city.module.css";
 
 type CameraMode = "third" | "first";
+type Mission = { id: string; role: string; title: string; detail: string; x: number; z: number };
+const missions: Mission[] = [
+  { id: "police-01", role: "POLICE", title: "Sécuriser un carrefour", detail: "Rejoignez le carrefour central pour organiser la circulation.", x: 0, z: 0 },
+  { id: "fire-01", role: "POMPIERS", title: "Contrôle de sécurité", detail: "Rejoignez le parc nord pour une vérification préventive.", x: -64, z: 64 },
+  { id: "medical-01", role: "SECOURS", title: "Assistance citoyenne", detail: "Rejoignez le point de rendez-vous du quartier résidentiel.", x: 64, z: -64 }
+];
 
 export default function EmergencyCityPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mode, setMode] = useState<CameraMode>("third");
   const [driving, setDriving] = useState(false);
+  const [activeMission, setActiveMission] = useState<Mission | null>(null);
+  const [completedMissions, setCompletedMissions] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
   const cameraBundleRef = useRef<{ world: import("@babylonjs/core").Scene; first: import("@babylonjs/core").UniversalCamera; third: import("@babylonjs/core").ArcRotateCamera } | null>(null);
@@ -273,6 +281,9 @@ export default function EmergencyCityPage() {
 
         const keys = new Set<string>();
         let carSpeed = 0;
+        const missionTarget = { current: null as { x: number; z: number } | null };
+        const missionComplete = { current: (() => {}) as () => void };
+        missionBridgeRef.current = { setTarget: (target) => { missionTarget.current = target; }, clear: () => { missionTarget.current = null; } };
         const onDown = (event: KeyboardEvent) => { keys.add(event.key.toLowerCase()); };
         const onUp = (event: KeyboardEvent) => { keys.delete(event.key.toLowerCase()); };
         window.addEventListener("keydown", onDown);
@@ -298,6 +309,7 @@ export default function EmergencyCityPage() {
             player.position.x = B.Scalar.Clamp(player.position.x + dx * dt * 9, -205, 205);
             player.position.z = B.Scalar.Clamp(player.position.z + dz * dt * 9, -205, 205);
           }
+          if (missionTarget.current) { const distance = Math.hypot(followed.x - missionTarget.current.x, followed.z - missionTarget.current.z); if (distance < 9) { missionTarget.current = null; missionComplete.current(); } }
           if (modeRef.current === "third") third.target.copyFrom(followed);
           else if (drivingRef.current) { first.position.set(carRoot.position.x, 1.48, carRoot.position.z); first.rotation.y = carRoot.rotation.y; }
           else first.position.set(player.position.x, player.position.y + 0.55, player.position.z);
@@ -316,6 +328,7 @@ export default function EmergencyCityPage() {
           priorCleanup?.();
         };
         driveBundleRef.current = { player };
+        missionComplete.current = () => setCompletedMissions((count) => count + 1);
         if (!disposed) setLoaded(true);
       } catch (e) {
         if (!disposed) setError(e instanceof Error ? e.message : "Impossible de charger le moteur 3D.");
@@ -328,13 +341,18 @@ export default function EmergencyCityPage() {
       engine?.dispose();
       cameraBundleRef.current = null;
       driveBundleRef.current = null;
+      missionBridgeRef.current = null;
     };
   }, []);
 
+  const missionBridgeRef = useRef<{ setTarget: (target: { x: number; z: number }) => void; clear: () => void } | null>(null);
   const modeRef = useRef<CameraMode>("third");
   const driveBundleRef = useRef<{ player: import("@babylonjs/core").Mesh } | null>(null);
   const drivingRef = useRef(false);
   useEffect(() => { drivingRef.current = driving; const bundle = driveBundleRef.current; if (bundle) bundle.player.isVisible = !driving; }, [driving]);
+  useEffect(() => {
+    if (activeMission) missionBridgeRef.current?.setTarget({ x: activeMission.x, z: activeMission.z }); else missionBridgeRef.current?.clear();
+  }, [activeMission]);
   useEffect(() => {
     modeRef.current = mode;
     const cameras = cameraBundleRef.current;
@@ -345,12 +363,23 @@ export default function EmergencyCityPage() {
     <main className={styles.shell}>
       <header className={styles.topbar}>
         <a href="/" className={styles.brand}><span>N</span> NEXUS <b>EMERGENCY CITY</b></a>
-        <div className={styles.build}>CITY UPDATE <i /> 0.3.0</div>
+        <div className={styles.build}>CITY UPDATE <i /> 0.4.0</div>
       </header>
       <section className={styles.viewport}>
         <canvas ref={canvasRef} className={styles.canvas} aria-label="Aperçu 3D de la métropole Nexus Emergency City" />
-        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.3</span><span>25 CITY BLOCKS · DRIVEABLE CIVILIAN CAR</span></div>
+        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.4</span><span>POLICE · POMPIERS · SECOURS · MISSIONS</span></div>
         <div className={styles.titleCard}><small>NEXUS SIMULATION PROJECT</small><h1>EMERGENCY<br /><em>CITY</em></h1><p>UNE MÉTROPOLE. DES MILLIERS D'HISTOIRES.</p></div>
+        <aside className={styles.dispatchPanel}>
+          <div className={styles.dispatchHeader}><span>DISPATCH CENTRAL</span><b>{completedMissions} TERMINÉE(S)</b></div>
+          {activeMission ? <div className={styles.activeMission}>
+            <small>MISSION EN COURS · {activeMission.role}</small><h2>{activeMission.title}</h2><p>{activeMission.detail}</p>
+            <div className={styles.missionTarget}>OBJECTIF : {activeMission.x}, {activeMission.z} · APPROCHEZ-VOUS À 9 M</div>
+            <button onClick={() => setActiveMission(null)}>ABANDONNER</button>
+          </div> : <div className={styles.missionList}><small>CHOISISSEZ UNE INTERVENTION</small>
+            {missions.map((mission) => <button key={mission.id} onClick={() => setActiveMission(mission)}><span>{mission.role}</span><b>{mission.title}</b><i>↗</i></button>)}
+          </div>}
+        </aside>
+        {completedMissions > 0 && <div className={styles.missionToast}>INTERVENTION VALIDÉE · +1 EXPÉRIENCE</div>}
         <div className={styles.hudBottom}>
           <div className={styles.status}>{error ? "3D ENGINE ERROR" : loaded ? "CITY ONLINE" : "LOADING CITY"} <i className={error ? styles.error : ""} /></div>
           <div className={styles.controls}>ZQSD / WASD <span>{driving ? "DRIVE" : "MOVE"}</span> · MOUSE <span>LOOK</span></div>
@@ -362,7 +391,7 @@ export default function EmergencyCityPage() {
         </div>
         {error && <div className={styles.errorPanel}>Le moteur 3D n'a pas pu démarrer : {error}</div>}
       </section>
-      <footer className={styles.footer}><span>BUILD 0.3 — VEHICLE FOUNDATION</span><span>VOITURE CIVILE TESTABLE · CONDUITE PROTOTYPE · CAMÉRAS PIÉTON ET VÉHICULE.</span></footer>
+      <footer className={styles.footer}><span>BUILD 0.4 — EMERGENCY SERVICES & MISSIONS</span><span>CENTRE DE DISPATCH · 3 MISSIONS GUIDÉES · OBJECTIFS À REJOINDRE À PIED OU EN VOITURE.</span></footer>
     </main>
   );
 }
