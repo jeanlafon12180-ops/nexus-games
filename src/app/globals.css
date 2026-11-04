@@ -566,3 +566,15 @@ body{background:#070a0f;color:var(--text)}
 .network-transfer h2{margin:8px 0;color:#f4f7fb;font-size:20px}.network-transfer p{margin:0;max-width:620px}
 .network-transfer .evo-primary{cursor:pointer}.network-notice{grid-column:1/-1;color:#b9f58b!important}
 @media(max-width:650px){.network-page{padding:0 4vw 30px}.network-top{height:62px}.network-hero{padding:35px 0 25px}.network-status-panel{align-items:flex-start;flex-direction:column}.network-grid{grid-template-columns:1fr}.network-transfer{grid-template-columns:1fr}.network-transfer .evo-primary{width:100%}}
+
+
+/* Nexus Games 4.0.0 — Ultimate Hub */
+.continue-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.continue-racing{background:radial-gradient(circle at 80% 24%,rgba(230,83,77,.28),transparent 37%),linear-gradient(125deg,#2b1719,#101b25 72%)}
+.continue-racing .continue-kicker{color:#ff9a8e}
+.recent-games-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px;padding:13px 15px;border:1px solid var(--line);border-radius:5px;background:rgba(16,25,21,.65)}
+.recent-games-strip>span{color:#829187;font-size:8px;font-weight:900;letter-spacing:1.2px;margin-right:5px}
+.recent-games-strip a{padding:7px 10px;border:1px solid rgba(155,229,100,.2);border-radius:3px;color:#c8d7cb;font-size:9px}
+.recent-games-strip a:hover{border-color:var(--green);color:var(--green)}
+@media(max-width:1100px){.continue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.continue-grid{grid-template-columns:1fr}.recent-games-strip{align-items:flex-start}.recent-games-strip>span{width:100%}}
