@@ -11,3 +11,6 @@
 .activeMission>button{margin-top:12px;border:1px solid #ffffff35;background:transparent;color:#cbd3df;padding:9px 11px;font-size:8px;letter-spacing:1px;cursor:pointer}
 .missionToast{position:absolute;left:50%;top:80px;transform:translateX(-50%);z-index:4;background:#b5ff64;color:#10140c;padding:12px 18px;font-size:9px;font-weight:800;letter-spacing:1px;box-shadow:0 5px 24px #0008}
 @media(max-width:650px){.dispatchPanel{top:66px;right:4vw;width:min(310px,92vw)}.dispatchHeader{padding:10px}.missionList,.activeMission{padding:10px}.missionList button{padding:9px 5px}.missionToast{top:auto;bottom:110px;width:max-content;max-width:90%;font-size:8px}}
+
+/* 0.5: visual refinements for the expanded city HUD. */
+.dispatchPanel{max-height:min(62vh,560px);overflow:auto;scrollbar-width:thin;scrollbar-color:#53634a transparent}.missionList button:hover{background:#b5ff6410}.missionList button:focus-visible,.activeMission>button:focus-visible,.cameraSwitch button:focus-visible{outline:2px solid #b5ff64;outline-offset:2px}
