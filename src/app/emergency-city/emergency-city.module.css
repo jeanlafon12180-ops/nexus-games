@@ -14,3 +14,6 @@
 
 /* 0.5: visual refinements for the expanded city HUD. */
 .dispatchPanel{max-height:min(62vh,560px);overflow:auto;scrollbar-width:thin;scrollbar-color:#53634a transparent}.missionList button:hover{background:#b5ff6410}.missionList button:focus-visible,.activeMission>button:focus-visible,.cameraSwitch button:focus-visible{outline:2px solid #b5ff64;outline-offset:2px}
+
+/* 0.6 — clearer dispatch and HUD focus states */
+.dispatchPanel{border-color:rgba(181,255,100,.48)}.missionList button:hover{transform:translateX(2px);transition:transform .16s ease,background .16s ease}
