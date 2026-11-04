@@ -60,6 +60,12 @@ A large original European-inspired metropolis for a grounded emergency-services 
 - Updated the in-game dispatch/HUD build label and Nexus Games catalogue to 0.5.
 - These are low-cost procedural prototypes: no siren audio, emergency light animation, pedestrian navigation mesh, traffic signals, collision avoidance, advanced road rules or multiplayer yet.
 
+### 0.6 — Pedestrians and traffic signals (implemented prototype)
+- Pedestrians now follow rounded sidewalk circuits and orient toward their movement direction.
+- Added a central three-state traffic signal with timed green, amber and red phases.
+- Ambient vehicles queue at a stop line during amber/red phases on the central avenue.
+- The traffic system is a small scripted demonstration: no full city-wide signal network, junction reservations, lane changes, collision avoidance or pedestrian crossing logic yet.
+
 ### Future — Multiplayer prototype
 - Authoritative server, player sessions, synchronization and abuse prevention.
 ### 1.0 — Public release candidate
