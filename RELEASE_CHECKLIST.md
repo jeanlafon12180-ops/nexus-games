@@ -112,3 +112,15 @@
 - [ ] Vérifier l'accès depuis le hub et la disponibilité de Nexus City et Neon Dodge
 - [ ] Exécuter `npm test`, `npm run build` et les tests manuels
 - [ ] Vérifier le déploiement Vercel avant toute annonce de publication
+
+
+## Contrôles 3.0.0
+- [ ] Vérifier `/game-builder` sur mobile et ordinateur
+- [ ] Créer, renommer, changer et supprimer des niveaux (limite de 20)
+- [ ] Personnaliser la couleur du personnage
+- [ ] Tester collecte, interrupteur, porte, obstacle et passage entre niveaux
+- [ ] Enregistrer, rouvrir, exporter et importer un projet multi-niveaux
+- [ ] Vérifier le refus d'un JSON invalide ou supérieur à 300 Ko
+- [ ] Confirmer que les anciennes clés de sauvegarde restent intactes
+- [ ] Exécuter `npm test`, `npm run build` et les tests manuels
+- [ ] Vérifier le déploiement Vercel avant toute annonce de publication
