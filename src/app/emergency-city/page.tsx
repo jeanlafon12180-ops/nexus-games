@@ -34,102 +34,205 @@ export default function EmergencyCityPage() {
         const world = new B.Scene(webEngine);
         world.clearColor = new B.Color4(0.055, 0.075, 0.11, 1);
         world.fogMode = B.Scene.FOGMODE_EXP2;
-        world.fogDensity = 0.0022;
+        world.fogDensity = 0.00155;
         world.fogColor = new B.Color3(0.22, 0.29, 0.38);
 
         const hemi = new B.HemisphericLight("sky-fill", new B.Vector3(0, 1, 0), world);
-        hemi.intensity = 0.72;
+        hemi.intensity = 0.78;
         const sun = new B.DirectionalLight("late-afternoon-sun", new B.Vector3(-0.45, -1, 0.3), world);
-        sun.position = new B.Vector3(80, 110, -60);
-        sun.intensity = 1.35;
+        sun.position = new B.Vector3(120, 160, -90);
+        sun.intensity = 1.45;
 
-        const mat = (name: string, color: B.Color3, rough = 0.8) => {
+        const mat = (name: string, color: B.Color3, rough = 0.8, metallic = 0.04) => {
           const m = new B.PBRMaterial(name, world);
           m.albedoColor = color;
-          m.metallic = 0.05;
+          m.metallic = metallic;
           m.roughness = rough;
           return m;
         };
-        const asphalt = mat("asphalt-greybox", new B.Color3(0.075, 0.09, 0.11), 0.94);
-        const sidewalk = mat("pavement-greybox", new B.Color3(0.34, 0.36, 0.37));
-        const concrete = [0.25, 0.31, 0.38, 0.43].map((v, i) => mat("building-" + i, new B.Color3(v, v * 1.04, v * 1.1)));
-        const glass = mat("blue-glass-placeholder", new B.Color3(0.08, 0.19, 0.25), 0.22);
-        const lane = mat("road-markings", new B.Color3(0.83, 0.81, 0.72));
-        const green = mat("player-marker", new B.Color3(0.55, 0.95, 0.29), 0.45);
+        const asphalt = mat("road-asphalt", new B.Color3(0.065, 0.078, 0.09), 0.96);
+        const sidewalk = mat("sidewalk-stone", new B.Color3(0.37, 0.39, 0.4), 0.9);
+        const curb = mat("curb-concrete", new B.Color3(0.52, 0.53, 0.51));
+        const lane = mat("road-markings", new B.Color3(0.86, 0.83, 0.72));
+        const glass = mat("facade-glass", new B.Color3(0.055, 0.16, 0.22), 0.2, 0.28);
+        const darkGlass = mat("dark-glass", new B.Color3(0.025, 0.07, 0.095), 0.18, 0.35);
+        const roofMat = mat("roof-concrete", new B.Color3(0.25, 0.27, 0.29));
+        const metal = mat("street-metal", new B.Color3(0.1, 0.12, 0.14), 0.38, 0.72);
+        const parkGrass = mat("park-grass", new B.Color3(0.12, 0.27, 0.16), 1);
+        const treeTrunk = mat("tree-trunk", new B.Color3(0.22, 0.13, 0.075));
+        const treeLeaf = mat("tree-canopy", new B.Color3(0.13, 0.31, 0.19), 0.95);
+        const water = mat("canal-water", new B.Color3(0.035, 0.19, 0.24), 0.18, 0.48);
+        const playerMat = mat("player-marker", new B.Color3(0.55, 0.95, 0.29), 0.42, 0.12);
 
-        const ground = B.MeshBuilder.CreateGround("city-ground", { width: 260, height: 260 }, world);
-        ground.position.y = -0.12;
-        ground.material = sidewalk;
-
-        const road = B.MeshBuilder.CreateGround("main-avenue", { width: 22, height: 230 }, world);
-        road.position.y = 0.015;
-        road.material = asphalt;
-        const crossRoad = B.MeshBuilder.CreateGround("cross-avenue", { width: 230, height: 20 }, world);
-        crossRoad.position.y = 0.02;
-        crossRoad.material = asphalt;
-
-        for (let z = -105; z <= 105; z += 10) {
-          const dash = B.MeshBuilder.CreateBox("center-line", { width: 0.22, height: 0.025, depth: 4.8 }, world);
-          dash.position.set(0, 0.06, z);
-          dash.material = lane;
-        }
-        for (let x = -105; x <= 105; x += 10) {
-          const dash = B.MeshBuilder.CreateBox("cross-line", { width: 4.8, height: 0.025, depth: 0.22 }, world);
-          dash.position.set(x, 0.065, 0);
-          dash.material = lane;
-        }
+        const ground = B.MeshBuilder.CreateGround("metropolitan-terrain", { width: 430, height: 430 }, world);
+        ground.position.y = -0.16;
+        ground.material = parkGrass;
 
         const seeded = (n: number) => {
-          const x = Math.sin(n * 127.1) * 43758.5453;
+          const x = Math.sin(n * 127.1 + 17.7) * 43758.5453;
           return x - Math.floor(x);
         };
-        let index = 0;
-        for (let x = -90; x <= 90; x += 30) {
-          for (let z = -90; z <= 90; z += 30) {
-            if (Math.abs(x) < 20 || Math.abs(z) < 19) continue;
-            const width = 13 + seeded(index + 2) * 5;
-            const depth = 13 + seeded(index + 4) * 5;
-            const height = 13 + seeded(index + 6) * 42;
-            const building = B.MeshBuilder.CreateBox("city-block-" + index, { width, depth, height }, world);
-            building.position.set(x + (seeded(index + 9) - 0.5) * 5, height / 2, z + (seeded(index + 11) - 0.5) * 5);
-            building.material = concrete[index % concrete.length];
-            const roof = B.MeshBuilder.CreateBox("roof-" + index, { width: width + 0.2, depth: depth + 0.2, height: 0.45 }, world);
-            roof.position.set(building.position.x, height + 0.22, building.position.z);
-            roof.material = sidewalk;
+        const box = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: B.Material) => {
+          const mesh = B.MeshBuilder.CreateBox(name, { width: w, height: h, depth: d }, world);
+          mesh.position.set(x, y, z);
+          mesh.material = material;
+          return mesh;
+        };
 
-            const floors = Math.max(2, Math.floor(height / 4));
-            for (let floor = 0; floor < floors; floor++) {
-              for (let side = -1; side <= 1; side++) {
-                const window = B.MeshBuilder.CreateBox("facade-glass", { width: 2.1, height: 1.35, depth: 0.08 }, world);
-                window.position.set(building.position.x + side * (width / 3.2), floor * 3.5 + 2.2, building.position.z - depth / 2 - 0.045);
-                window.material = glass;
-              }
+        // A six-by-six street grid creates a navigable metropolitan road network.
+        const roadLines = [-192, -128, -64, 0, 64, 128, 192];
+        for (const line of roadLines) {
+          const vertical = B.MeshBuilder.CreateGround("north-south-avenue", { width: 21, height: 410 }, world);
+          vertical.position.set(line, 0.015, 0);
+          vertical.material = asphalt;
+          const horizontal = B.MeshBuilder.CreateGround("east-west-avenue", { width: 410, height: 21 }, world);
+          horizontal.position.set(0, 0.02, line);
+          horizontal.material = asphalt;
+
+          for (const side of [-1, 1]) {
+            const pavementV = B.MeshBuilder.CreateGround("avenue-sidewalk", { width: 3.2, height: 410 }, world);
+            pavementV.position.set(line + side * 12.2, 0.035, 0);
+            pavementV.material = sidewalk;
+            const pavementH = B.MeshBuilder.CreateGround("avenue-sidewalk", { width: 410, height: 3.2 }, world);
+            pavementH.position.set(0, 0.04, line + side * 12.2);
+            pavementH.material = sidewalk;
+            const curbV = B.MeshBuilder.CreateBox("avenue-curb", { width: 0.22, height: 0.22, depth: 410 }, world);
+            curbV.position.set(line + side * 10.55, 0.12, 0);
+            curbV.material = curb;
+            const curbH = B.MeshBuilder.CreateBox("avenue-curb", { width: 410, height: 0.22, depth: 0.22 }, world);
+            curbH.position.set(0, 0.12, line + side * 10.55);
+            curbH.material = curb;
+          }
+        }
+
+        // Dashed lane dividers and zebra crossings at every major intersection.
+        for (const line of roadLines) {
+          for (let p = -184; p <= 184; p += 13) {
+            if (roadLines.some(cross => Math.abs(p - cross) < 13)) continue;
+            box("lane-dash-ns", 0.2, 0.035, 5.2, line, 0.075, p, lane);
+            box("lane-dash-ew", 5.2, 0.035, 0.2, p, 0.08, line, lane);
+          }
+          for (const cross of roadLines) {
+            for (let stripe = -1; stripe <= 1; stripe++) {
+              box("zebra-ns", 5.2, 0.035, 0.72, line + stripe * 1.8, 0.085, cross + 8.5, lane);
+              box("zebra-ew", 0.72, 0.035, 5.2, cross + 8.5, 0.09, line + stripe * 1.8, lane);
             }
-            index++;
           }
         }
 
-        for (let side of [-1, 1]) {
-          for (let z = -100; z <= 100; z += 25) {
-            const pole = B.MeshBuilder.CreateCylinder("street-light-pole", { height: 7, diameter: 0.16 }, world);
-            pole.position.set(side * 13.5, 3.5, z);
-            pole.material = mat("street-metal-" + side, new B.Color3(0.12, 0.14, 0.17), 0.4);
-            const arm = B.MeshBuilder.CreateBox("street-light-arm", { width: 2, height: 0.14, depth: 0.14 }, world);
-            arm.position.set(side * 14.4, 6.7, z);
-            arm.material = pole.material;
+        const districtMaterials = [
+          mat("downtown-stone", new B.Color3(0.34, 0.38, 0.42)),
+          mat("business-tower", new B.Color3(0.2, 0.29, 0.35), 0.48, 0.18),
+          mat("residential-brick", new B.Color3(0.42, 0.27, 0.22)),
+          mat("industrial-metal", new B.Color3(0.29, 0.32, 0.31), 0.7, 0.24),
+          mat("civic-sandstone", new B.Color3(0.55, 0.48, 0.36)),
+        ];
+
+        const parkBlocks = new Set(["-64,64", "64,-64"]);
+        let buildingId = 0;
+        for (let gx = -2; gx <= 2; gx++) {
+          for (let gz = -2; gz <= 2; gz++) {
+            const blockX = gx * 64;
+            const blockZ = gz * 64;
+            if (parkBlocks.has(blockX + "," + blockZ)) {
+              const park = B.MeshBuilder.CreateGround("riverside-city-park", { width: 43, height: 43 }, world);
+              park.position.set(blockX, 0.055, blockZ);
+              park.material = parkGrass;
+              for (let t = 0; t < 18; t++) {
+                const tx = blockX + (seeded(t + gx * 13 + gz * 7) - 0.5) * 34;
+                const tz = blockZ + (seeded(t + 51 + gx * 3) - 0.5) * 34;
+                const trunk = B.MeshBuilder.CreateCylinder("park-tree-trunk", { height: 2.6, diameter: 0.42 }, world);
+                trunk.position.set(tx, 1.3, tz);
+                trunk.material = treeTrunk;
+                const crown = B.MeshBuilder.CreateSphere("park-tree-crown", { diameter: 3.5 + seeded(t + 83) * 1.5, segments: 7 }, world);
+                crown.position.set(tx, 3.6, tz);
+                crown.material = treeLeaf;
+              }
+              for (let pathIndex = -1; pathIndex <= 1; pathIndex++) {
+                const path = B.MeshBuilder.CreateGround("park-walking-path", { width: 2.2, height: 40 }, world);
+                path.position.set(blockX + pathIndex * 10, 0.075, blockZ);
+                path.material = sidewalk;
+              }
+              continue;
+            }
+
+            const district = gx === 0 && gz === 0 ? 1 : gx === 2 || gz === 2 ? 3 : gx < 0 && gz < 0 ? 2 : gx === 0 ? 4 : 0;
+            const count = district === 1 ? 5 : 4;
+            for (let b = 0; b < count; b++) {
+              const col = b % 2;
+              const row = Math.floor(b / 2);
+              const width = (district === 1 ? 13 : 15) + seeded(buildingId + 4) * 5;
+              const depth = 13 + seeded(buildingId + 9) * 5;
+              let height = district === 1 ? 48 + seeded(buildingId + 12) * 70 : district === 3 ? 12 + seeded(buildingId + 12) * 12 : 18 + seeded(buildingId + 12) * 34;
+              if (gx === 0 && gz === 0 && b === 4) height = 112;
+              const x = blockX + (col === 0 ? -12 : 12) + (seeded(buildingId + 17) - 0.5) * 3;
+              const z = blockZ + (row === 0 ? -12 : 12) + (seeded(buildingId + 21) - 0.5) * 3;
+              const building = box("metropolitan-building-" + buildingId, width, height, depth, x, height / 2, z, districtMaterials[district]);
+              const roof = box("building-roof-" + buildingId, width + 0.5, 0.5, depth + 0.5, x, height + 0.25, z, roofMat);
+              roof.isPickable = false;
+
+              // Repeated facade window bands; restrained counts keep the browser scene responsive.
+              const floors = Math.min(18, Math.floor(height / 4.2));
+              for (let floor = 0; floor < floors; floor++) {
+                for (let side = -1; side <= 1; side++) {
+                  const winWidth = Math.max(1.25, width / 5);
+                  box("front-window", winWidth, 1.45, 0.09, x + side * width / 3.1, floor * 4.1 + 2.3, z - depth / 2 - 0.055, district === 1 ? darkGlass : glass);
+                  box("side-window", 0.09, 1.45, Math.max(1.25, depth / 5), x + width / 2 + 0.055, floor * 4.1 + 2.3, z + side * depth / 3.1, glass);
+                }
+              }
+              buildingId++;
+            }
           }
         }
+
+        // A canal and promenade establish a recognisable waterfront district.
+        const canal = B.MeshBuilder.CreateGround("east-waterfront-canal", { width: 24, height: 420 }, world);
+        canal.position.set(216, -0.035, 0);
+        canal.material = water;
+        for (const side of [-1, 1]) {
+          const promenade = B.MeshBuilder.CreateGround("canal-promenade", { width: 5, height: 420 }, world);
+          promenade.position.set(216 + side * 15, 0.04, 0);
+          promenade.material = sidewalk;
+          for (let z = -180; z <= 180; z += 30) {
+            const lamp = B.MeshBuilder.CreateCylinder("waterfront-lamp", { height: 5.5, diameter: 0.13 }, world);
+            lamp.position.set(216 + side * 17, 2.75, z);
+            lamp.material = metal;
+            const head = B.MeshBuilder.CreateSphere("waterfront-lamp-head", { diameter: 0.55, segments: 8 }, world);
+            head.position.set(216 + side * 17, 5.55, z);
+            head.material = lane;
+          }
+        }
+
+        // Street furniture and trees line the principal boulevards.
+        for (const line of roadLines) {
+          for (let z = -176; z <= 176; z += 32) {
+            for (const side of [-1, 1]) {
+              const pole = B.MeshBuilder.CreateCylinder("streetlight-pole", { height: 8, diameter: 0.18 }, world);
+              pole.position.set(line + side * 14.3, 4, z);
+              pole.material = metal;
+              const arm = box("streetlight-arm", 1.7, 0.15, 0.15, line + side * 13.55, 7.7, z, metal);
+              arm.isPickable = false;
+            }
+          }
+        }
+
+        // Civic landmark: a distinctive transit and emergency-services hub.
+        const hubBase = box("central-civic-hub", 26, 10, 22, 0, 5, 0, districtMaterials[4]);
+        const hubRoof = box("central-hub-roof", 29, 1.1, 25, 0, 10.5, 0, metal);
+        const hubGlass = box("central-hub-glass-front", 18, 6.5, 0.16, 0, 5, -11.1, glass);
+        const hubSign = box("central-hub-sign", 8, 1.2, 0.25, 0, 9, -11.25, lane);
+        hubBase.isPickable = hubRoof.isPickable = hubGlass.isPickable = hubSign.isPickable = false;
 
         const player = B.MeshBuilder.CreateCapsule("player-placeholder", { height: 1.8, radius: 0.34 }, world);
-        player.position.set(2.5, 0.9, 15);
-        player.material = green;
+        player.position.set(5, 0.9, 18);
+        player.material = playerMat;
 
-        const third = new B.ArcRotateCamera("third-person", -Math.PI / 2, 1.12, 11, player.position.clone(), world);
+        const third = new B.ArcRotateCamera("third-person", -Math.PI / 2, 1.12, 13, player.position.clone(), world);
         third.lowerRadiusLimit = 4;
-        third.upperRadiusLimit = 18;
+        third.upperRadiusLimit = 24;
         third.wheelPrecision = 45;
         third.attachControl(canvas, true);
-        const first = new B.UniversalCamera("first-person", new B.Vector3(2.5, 1.55, 15), world);
+        const first = new B.UniversalCamera("first-person", new B.Vector3(5, 1.55, 18), world);
         first.speed = 0;
         first.inertia = 0;
         first.minZ = 0.1;
@@ -153,8 +256,8 @@ export default function EmergencyCityPage() {
             const angle = modeRef.current === "third" ? third.alpha : first.rotation.y;
             const dx = Math.cos(angle) * direction.x + Math.sin(angle) * direction.z;
             const dz = -Math.sin(angle) * direction.x + Math.cos(angle) * direction.z;
-            player.position.x += dx * dt * 8;
-            player.position.z += dz * dt * 8;
+            player.position.x = B.Scalar.Clamp(player.position.x + dx * dt * 9, -205, 205);
+            player.position.z = B.Scalar.Clamp(player.position.z + dz * dt * 9, -205, 205);
           }
           if (modeRef.current === "third") {
             third.target.copyFrom(player.position);
@@ -185,6 +288,7 @@ export default function EmergencyCityPage() {
       disposed = true;
       cleanup?.();
       engine?.dispose();
+      cameraBundleRef.current = null;
     };
   }, []);
 
@@ -199,14 +303,14 @@ export default function EmergencyCityPage() {
     <main className={styles.shell}>
       <header className={styles.topbar}>
         <a href="/" className={styles.brand}><span>N</span> NEXUS <b>EMERGENCY CITY</b></a>
-        <div className={styles.build}>TECH PREVIEW <i /> 0.1.0</div>
+        <div className={styles.build}>CITY UPDATE <i /> 0.2.0</div>
       </header>
       <section className={styles.viewport}>
         <canvas ref={canvasRef} className={styles.canvas} aria-label="Aperçu 3D de la métropole Nexus Emergency City" />
-        <div className={styles.hudTop}><span><i /> CITY BLOCKOUT / METRO DISTRICT 01</span><span>EARLY DEVELOPMENT BUILD</span></div>
+        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.2</span><span>25 CITY BLOCKS · WATERFRONT · CIVIC HUB</span></div>
         <div className={styles.titleCard}><small>NEXUS SIMULATION PROJECT</small><h1>EMERGENCY<br /><em>CITY</em></h1><p>UNE MÉTROPOLE. DES MILLIERS D'HISTOIRES.</p></div>
         <div className={styles.hudBottom}>
-          <div className={styles.status}>{error ? "3D ENGINE ERROR" : loaded ? "WORLD ONLINE" : "LOADING CITY"} <i className={error ? styles.error : ""} /></div>
+          <div className={styles.status}>{error ? "3D ENGINE ERROR" : loaded ? "CITY ONLINE" : "LOADING CITY"} <i className={error ? styles.error : ""} /></div>
           <div className={styles.controls}>ZQSD / WASD <span>MOVE</span> · MOUSE <span>LOOK</span></div>
           <div className={styles.cameraSwitch}>
             <button className={mode === "third" ? styles.active : ""} onClick={() => setMode("third")}>3RD PERSON</button>
@@ -215,7 +319,7 @@ export default function EmergencyCityPage() {
         </div>
         {error && <div className={styles.errorPanel}>Le moteur 3D n'a pas pu démarrer : {error}</div>}
       </section>
-      <footer className={styles.footer}><span>PROTOTYPE 0.1 — GÉOMÉTRIE TEMPORAIRE</span><span>LES GRAPHISMES FINAUX SERONT CRÉÉS AVEC DES ASSETS 3D ORIGINAUX.</span></footer>
+      <footer className={styles.footer}><span>BUILD 0.2 — CITY BLOCKOUT</span><span>QUARTIERS, RÉSEAU ROUTIER ET FRONT DE CANAL EN COURS DE DÉVELOPPEMENT.</span></footer>
     </main>
   );
 }
