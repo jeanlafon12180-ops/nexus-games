@@ -448,10 +448,11 @@ export default function EmergencyCityPage() {
           world.dispose();
         };
         webEngine.runRenderLoop(() => world.render());
-        window.addEventListener("resize", webEngine.resize);
+        const resizeHandler = () => webEngine.resize();
+        window.addEventListener("resize", resizeHandler);
         const priorCleanup = cleanup;
         cleanup = () => {
-          window.removeEventListener("resize", webEngine.resize);
+          window.removeEventListener("resize", resizeHandler);
           priorCleanup?.();
         };
         driveBundleRef.current = { player };
