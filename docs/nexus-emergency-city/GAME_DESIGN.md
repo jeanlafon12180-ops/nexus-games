@@ -66,6 +66,12 @@ A large original European-inspired metropolis for a grounded emergency-services 
 - Ambient vehicles queue at a stop line during amber/red phases on the central avenue.
 - The traffic system is a small scripted demonstration: no full city-wide signal network, junction reservations, lane changes, collision avoidance or pedestrian crossing logic yet.
 
+### 0.7 — First accessible service interior (implemented prototype)
+- Added a small original emergency-services reception interior with floor, walls, reception desk, dispatch screen and waiting bench.
+- Added a simple enter/exit control that moves the player between the civic hub entrance and the interior.
+- Interior geometry is isolated from the outdoor city and disabled until entered to limit scene overhead.
+- This is one compact prototype room: no full building system, door animation, interior NPC dialogue, inventory, jobs or multiplayer yet.
+
 ### Future — Multiplayer prototype
 - Authoritative server, player sessions, synchronization and abuse prevention.
 ### 1.0 — Public release candidate
