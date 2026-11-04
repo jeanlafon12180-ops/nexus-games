@@ -23,7 +23,7 @@ const games: Game[] = [
   { id: 2, title: "Pixel Raiders", category: "Action", label: "ACTION", color: "orange", icon: "⚔", description: "Une aventure rétro pleine de défis.", players: "1 joueur", status: "BIENTÔT", details: "Une aventure d'action au style rétro. La fiche est prête, le jeu est encore en développement." },
   { id: 3, title: "Orbital", category: "Réflexion", label: "PUZZLE", color: "blue", icon: "◉", description: "Trouve ton chemin parmi les astres.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de réflexion spatial en préparation." },
   { id: 4, title: "Skybound", category: "Aventure", label: "AVENTURE", color: "teal", icon: "⬡", description: "Explore des mondes suspendus dans le ciel.", players: "1 joueur", status: "BIENTÔT", details: "Une aventure d'exploration en préparation." },
-  { id: 5, title: "Turbo League", category: "Course", label: "SPORT", color: "red", icon: "↗", description: "Des courses rapides et spectaculaires.", players: "1–4 joueurs", status: "BIENTÔT", details: "Un jeu de course arcade en préparation." },
+  { id: 5, title: "Nexus Racing", category: "Course", label: "ARCADE", color: "red", icon: "🏎", description: "Évite le trafic, ramasse des crédits et déclenche le turbo.", players: "1 joueur", status: "JOUABLE", slug: "/games/nexus-racing", details: "Un jeu de course arcade original avec trois voies, trafic, crédits à collecter, turbo, commandes tactiles et record local." },
   { id: 6, title: "Little Kingdom", category: "Stratégie", label: "STRATÉGIE", color: "green", icon: "♜", description: "Construis et développe ton royaume.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de stratégie et de construction en préparation." },
   { id: 7, title: "Deep Space", category: "Aventure", label: "EXPLORATION", color: "blue", icon: "✧", description: "Pars à la découverte d'une galaxie inconnue.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu d'exploration spatiale en préparation." },
   { id: 8, title: "Drift City", category: "Course", label: "ARCADE", color: "violet", icon: "⌁", description: "Maîtrise les virages dans une ville futuriste.", players: "1 joueur", status: "BIENTÔT", details: "Un jeu de course et de drift en préparation." },
@@ -35,7 +35,7 @@ const categories = ["Tout", "Action", "Aventure", "Course", "Réflexion", "Strat
 const BACKUP_FORMAT = "nexus-games-player-backup";
 const BACKUP_STORAGE_KEYS = [
   "nexus-games-favorites", "nexus-games-player-name", "nexus-platform-city-visited",
-  "nexus-city-save-v1", "nexus-neon-dodge-best", "nexus-creator-creations-v1",
+  "nexus-city-save-v1", "nexus-neon-dodge-best", "nexus-racing-best", "nexus-creator-creations-v1",
   "nexus-community-games-v1", "nexus-community-liked-v1", "nexus-player-accent-v1", "nexus-player-status-v1", "nexus-recent-games-v1"
 ] as const;
 
@@ -49,11 +49,11 @@ function validateBackupData(data: unknown): data is Record<string, string> {
     if (key === "nexus-platform-city-visited") { if (value !== "1") return false; continue; }
     if (key === "nexus-player-accent-v1") { if (!["green","blue","violet","orange","cyan"].includes(value)) return false; continue; }
     if (key === "nexus-player-status-v1") { if (value.length > 60) return false; continue; }
-    if (key === "nexus-neon-dodge-best") { if (!Number.isFinite(Number(value)) || Number(value) < 0) return false; continue; }
+    if (key === "nexus-neon-dodge-best" || key === "nexus-racing-best") { if (!Number.isFinite(Number(value)) || Number(value) < 0) return false; continue; }
     let parsed: unknown;
     try { parsed = JSON.parse(value); } catch { return false; }
     if (key === "nexus-games-favorites" && (!Array.isArray(parsed) || !parsed.every(item => Number.isInteger(item)))) return false;
-    if (key === "nexus-recent-games-v1" && (!Array.isArray(parsed) || parsed.length > 20 || !parsed.every(item => item === "Nexus City" || item === "Neon Dodge"))) return false;
+    if (key === "nexus-recent-games-v1" && (!Array.isArray(parsed) || parsed.length > 20 || !parsed.every(item => item === "Nexus City" || item === "Neon Dodge" || item === "Nexus Racing"))) return false;
     if ((key === "nexus-creator-creations-v1" || key === "nexus-community-games-v1") && (!Array.isArray(parsed) || parsed.length > 100)) return false;
     if (key === "nexus-community-liked-v1" && (!Array.isArray(parsed) || !parsed.every(item => typeof item === "string"))) return false;
     if (key === "nexus-city-save-v1") {
