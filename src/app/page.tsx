@@ -102,10 +102,10 @@ export default function Home() {
               <span className="project-visual-caption">NEXUS ORIGINAL / PROJECT 001</span>
             </div>
             <div className="project-details">
-              <span className="project-status"><i /> AU CATALOGUE · PROTOTYPE EN DÉVELOPPEMENT · BUILD 0.2</span>
+              <span className="project-status"><i /> AU CATALOGUE · PROTOTYPE EN DÉVELOPPEMENT · BUILD 0.3</span>
               <h3>NEXUS EMERGENCY<br /><em>CITY.</em></h3>
-              <p>Le premier univers de Nexus Games : une métropole originale à explorer à pied, avec une vue à la première ou à la troisième personne. Le prototype est accessible, tandis que le jeu complet reste en développement.</p>
-              <div className="project-tags"><span>OPEN CITY</span><span>FIRST / THIRD PERSON</span><span>PC & WEB TARGET</span></div>
+              <p>Le premier univers de Nexus Games : une métropole originale à explorer à pied, avec une vue à la première ou à la troisième personne, et une première voiture civile pilotable. Le prototype est accessible, tandis que le jeu complet reste en développement.</p>
+              <div className="project-tags"><span>OPEN CITY</span><span>DRIVABLE CAR</span><span>FIRST / THIRD PERSON</span><span>PC & WEB TARGET</span></div>
               <a className="button-primary" href="/emergency-city">Jouer au prototype <span>↗</span></a>
             </div>
           </div>
