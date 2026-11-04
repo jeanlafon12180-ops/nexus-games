@@ -53,7 +53,14 @@ A large original European-inspired metropolis for a grounded emergency-services 
 - Each task has a destination coordinate; walking or driving within 9 metres completes the intervention.
 - Added a completed-intervention counter and feedback toast.
 - These are navigation and interaction prototypes, not full emergency-service simulations; no injury, fire-fighting or tactical mechanics are implemented.
-### 0.5 — Multiplayer prototype
+### 0.5 — Emergency fleet and living-city prototype (implemented)
+- Added original procedural police cruiser, fire engine and ambulance models, parked at the civic hub.
+- Added eight lightweight pedestrian placeholders with simple sidewalk-loop movement.
+- Added three ambient civilian traffic vehicles following bounded loops on the main avenue.
+- Updated the in-game dispatch/HUD build label and Nexus Games catalogue to 0.5.
+- These are low-cost procedural prototypes: no siren audio, emergency light animation, pedestrian navigation mesh, traffic signals, collision avoidance, advanced road rules or multiplayer yet.
+
+### Future — Multiplayer prototype
 - Authoritative server, player sessions, synchronization and abuse prevention.
 ### 1.0 — Public release candidate
 - Performance, accessibility, QA, privacy and security review; only then publish on Nexus Games.
