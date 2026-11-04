@@ -15,7 +15,6 @@ export default function NexusRacing() {
   const [best, setBest] = useState(0);
   const [crashed, setCrashed] = useState(false);
   const [boost, setBoost] = useState(100);
-  const [boosting, setBoosting] = useState(false);
   const state = useRef({ lane: 1, objects: [] as Obstacle[], tick: 0, score: 0, coins: 0, id: 0, boost: 100, boosting: false });
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export default function NexusRacing() {
 
   const start = useCallback(() => {
     state.current = { lane: 1, objects: [], tick: 0, score: 0, coins: 0, id: 0, boost: 100, boosting: false };
-    setLane(1); setObjects([]); setScore(0); setCoins(0); setBoost(100); setBoosting(false); setCrashed(false); setRunning(true);
+    setLane(1); setObjects([]); setScore(0); setCoins(0); setBoost(100); setCrashed(false); setRunning(true);
   }, []);
 
   useEffect(() => {
