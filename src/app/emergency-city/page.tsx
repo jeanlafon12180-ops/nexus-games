@@ -8,6 +8,7 @@ type CameraMode = "third" | "first";
 export default function EmergencyCityPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mode, setMode] = useState<CameraMode>("third");
+  const [driving, setDriving] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
   const cameraBundleRef = useRef<{ world: import("@babylonjs/core").Scene; first: import("@babylonjs/core").UniversalCamera; third: import("@babylonjs/core").ArcRotateCamera } | null>(null);
@@ -227,6 +228,35 @@ export default function EmergencyCityPage() {
         player.position.set(5, 0.9, 18);
         player.material = playerMat;
 
+        // Original procedural civilian hatchback for the 0.3 driving prototype.
+        const carRoot = new B.TransformNode("civilian-hatchback", world);
+        carRoot.position.set(2, 0, 18);
+        const carPaint = mat("car-deep-blue-paint", new B.Color3(0.035, 0.19, 0.38), 0.28, 0.72);
+        const tireMat = mat("car-rubber", new B.Color3(0.018, 0.022, 0.027), 0.98);
+        const rimMat = mat("car-alloy", new B.Color3(0.48, 0.53, 0.57), 0.24, 0.86);
+        const lampMat = mat("car-headlights", new B.Color3(0.92, 0.86, 0.65), 0.22, 0.18);
+        const tailMat = mat("car-tail-lights", new B.Color3(0.62, 0.025, 0.018), 0.3, 0.12);
+        const carPart = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: B.Material) => {
+          const mesh = B.MeshBuilder.CreateBox(name, { width: w, height: h, depth: d }, world);
+          mesh.parent = carRoot; mesh.position.set(x, y, z); mesh.material = material; return mesh;
+        };
+        carPart("car-lower-body", 2.05, 0.62, 4.15, 0, 0.72, 0, carPaint);
+        carPart("car-cabin", 1.72, 0.78, 2.15, 0, 1.34, -0.18, carPaint);
+        carPart("car-windshield", 1.55, 0.58, 0.07, 0, 1.39, 0.91, darkGlass);
+        carPart("car-rear-window", 1.48, 0.52, 0.07, 0, 1.39, -1.27, darkGlass);
+        for (const side of [-1, 1]) {
+          carPart("car-side-window", 0.07, 0.5, 1.45, side * 0.87, 1.38, -0.18, darkGlass);
+          carPart("car-headlamp", 0.42, 0.2, 0.08, side * 0.67, 0.82, 2.1, lampMat);
+          carPart("car-tail-lamp", 0.38, 0.22, 0.08, side * 0.68, 0.84, -2.1, tailMat);
+        }
+        const wheels: B.Mesh[] = [];
+        for (const x of [-1.02, 1.02]) for (const z of [-1.35, 1.35]) {
+          const wheel = B.MeshBuilder.CreateCylinder("car-wheel", { diameter: 0.78, height: 0.28, tessellation: 20 }, world);
+          wheel.parent = carRoot; wheel.position.set(x, 0.42, z); wheel.rotation.z = Math.PI / 2; wheel.material = tireMat; wheels.push(wheel);
+          const rim = B.MeshBuilder.CreateCylinder("car-wheel-alloy", { diameter: 0.39, height: 0.295, tessellation: 16 }, world);
+          rim.parent = carRoot; rim.position.copyFrom(wheel.position); rim.rotation.z = Math.PI / 2; rim.material = rimMat; wheels.push(rim);
+        }
+
         const third = new B.ArcRotateCamera("third-person", -Math.PI / 2, 1.12, 13, player.position.clone(), world);
         third.lowerRadiusLimit = 4;
         third.upperRadiusLimit = 24;
@@ -242,6 +272,7 @@ export default function EmergencyCityPage() {
         cameraBundleRef.current = { world, first, third };
 
         const keys = new Set<string>();
+        let carSpeed = 0;
         const onDown = (event: KeyboardEvent) => { keys.add(event.key.toLowerCase()); };
         const onUp = (event: KeyboardEvent) => { keys.delete(event.key.toLowerCase()); };
         window.addEventListener("keydown", onDown);
@@ -250,20 +281,26 @@ export default function EmergencyCityPage() {
           const dt = Math.min(webEngine.getDeltaTime() / 1000, 0.04);
           const forward = (keys.has("w") || keys.has("z") || keys.has("arrowup") ? 1 : 0) - (keys.has("s") || keys.has("arrowdown") ? 1 : 0);
           const strafe = (keys.has("d") || keys.has("arrowright") ? 1 : 0) - (keys.has("a") || keys.has("q") || keys.has("arrowleft") ? 1 : 0);
-          if (forward || strafe) {
-            const direction = new B.Vector3(strafe, 0, forward);
-            direction.normalize();
+          let followed = player.position;
+          if (drivingRef.current) {
+            const throttle = (keys.has("w") || keys.has("z") || keys.has("arrowup") ? 1 : 0) - (keys.has("s") || keys.has("arrowdown") ? 1 : 0);
+            const steering = (keys.has("d") || keys.has("arrowright") ? 1 : 0) - (keys.has("a") || keys.has("q") || keys.has("arrowleft") ? 1 : 0);
+            carSpeed += throttle * dt * 10; carSpeed *= Math.pow(0.985, dt * 60); carSpeed = B.Scalar.Clamp(carSpeed, -7, 17);
+            carRoot.rotation.y += steering * dt * Math.min(Math.abs(carSpeed) / 5, 1.2) * Math.sign(carSpeed || 1) * 1.65;
+            carRoot.position.x = B.Scalar.Clamp(carRoot.position.x + Math.sin(carRoot.rotation.y) * carSpeed * dt, -205, 205);
+            carRoot.position.z = B.Scalar.Clamp(carRoot.position.z + Math.cos(carRoot.rotation.y) * carSpeed * dt, -205, 205);
+            wheels.forEach((wheel) => { wheel.rotation.x += carSpeed * dt * 1.8; }); followed = carRoot.position;
+          } else if (forward || strafe) {
+            const direction = new B.Vector3(strafe, 0, forward); direction.normalize();
             const angle = modeRef.current === "third" ? third.alpha : first.rotation.y;
             const dx = Math.cos(angle) * direction.x + Math.sin(angle) * direction.z;
             const dz = -Math.sin(angle) * direction.x + Math.cos(angle) * direction.z;
             player.position.x = B.Scalar.Clamp(player.position.x + dx * dt * 9, -205, 205);
             player.position.z = B.Scalar.Clamp(player.position.z + dz * dt * 9, -205, 205);
           }
-          if (modeRef.current === "third") {
-            third.target.copyFrom(player.position);
-          } else {
-            first.position.set(player.position.x, player.position.y + 0.55, player.position.z);
-          }
+          if (modeRef.current === "third") third.target.copyFrom(followed);
+          else if (drivingRef.current) { first.position.set(carRoot.position.x, 1.48, carRoot.position.z); first.rotation.y = carRoot.rotation.y; }
+          else first.position.set(player.position.x, player.position.y + 0.55, player.position.z);
         });
         cleanup = () => {
           window.removeEventListener("keydown", onDown);
@@ -278,6 +315,7 @@ export default function EmergencyCityPage() {
           window.removeEventListener("resize", webEngine.resize);
           priorCleanup?.();
         };
+        driveBundleRef.current = { player };
         if (!disposed) setLoaded(true);
       } catch (e) {
         if (!disposed) setError(e instanceof Error ? e.message : "Impossible de charger le moteur 3D.");
@@ -289,10 +327,14 @@ export default function EmergencyCityPage() {
       cleanup?.();
       engine?.dispose();
       cameraBundleRef.current = null;
+      driveBundleRef.current = null;
     };
   }, []);
 
   const modeRef = useRef<CameraMode>("third");
+  const driveBundleRef = useRef<{ player: import("@babylonjs/core").Mesh } | null>(null);
+  const drivingRef = useRef(false);
+  useEffect(() => { drivingRef.current = driving; const bundle = driveBundleRef.current; if (bundle) bundle.player.isVisible = !driving; }, [driving]);
   useEffect(() => {
     modeRef.current = mode;
     const cameras = cameraBundleRef.current;
@@ -303,23 +345,24 @@ export default function EmergencyCityPage() {
     <main className={styles.shell}>
       <header className={styles.topbar}>
         <a href="/" className={styles.brand}><span>N</span> NEXUS <b>EMERGENCY CITY</b></a>
-        <div className={styles.build}>CITY UPDATE <i /> 0.2.0</div>
+        <div className={styles.build}>CITY UPDATE <i /> 0.3.0</div>
       </header>
       <section className={styles.viewport}>
         <canvas ref={canvasRef} className={styles.canvas} aria-label="Aperçu 3D de la métropole Nexus Emergency City" />
-        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.2</span><span>25 CITY BLOCKS · WATERFRONT · CIVIC HUB</span></div>
+        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.3</span><span>25 CITY BLOCKS · DRIVEABLE CIVILIAN CAR</span></div>
         <div className={styles.titleCard}><small>NEXUS SIMULATION PROJECT</small><h1>EMERGENCY<br /><em>CITY</em></h1><p>UNE MÉTROPOLE. DES MILLIERS D'HISTOIRES.</p></div>
         <div className={styles.hudBottom}>
           <div className={styles.status}>{error ? "3D ENGINE ERROR" : loaded ? "CITY ONLINE" : "LOADING CITY"} <i className={error ? styles.error : ""} /></div>
-          <div className={styles.controls}>ZQSD / WASD <span>MOVE</span> · MOUSE <span>LOOK</span></div>
+          <div className={styles.controls}>ZQSD / WASD <span>{driving ? "DRIVE" : "MOVE"}</span> · MOUSE <span>LOOK</span></div>
           <div className={styles.cameraSwitch}>
+            <button className={driving ? styles.active : ""} onClick={() => setDriving(!driving)}>{driving ? "EXIT CAR" : "DRIVE CAR"}</button>
             <button className={mode === "third" ? styles.active : ""} onClick={() => setMode("third")}>3RD PERSON</button>
             <button className={mode === "first" ? styles.active : ""} onClick={() => setMode("first")}>1ST PERSON</button>
           </div>
         </div>
         {error && <div className={styles.errorPanel}>Le moteur 3D n'a pas pu démarrer : {error}</div>}
       </section>
-      <footer className={styles.footer}><span>BUILD 0.2 — CITY BLOCKOUT</span><span>QUARTIERS, RÉSEAU ROUTIER ET FRONT DE CANAL EN COURS DE DÉVELOPPEMENT.</span></footer>
+      <footer className={styles.footer}><span>BUILD 0.3 — VEHICLE FOUNDATION</span><span>VOITURE CIVILE TESTABLE · CONDUITE PROTOTYPE · CAMÉRAS PIÉTON ET VÉHICULE.</span></footer>
     </main>
   );
 }
