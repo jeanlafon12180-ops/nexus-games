@@ -15,6 +15,7 @@ export default function NexusRacing() {
   const [best, setBest] = useState(0);
   const [crashed, setCrashed] = useState(false);
   const [boost, setBoost] = useState(100);
+  const [boosting, setBoosting] = useState(false);
   const state = useRef({ lane: 1, objects: [] as Obstacle[], tick: 0, score: 0, coins: 0, id: 0, boost: 100, boosting: false });
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function NexusRacing() {
 
   const start = useCallback(() => {
     state.current = { lane: 1, objects: [], tick: 0, score: 0, coins: 0, id: 0, boost: 100, boosting: false };
-    setLane(1); setObjects([]); setScore(0); setCoins(0); setBoost(100); setCrashed(false); setRunning(true);
+    setLane(1); setObjects([]); setScore(0); setCoins(0); setBoost(100); setBoosting(false); setCrashed(false); setRunning(true);
   }, []);
 
   useEffect(() => {
@@ -38,12 +39,14 @@ export default function NexusRacing() {
       if (["ArrowLeft", "ArrowRight", "a", "A", "d", "D", " "].includes(event.key)) event.preventDefault();
       if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") move(-1);
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") move(1);
-      if (event.code === "Space" && state.current.boost > 0) state.current.boosting = true;
+      if (event.code === "Space" && state.current.boost > 0) { state.current.boosting = true; setBoosting(true); }
     };
-    const onUp = (event: KeyboardEvent) => { if (event.code === "Space") state.current.boosting = false; };
+    const onUp = (event: KeyboardEvent) => { if (event.code === "Space") { state.current.boosting = false; setBoosting(false); } };
+    const onBlur = () => { state.current.boosting = false; setBoosting(false); };
     window.addEventListener("keydown", onKey);
     window.addEventListener("keyup", onUp);
-    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("keyup", onUp); };
+    window.addEventListener("blur", onBlur);
+    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("keyup", onUp); window.removeEventListener("blur", onBlur); };
   }, [running, move]);
 
   useEffect(() => {
@@ -63,7 +66,7 @@ export default function NexusRacing() {
       s.objects = s.objects.map(item => ({ ...item, y: item.y + speed })).filter(item => item.y < 112);
       const hit = s.objects.find(item => item.kind === "car" && item.lane === s.lane && item.y > 78 && item.y < 94);
       if (hit) {
-        setRunning(false); setCrashed(true);
+        setRunning(false); setCrashed(true); setBoosting(false); s.boosting = false;
         try { const next = Math.max(Number(localStorage.getItem("nexus-racing-best") || 0), s.score); localStorage.setItem("nexus-racing-best", String(next)); setBest(next); } catch {}
         return;
       }
@@ -121,7 +124,7 @@ export default function NexusRacing() {
             {!running && <div className="racing-overlay"><div className="racing-overlay-card"><div className="racing-kicker">{crashed?"COURSE TERMINÉE":"PRÊT SUR LA GRILLE ?"}</div><h2>{crashed?"IMPACT !":"À TOI DE JOUER."}</h2><p>{crashed?"Score : "+score+" · Crédits récupérés : "+coins+". Retente pour battre ton record.":"Évite les voitures, ramasse les crédits et utilise le turbo dans les moments difficiles."}</p><button className="racing-primary" onClick={start}>{crashed?"↻ REJOUER":"▶ DÉMARRER LA COURSE"}</button></div></div>}
           </div>
           <div className="racing-boost"><span style={{width:boost+"%"}}/></div>
-          <div className="racing-controls"><button onClick={()=>move(-1)} disabled={!running}>←</button><button onClick={()=>move(1)} disabled={!running}>→</button><button className="boost-button" disabled={!running||boost===0} onPointerDown={()=>{state.current.boosting=true;setBoosting(true)}} onPointerUp={()=>{state.current.boosting=false;setBoosting(false)}} onPointerLeave={()=>{state.current.boosting=false;setBoosting(false)}}>⚡ TURBO</button></div>
+          <div className="racing-controls"><button onClick={()=>move(-1)} disabled={!running}>←</button><button onClick={()=>move(1)} disabled={!running}>→</button><button className="boost-button" disabled={!running||boost===0} aria-pressed={boosting} onPointerDown={(event)=>{event.preventDefault();state.current.boosting=true;setBoosting(true);event.currentTarget.setPointerCapture(event.pointerId);}} onPointerUp={()=>{state.current.boosting=false;setBoosting(false)}} onPointerCancel={()=>{state.current.boosting=false;setBoosting(false)}} onLostPointerCapture={()=>{state.current.boosting=false;setBoosting(false)}}>⚡ TURBO</button></div>
           <p className="racing-help">CLAVIER : ← → OU A / D · ESPACE POUR LE TURBO · COMMANDES TACTILES DISPONIBLES</p>
         </div>
       </section>

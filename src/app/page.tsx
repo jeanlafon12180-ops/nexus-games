@@ -82,6 +82,17 @@ export default function Home() {
   const [playerAccent, setPlayerAccent] = useState("green");
   const [playerStatus, setPlayerStatus] = useState("Prêt à jouer.");
   const [recentGames, setRecentGames] = useState<string[]>([]);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [commandQuery, setCommandQuery] = useState("");
+
+  useEffect(() => {
+    const onShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") { event.preventDefault(); setCommandOpen(true); }
+      if (event.key === "Escape") setCommandOpen(false);
+    };
+    window.addEventListener("keydown", onShortcut);
+    return () => window.removeEventListener("keydown", onShortcut);
+  }, []);
 
   useEffect(() => {
     try {
@@ -92,7 +103,7 @@ export default function Home() {
       const savedRecent = JSON.parse(window.localStorage.getItem("nexus-recent-games-v1") || "[]");
       if (savedAccent && ["green","blue","violet","orange","cyan"].includes(savedAccent)) setPlayerAccent(savedAccent);
       if (savedStatus) setPlayerStatus(savedStatus.slice(0,60));
-      if (Array.isArray(savedRecent)) setRecentGames(savedRecent.filter(item => item === "Nexus City" || item === "Neon Dodge").slice(0,20));
+      if (Array.isArray(savedRecent)) setRecentGames(savedRecent.filter(item => item === "Nexus City" || item === "Neon Dodge" || item === "Nexus Racing").slice(0,20));
       setCityVisited(window.localStorage.getItem("nexus-platform-city-visited") === "1");
       const creatorData = JSON.parse(window.localStorage.getItem("nexus-creator-creations-v1") || "[]");
       const communityData = JSON.parse(window.localStorage.getItem("nexus-community-games-v1") || "[]");
@@ -193,6 +204,8 @@ export default function Home() {
     }
   }
 
+  const commandResults = games.filter((game) => (game.title + " " + game.category + " " + game.description).toLowerCase().includes(commandQuery.trim().toLowerCase())).slice(0, 7);
+
   const filteredGames = useMemo(() => {
     const filtered = games.filter((game) => {
       const categoryMatch = activeCategory === "Tout" || (activeCategory === "Favoris" ? favorites.includes(game.id) : game.category === activeCategory);
@@ -232,32 +245,32 @@ export default function Home() {
         </nav>
         <div className="side-label categories-label">EXPLORER</div>
         <nav className="side-nav">{categories.slice(1).map((category) => <button key={category} className="side-link side-button" onClick={() => { setActiveCategory(category); document.getElementById("discover")?.scrollIntoView({ behavior: "smooth" }); }}><span className="category-dot" /> {category}</button>)}</nav>
-        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 2.5.0</small></div>
+        <div className="sidebar-bottom"><div className="status-dot" /><span>La prochaine partie commence ici.</span><small>NEXUS GAMES · VERSION 4.0.0</small></div>
       </aside>
 
       <section className="main-area" id="home">
-        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><span className="online-pill"><i /> 2 JEUX JOUABLES</span><span className="version-chip">VERSION · 2.8.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>ESPACE JOUEUR</span><b>/</b> ACCUEIL</div><div className="top-actions"><button className="command-trigger" onClick={() => setCommandOpen(true)} aria-label="Ouvrir la recherche rapide">⌕ <span>RECHERCHE RAPIDE</span> <kbd>Ctrl K</kbd></button><span className="online-pill"><i /> 3 JEUX JOUABLES</span><span className="version-chip">VERSION · 4.0.0</span><button className={"avatar avatar-"+playerAccent} onClick={() => setProfileOpen(true)} aria-label="Ouvrir mon profil">{playerName.trim().charAt(0).toUpperCase() || "N"}</button></div></header>
         <div className="content">
           <section className="hero">
             <div className="hero-grid" />
             <div className="hero-content">
               <div className="eyebrow"><span /> TON PROCHAIN UNIVERS T'ATTEND</div>
-              <h1>PLAY BEYOND<br /><em>LIMITS.</em></h1><div className="hero-release">NEXUS GAMES <b>2.5</b> · NOUVELLE EXPÉRIENCE</div>
+              <h1>PLAY BEYOND<br /><em>LIMITS.</em></h1><div className="hero-release">NEXUS GAMES <b>4.0</b> · ÉDITION MAJEURE</div>
               <p>Découvre. Joue. Recommence.<br />Toute ta passion du jeu, au même endroit.</p>
-              <div className="hero-actions"><Link className="primary-button" href="/games/nexus-city"><span>▶</span> JOUER À NEXUS CITY</Link><Link className="secondary-button" href="/games/neon-dodge">JOUER À NEON DODGE <span>↗</span></Link><a className="text-button" href="#discover">EXPLORER LE STORE ↓</a></div>
+              <div className="hero-actions"><Link className="primary-button" href="/games/nexus-city"><span>▶</span> JOUER À NEXUS CITY</Link><Link className="secondary-button" href="/games/nexus-racing" onClick={() => recordPlayed("Nexus Racing")}>JOUER À NEXUS RACING <span>↗</span></Link><a className="text-button" href="#discover">EXPLORER LE STORE ↓</a></div>
             </div>
             <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="hero-emblem">N</div><div className="hero-caption"><span>NG / 020</span><b>PLAY YOUR WAY</b></div></div>
             <div className="hero-index"><span>01</span> / 03</div>
           </section>
 
           <section className="stats-row" aria-label="Informations sur la plateforme">
-            <div><strong>10</strong><span>JEUX AU<br />CATALOGUE</span></div><div><strong>02</strong><span>JEUX<br />JOUABLES</span></div><div><strong>0€</strong><span>ACCÈS AU<br />PROTOTYPE</span></div><div className="stats-note">UNE PLATEFORME INDÉPENDANTE.<br /><b>PROPULSÉE PAR NEXUS.</b></div>
+            <div><strong>10</strong><span>JEUX AU<br />CATALOGUE</span></div><div><strong>03</strong><span>JEUX<br />JOUABLES</span></div><div><strong>0€</strong><span>ACCÈS AU<br />PROTOTYPE</span></div><div className="stats-note">UNE PLATEFORME INDÉPENDANTE.<br /><b>PROPULSÉE PAR NEXUS.</b></div>
           </section>
 
           <section className="continue-section" aria-labelledby="continue-title">
             <div className="continue-heading">
-              <div><div className="eyebrow"><span /> REPRENDRE TA PARTIE</div><h2 id="continue-title">TES JEUX <em>JOUABLES</em></h2><p>Les deux expériences Nexus Games sont toujours là. Choisis ton univers et lance ta partie.</p></div>
-              <span className="playable-count">02 JEUX DISPONIBLES</span>
+              <div><div className="eyebrow"><span /> REPRENDRE TA PARTIE</div><h2 id="continue-title">TES JEUX <em>JOUABLES</em></h2><p>Trois expériences sont disponibles. Choisis ton univers et lance ta partie.</p></div>
+              <span className="playable-count">03 JEUX DISPONIBLES</span>
             </div>
             <div className="continue-grid">
               <Link className="continue-card continue-city" href="/games/nexus-city" onClick={() => recordPlayed("Nexus City")}>
@@ -270,8 +283,15 @@ export default function Home() {
                 <span className="continue-card-title">NEON DODGE</span><span className="continue-card-copy">Évite les obstacles, améliore ton score et bats ton record personnel.</span>
                 <span className="continue-launch">LANCER LE JEU <b>↗</b></span>
               </Link>
+              <Link className="continue-card continue-racing" href="/games/nexus-racing" onClick={() => recordPlayed("Nexus Racing")}>
+                <span className="continue-kicker">COURSE · JOUABLE</span><span className="continue-symbol">🏎</span>
+                <span className="continue-card-title">NEXUS RACING</span><span className="continue-card-copy">Faufile-toi dans le trafic, collecte des crédits et utilise ton turbo.</span>
+                <span className="continue-launch">LANCER LE JEU <b>↗</b></span>
+              </Link>
             </div>
+            {recentGames.length > 0 && <div className="recent-games-strip" aria-label="Jeux récemment lancés"><span>RÉCEMMENT LANCÉS</span>{recentGames.slice(0,3).map((name) => { const game=games.find((item) => item.title===name && item.slug); return game ? <Link key={name} href={game.slug!} onClick={() => recordPlayed(name)}>▶ {name}</Link> : null; })}</div>}
           </section>
+
           <section className="hub-section" aria-label="Les espaces Nexus Games">
             <div className="eyebrow"><span /> TON HUB DE JEU</div>
             <div className="hub-grid">
@@ -328,7 +348,7 @@ export default function Home() {
           </section>
 
           <section className="library-banner" id="library"><div><div className="eyebrow"><span /> TON ESPACE PERSONNEL</div><h2>TA BIBLIOTHÈQUE.<br /><em>TES RÈGLES.</em></h2><p>Ajoute tes jeux favoris et retrouve-les ici.</p><div className="favorite-list">{games.filter((game) => favorites.includes(game.id)).map((game) => <button key={game.id} onClick={() => setSelectedGame(game)}>{game.title} ↗</button>)}{favorites.length === 0 && <span>Ajoute des favoris avec le cœur sur les fiches.</span>}</div><button className="library-clear" onClick={()=>setFavorites([])} disabled={favorites.length===0}>VIDER LES FAVORIS</button></div><div className="library-count"><strong>{favorites.length.toString().padStart(2, "0")}</strong><span>JEUX FAVORIS</span></div></section>
-          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>NEXUS GAMES · VERSION 2.5.0</span><span>© 2026 NEXUS GAMES</span></footer>
+          <footer id="about"><a className="footer-brand" href="#home">NEXUS<span>GAMES</span></a><span>NEXUS GAMES · VERSION 4.0.0</span><span>© 2026 NEXUS GAMES</span></footer>
         </div>
       </section>
 
@@ -347,7 +367,8 @@ export default function Home() {
             </div>
             {backupNotice && <p className="backup-notice" role="status">{backupNotice}</p>}
           </section><button className="primary-button modal-play" onClick={() => setProfileOpen(false)}>ENREGISTRER</button></div></div>}
-      {selectedGame && <div className="modal-backdrop" role="presentation" onClick={() => setSelectedGame(null)}><div className="game-modal" role="dialog" aria-modal="true" aria-label={"Fiche de " + selectedGame.title} onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedGame(null)} aria-label="Fermer">×</button><div className={"modal-game-art art-" + selectedGame.color}><span>{selectedGame.icon}</span><b>{selectedGame.label}</b></div><div className="eyebrow"><span /> FICHE DU JEU · {selectedGame.category.toUpperCase()}</div><h2>{selectedGame.title}</h2><p>{selectedGame.details}</p><div className="game-meta"><span>{selectedGame.players}</span><span className={selectedGame.status === "JOUABLE" ? "meta-ready" : ""}>{selectedGame.status}</span></div>{selectedGame.slug ? <Link className="primary-button modal-play" href={selectedGame.slug}>▶ LANCER LE JEU</Link> : <button className="secondary-button modal-play" onClick={() => setSelectedGame(null)}>RETOUR AU CATALOGUE</button>}</div></div>}
+      {selectedGame && <div className="modal-backdrop" role="presentation" onClick={() => setSelectedGame(null)}><div className="game-modal" role="dialog" aria-modal="true" aria-label={"Fiche de " + selectedGame.title} onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedGame(null)} aria-label="Fermer">×</button><div className={"modal-game-art art-" + selectedGame.color}><span>{selectedGame.icon}</span><b>{selectedGame.label}</b></div><div className="eyebrow"><span /> FICHE DU JEU · {selectedGame.category.toUpperCase()}</div><h2>{selectedGame.title}</h2><p>{selectedGame.details}</p><div className="game-meta"><span>{selectedGame.players}</span><span className={selectedGame.status === "JOUABLE" ? "meta-ready" : ""}>{selectedGame.status}</span></div>{selectedGame.slug ? <Link className="primary-button modal-play" href={selectedGame.slug} onClick={() => recordPlayed(selectedGame.title)}>▶ LANCER LE JEU</Link> : <button className="secondary-button modal-play" onClick={() => setSelectedGame(null)}>RETOUR AU CATALOGUE</button>}</div></div>}
+      {commandOpen && <div className="command-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setCommandOpen(false); }}><section className="command-dialog" role="dialog" aria-modal="true" aria-label="Recherche rapide Nexus Games"><div className="command-head"><span>⌕</span><input autoFocus value={commandQuery} onChange={(event) => setCommandQuery(event.target.value)} placeholder="Rechercher un jeu, un genre..." aria-label="Rechercher un jeu" /><kbd>ESC</kbd><button onClick={() => setCommandOpen(false)} aria-label="Fermer la recherche">×</button></div><div className="command-caption">LANCEMENT RAPIDE · {commandResults.length} RÉSULTAT(S)</div><div className="command-results">{commandResults.map((game) => game.slug ? <Link key={game.id} href={game.slug} onClick={() => { recordPlayed(game.title); setCommandOpen(false); }}><span className={"command-game-icon art-"+game.color}>{game.icon}</span><span><b>{game.title}</b><small>{game.category} · {game.players}</small></span><strong>{game.status === "JOUABLE" ? "JOUER ↗" : "À VENIR"}</strong></Link> : <button key={game.id} onClick={() => { setSelectedGame(game); setCommandOpen(false); }}><span className={"command-game-icon art-"+game.color}>{game.icon}</span><span><b>{game.title}</b><small>{game.category} · {game.players}</small></span><strong>VOIR LA FICHE ↗</strong></button>)}</div>{commandResults.length===0 && <p className="command-empty">Aucun jeu trouvé. Essaie un autre mot-clé.</p>}<div className="command-foot">ASTUCE : CTRL + K POUR OUVRIR CETTE RECHERCHE DEPUIS LE CLAVIER</div></section></div>}
     </main>
   );
 }

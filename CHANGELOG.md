@@ -105,3 +105,11 @@ Première version majeure préparant le catalogue, les fonctionnalités joueur l
 - Interactions : pièces à collecter, interrupteurs, portes, obstacles et sorties avec passage au niveau suivant.
 - Bibliothèque locale et import/export JSON versionné, validé et limité à 300 Ko.
 - Le moteur 2D reste expérimental ; pas de compilation autonome ou de publication en ligne.
+
+
+## 4.0.0 — Ultimate Hub
+- Refonte du tableau de bord pour refléter les trois jeux réellement jouables.
+- Accès direct à Nexus City, Neon Dodge et Nexus Racing depuis la zone de reprise.
+- Historique local enrichi avec raccourcis vers les parties récentes.
+- Présentation responsive adaptée aux écrans larges, tablettes et mobiles.
+- Préservation des sauvegardes et des clés de stockage existantes.
