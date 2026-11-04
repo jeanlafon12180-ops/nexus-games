@@ -17,6 +17,7 @@ export default function EmergencyCityPage() {
   const [driving, setDriving] = useState(false);
   const [activeMission, setActiveMission] = useState<Mission | null>(null);
   const [completedMissions, setCompletedMissions] = useState(0);
+  const [insideBuilding, setInsideBuilding] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
   const cameraBundleRef = useRef<{ world: import("@babylonjs/core").Scene; first: import("@babylonjs/core").UniversalCamera; third: import("@babylonjs/core").ArcRotateCamera } | null>(null);
@@ -232,6 +233,27 @@ export default function EmergencyCityPage() {
         const hubSign = box("central-hub-sign", 8, 1.2, 0.25, 0, 9, -11.25, lane);
         hubBase.isPickable = hubRoof.isPickable = hubGlass.isPickable = hubSign.isPickable = false;
 
+        // 0.7: a compact accessible emergency-services reception interior.
+        const interiorRoot = new B.TransformNode("emergency-hub-interior", world);
+        const interiorFloor = B.MeshBuilder.CreateGround("hub-interior-floor", { width: 22, height: 18 }, world);
+        interiorFloor.parent = interiorRoot; interiorFloor.position.set(178, 0.04, 178); interiorFloor.material = sidewalk;
+        const interiorWall = mat("hub-interior-wall", new B.Color3(0.62, 0.66, 0.68), 0.92);
+        const interiorTrim = mat("hub-interior-trim", new B.Color3(0.12, 0.18, 0.22), 0.6);
+        const interiorPart = (name: string, w: number, h: number, d: number, x: number, y: number, z: number, material: B.Material) => {
+          const mesh = B.MeshBuilder.CreateBox(name, { width: w, height: h, depth: d }, world);
+          mesh.parent = interiorRoot; mesh.position.set(178 + x, y, 178 + z); mesh.material = material; return mesh;
+        };
+        interiorPart("interior-back-wall", 22, 4, 0.5, 0, 2, -9, interiorWall);
+        interiorPart("interior-left-wall", 0.5, 4, 18, -11, 2, 0, interiorWall);
+        interiorPart("interior-right-wall", 0.5, 4, 18, 11, 2, 0, interiorWall);
+        interiorPart("interior-front-left", 7, 4, 0.5, -7.5, 2, 9, interiorWall);
+        interiorPart("interior-front-right", 7, 4, 0.5, 7.5, 2, 9, interiorWall);
+        interiorPart("reception-desk", 7, 1.1, 1.4, 0, 0.65, -5.5, interiorTrim);
+        interiorPart("dispatch-screen", 3.8, 2, 0.16, 0, 2.1, -8.55, glass);
+        interiorPart("waiting-bench", 5, 0.65, 1.2, -6, 0.45, 3, interiorTrim);
+        interiorPart("interior-ceiling-light", 5, 0.12, 1, 0, 3.85, 0, lane);
+        interiorRoot.setEnabled(false);
+
         const player = B.MeshBuilder.CreateCapsule("player-placeholder", { height: 1.8, radius: 0.34 }, world);
         player.position.set(5, 0.9, 18);
         player.material = playerMat;
@@ -356,7 +378,13 @@ export default function EmergencyCityPage() {
         const keys = new Set<string>();
         let carSpeed = 0;
         const missionTarget = { current: null as { x: number; z: number } | null };
+        const buildingAccess = { current: ((inside: boolean) => {}) as (inside: boolean) => void };
         const missionComplete = { current: (() => {}) as () => void };
+        buildingBridgeRef.current = (inside) => {
+          if (inside) { interiorRoot.setEnabled(true); player.position.set(178, 0.9, 176); carRoot.setEnabled(false); }
+          else { interiorRoot.setEnabled(false); player.position.set(0, 0.9, 15); carRoot.setEnabled(true); }
+          setInsideBuilding(inside);
+        };
         missionBridgeRef.current = { setTarget: (target) => { missionTarget.current = target; }, clear: () => { missionTarget.current = null; } };
         const onDown = (event: KeyboardEvent) => { keys.add(event.key.toLowerCase()); };
         const onUp = (event: KeyboardEvent) => { keys.delete(event.key.toLowerCase()); };
@@ -442,9 +470,11 @@ export default function EmergencyCityPage() {
       cameraBundleRef.current = null;
       driveBundleRef.current = null;
       missionBridgeRef.current = null;
+      buildingBridgeRef.current = null;
     };
   }, []);
 
+  const buildingBridgeRef = useRef<((inside: boolean) => void) | null>(null);
   const missionBridgeRef = useRef<{ setTarget: (target: { x: number; z: number }) => void; clear: () => void } | null>(null);
   const modeRef = useRef<CameraMode>("third");
   const driveBundleRef = useRef<{ player: import("@babylonjs/core").Mesh } | null>(null);
@@ -463,11 +493,11 @@ export default function EmergencyCityPage() {
     <main className={styles.shell}>
       <header className={styles.topbar}>
         <a href="/" className={styles.brand}><span>N</span> NEXUS <b>EMERGENCY CITY</b></a>
-        <div className={styles.build}>CITY UPDATE <i /> 0.6.0</div>
+        <div className={styles.build}>CITY UPDATE <i /> 0.7.0</div>
       </header>
       <section className={styles.viewport}>
         <canvas ref={canvasRef} className={styles.canvas} aria-label="Aperçu 3D de la métropole Nexus Emergency City" />
-        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.6</span><span>POLICE · POMPIERS · SECOURS · CIRCULATION</span></div>
+        <div className={styles.hudTop}><span><i /> METRO DISTRICT / CITY BUILD 0.7</span><span>POLICE · POMPIERS · SECOURS · CIRCULATION</span></div>
         <div className={styles.titleCard}><small>NEXUS SIMULATION PROJECT</small><h1>EMERGENCY<br /><em>CITY</em></h1><p>UNE MÉTROPOLE. DES MILLIERS D'HISTOIRES.</p></div>
         <aside className={styles.dispatchPanel}>
           <div className={styles.dispatchHeader}><span>DISPATCH CENTRAL</span><b>{completedMissions} TERMINÉE(S)</b></div>
@@ -480,6 +510,10 @@ export default function EmergencyCityPage() {
           </div>}
         </aside>
         {completedMissions > 0 && <div className={styles.missionToast}>INTERVENTION VALIDÉE · +1 EXPÉRIENCE</div>}
+        <div className={styles.buildingAccess}>
+          <span>{insideBuilding ? "CENTRE DE SERVICES · INTÉRIEUR" : "CENTRE DE SERVICES · ENTRÉE"}</span>
+          <button onClick={() => buildingBridgeRef.current?.(!insideBuilding)}>{insideBuilding ? "SORTIR DU BÂTIMENT" : "ENTRER DANS LE BÂTIMENT"}</button>
+        </div>
         <div className={styles.hudBottom}>
           <div className={styles.status}>{error ? "3D ENGINE ERROR" : loaded ? "CITY ONLINE" : "LOADING CITY"} <i className={error ? styles.error : ""} /></div>
           <div className={styles.controls}>ZQSD / WASD <span>{driving ? "DRIVE" : "MOVE"}</span> · MOUSE <span>LOOK</span></div>
@@ -491,7 +525,7 @@ export default function EmergencyCityPage() {
         </div>
         {error && <div className={styles.errorPanel}>Le moteur 3D n'a pas pu démarrer : {error}</div>}
       </section>
-      <footer className={styles.footer}><span>BUILD 0.6 — TRAFFIC SYSTEMS & PEDESTRIANS</span><span>FEUX TRICOLORES · PIÉTONS EN CIRCUIT · CIRCULATION RÉGULÉE · 3 MISSIONS.</span></footer>
+      <footer className={styles.footer}><span>BUILD 0.7 — ACCESSIBLE SERVICE INTERIOR</span><span>CENTRE DE SERVICES ACCESSIBLE · INTÉRIEUR AMÉNAGÉ · FEUX · PIÉTONS · 3 MISSIONS.</span></footer>
     </main>
   );
 }
