@@ -1,132 +1,118 @@
-# Nexus Games — architecture PC + navigateur
+# Nexus Games — architecture PC + navigateur (stockage limité)
 
-> Statut : architecture cible, pas encore un jeu Unity compilé ni une version jouable.
-> Décision : un projet Unity 6 partagé, avec des profils de compilation Windows et Web.
+> Statut : architecture cible documentée ; aucun moteur 3D complet, build PC ou multijoueur n'est livré par ce document.
+> Contrainte : moins de 5 Go libres sur le PC ; éviter toute installation locale lourde.
 
-## 1. Objectif produit
+## 1. Décision technique
 
-Nexus Games conserve son hub Next.js, mais les jeux 3D ne sont plus dessinés par le hub. Chaque jeu possède un runtime indépendant, construit depuis un projet moteur commun et distribué sur plusieurs plateformes.
+Adopter une architecture web-first : un runtime 3D Babylon.js partagé entre le navigateur et une application Windows Electron. Les dépendances et compilations sont exécutées par GitHub Actions ; le PC sert à éditer et tester la version Web sans conserver les dossiers de compilation.
 
-- **Windows** : build natif installable, qualité graphique élevée et accès aux ressources locales autorisées.
-- **Navigateur desktop** : build Unity Web (WebAssembly/WebGL), intégré dans une page du hub.
-- **Identité visuelle** : mêmes personnages, environnements, règles et commandes de base ; qualité graphique et distance d'affichage ajustées selon la plateforme.
-- **Mobile web** : non prioritaire pour le premier jeu 3D ; ne pas promettre la compatibilité avant des tests réels.
+- Navigateur : Babylon.js + WebGL 2, avec WebGPU si disponible.
+- Windows : Electron embarque le même client web ; gameplay et règles restent partagés.
+- Hub : Next.js existant pour catalogue, profils et lancement.
+- CI : GitHub Actions pour tests, builds et installateur Windows.
+- Assets : modèles glTF/GLB, textures PBR compressées, audio et niveaux séparés des builds.
+- Clé USB : stockage/transport des assets et exports ; pas un disque de compilation idéal.
 
-## 2. Stack retenue
+Ce choix limite les installations locales, mais ne rend pas automatiquement le jeu équivalent à Fortnite. Le réalisme dépend des modèles, animations, environnements, éclairage, audio, optimisation et du temps de production.
+
+## 2. Stack
 
 | Domaine | Technologie / rôle |
 |---|---|
-| Hub, catalogue, pages, compte | Next.js + React + TypeScript (existant) |
-| Moteur 3D | Unity 6, projet C# partagé |
-| Rendu | Universal Render Pipeline (URP), avec profils qualité par plateforme |
-| Build PC | Windows x86-64 |
-| Build navigateur | Unity Web, WebAssembly + WebGL |
-| Distribution web | Hub Next.js/Vercel pour les pages et les fichiers statiques du build, après validation des en-têtes MIME/compression |
-| Données joueur | API sécurisée à définir ; ne pas considérer localStorage comme une sauvegarde cloud |
-| Multijoueur | Serveur faisant autorité ; transport WebSocket compatible navigateur pour les clients Web |
-| Assets | Fichiers source versionnés ; Git LFS à configurer pour les gros fichiers binaires |
+| Hub | Next.js + React + TypeScript |
+| Runtime 3D | Babylon.js + TypeScript |
+| Rendu | WebGL 2 ; WebGPU en amélioration progressive |
+| Formats 3D | glTF / GLB ; textures PBR compressées |
+| Navigateur | Client web servi par le hub |
+| Windows | Electron, empaqueté par GitHub Actions |
+| CI et builds | GitHub Actions, artefacts temporaires |
+| Données joueur | API sécurisée à concevoir ; stockage local limité aux préférences/cache |
+| Multijoueur futur | Serveur faisant autorité et transport WebSocket |
+| Assets volumineux | Git LFS ou stockage séparé ; ne pas committer les builds |
 
-## 3. Structure cible du dépôt
+## 3. Structure cible
 
 ```text
 nexus-games/
-├── src/                         # Hub Next.js existant
-│   ├── app/
-│   │   └── games/[slug]/         # Page d'accueil/lecteur du jeu
-│   └── components/game-player/   # Intégration du build Web
-├── public/
-│   └── games/                    # Builds Web exportés (pas les sources Unity)
-├── game-unity/                   # Projet Unity (à créer avec Unity Hub)
-│   ├── Assets/
-│   │   ├── GameCore/              # Gameplay partagé
-│   │   ├── Characters/
-│   │   ├── Environments/
-│   │   ├── UI/
-│   │   └── Platform/
-│   ├── Packages/
-│   └── ProjectSettings/
-├── docs/
-│   └── architecture/
-│       └── dual-platform.md
-└── CHANGELOG.md
+├── src/                         # Hub Next.js
+├── game/                        # Runtime Babylon partagé
+│   ├── src/core/
+│   ├── src/gameplay/
+│   ├── src/rendering/
+│   ├── src/platform/
+│   └── public/assets/           # GLB, textures, audio
+├── desktop/                     # Shell Electron
+├── public/games/                # Build Web publié
+├── .github/workflows/           # CI et build Windows distants
+└── docs/architecture/
 ```
 
-Les dossiers générés par Unity (Library, Temp, Obj, Builds locaux) ne doivent pas être commités. Les gros modèles, textures et sons doivent utiliser Git LFS ou un stockage d'assets adapté.
+Ne pas committer les dossiers de build, caches ou dépendances générés. Garder les assets source séparés des bundles exportés. Configurer Git LFS seulement si nécessaire et surveiller les quotas.
 
-## 4. Séparation des responsabilités
+## 4. Qualité visuelle visée
 
-### Runtime Unity
-- Contrôles et caméra à la troisième personne.
-- Animation, physique, collisions et interactions.
-- Monde, éclairage, matériaux, audio et interface en jeu.
-- Systèmes de jeu indépendants du hub web.
-- Adaptateurs de plateforme pour clavier/manette, sauvegarde et réseau.
+- Personnages et accessoires détaillés au format GLB, avec squelettes et animations.
+- Matériaux PBR, éclairage cohérent et environnements avec direction artistique.
+- Ombres, ciel, brouillard, post-traitement et audio selon les capacités.
+- LOD, compression des textures, occlusion et chargement progressif.
+- Réglages distincts : qualité élevée sur PC compatible, profil Web plus léger.
+- Assets originaux ou sous licence adaptée ; ne pas copier les contenus de Fortnite.
 
-### Hub Next.js
-- Catalogue, pages de présentation, comptes et bibliothèque.
-- Lancement du build Web dans un lecteur isolé et responsive.
-- Détection de la disponibilité du build et messages d'erreur lisibles.
-- Liens de téléchargement des builds PC signés, une fois leur distribution configurée.
-- Aucun rendu 3D de gameplay dans React.
+## 5. Livraison sur les deux plateformes
 
-### Services en ligne
-- Authentification et autorisations vérifiées côté serveur.
-- Sauvegardes avec validation et limites de taille.
-- Matchmaking et salons uniquement lorsqu'un serveur de jeu existe.
-- État de partie validé côté serveur ; le client ne décide pas seul des résultats.
-- Le client navigateur utilise un transport compatible Web (WebSocket/relay), pas des sockets TCP/UDP natifs.
+### Navigateur
+- Le hub ouvre une page qui charge le runtime Babylon.
+- WebGL 2 sert de chemin de compatibilité ; charger les ressources progressivement.
+- Afficher une erreur claire si WebGL, la mémoire ou le chargement des assets échoue.
 
-## 5. Profils de performance
+### Windows
+- Electron ouvre le même client et le même runtime Babylon.
+- GitHub Actions construit l'installateur Windows à distance.
+- Tester l'installateur sur un vrai PC Windows avant distribution.
+- Ne pas promettre de performances supérieures : les deux plateformes partagent le moteur et les profils peuvent varier.
 
-| Paramètre | Windows | Navigateur |
-|---|---|---|
-| Qualité | Élevée / réglable | Moyenne / réglable |
-| Textures | Résolution selon GPU | Packs compressés plus légers |
-| Ombres | Distance et qualité élevées | Distance réduite |
-| Décor | Densité complète selon matériel | LOD et distance d'affichage agressifs |
-| Téléchargement | Installateur / fichiers du jeu | Chargement initial compact + contenu différé |
-| Sauvegarde | API commune, cache local optionnel | API commune, cache navigateur optionnel |
+## 6. Développement sans stockage local
 
-La parité recherchée concerne le gameplay et le contenu, pas une promesse de performances ou de qualité identiques. Unity Web impose des contraintes de mémoire, de threading, de graphismes et de réseau ; le build navigateur doit être profilé séparément.
+1. Modifier les fichiers via GitHub ou un éditeur web léger.
+2. Exécuter tests et builds dans GitHub Actions.
+3. Conserver les artefacts dans Actions ou les télécharger ponctuellement.
+4. Tester la version navigateur depuis un déploiement de preview.
+5. Copier sur la clé USB les assets source utiles et les exports à archiver.
+6. Nettoyer les téléchargements locaux après validation ; les sources restent sur GitHub.
 
-## 6. Pipeline de livraison
+La clé USB est un espace de transport et d'archive, pas un substitut idéal au disque système pour compiler ou exécuter les outils.
 
-1. Développer et tester le jeu dans Unity Editor.
-2. Lancer les tests gameplay et performances dans l'éditeur.
-3. Construire Windows x86-64.
-4. Construire Unity Web avec le profil Web dédié.
-5. Vérifier le chargement, les fichiers .wasm/.data, les en-têtes MIME, la compression et les erreurs console.
-6. Déployer le build Web dans le dossier public versionné et publier le hub.
-7. Tester sur au moins un PC modeste et un PC plus puissant, ainsi que sur Chrome et Firefox desktop.
-8. Ne promouvoir une version qu'après validation des deux plateformes.
+## 7. Limites
 
-## 7. Limites et décisions non prises
-
-- Le prototype WebGL artisanal de `/battle-royale` reste une démo provisoire ; il ne devient pas automatiquement un projet Unity.
-- Aucun serveur multijoueur, matchmaking, compte cloud ni système anti-triche n'est actuellement livré.
-- Aucun installateur Windows Unity n'est encore produit.
-- Les services réseau et le stockage définitifs seront choisis avant l'activation des comptes et du multijoueur.
-- Un jeu de qualité commerciale demande des modèles, animations, sons, niveaux, tests et optimisation ; le choix du moteur ne les génère pas automatiquement.
+- Aucun projet Babylon complet ni installateur Electron n'est encore livré.
+- Le prototype battle royale actuel reste séparé ; il ne devient pas automatiquement un jeu réaliste.
+- Le multijoueur, matchmaking, comptes cloud et sauvegardes serveur ne sont pas activés.
+- Les builds Windows sur GitHub Actions doivent être testés sur un vrai PC Windows.
+- Le navigateur et Electron restent limités par les capacités GPU/CPU de la machine.
+- Le réalisme dépend des assets et de l'optimisation, pas seulement du moteur.
 
 ## 8. Jalons
 
-- **A — Fondation** : créer le projet Unity URP, configurer Windows + Web et valider une scène de test.
-- **B — Vertical slice** : un personnage animé, caméra, terrain détaillé, bâtiment, éclairage, audio et boucle de jeu jouable.
-- **C — Intégration** : page du hub qui charge le build Web ; distribution du build Windows.
-- **D — Services** : identité joueur et sauvegardes sécurisées.
-- **E — Multijoueur** : serveur autoritaire, salons, synchronisation et tests de charge.
+- 7.0 — Fondation web 3D : ajouter Babylon.js, scène de test, caméra, terrain, éclairage et contrôles.
+- 7.1 — Qualité visuelle : personnage original animé, environnement PBR, ombres et optimisation.
+- 7.2 — Windows : shell Electron et workflow GitHub Actions pour un installateur de test.
+- 7.3 — Intégration : runtime dans le hub et validation navigateur/Windows.
+- 7.4 — Jeu vertical slice : boucle de jeu, interface, audio et sauvegarde locale.
+- 7.5 — Online : serveur autoritaire, salons et synchronisation après validation solo.
 
-## 9. Critères d'acceptation du premier prototype
+## 9. Critères d'acceptation
 
-- Le même projet Unity produit un build Windows et un build Web.
-- Les deux builds démarrent, affichent la scène et acceptent les contrôles.
-- La version Web est accessible depuis le hub sur Chrome et Firefox desktop.
-- Les erreurs de chargement sont visibles et compréhensibles.
-- Les performances sont mesurées et les profils graphiques sont distincts.
-- La documentation indique clairement les fonctionnalités non disponibles.
+- Runtime Babylon fonctionnel depuis le hub sur Chrome et Firefox desktop.
+- Même runtime lancé dans l'application Windows Electron.
+- Builds produits à distance par GitHub Actions.
+- Scène avec modèle animé original, environnement PBR, ombres et commandes.
+- Performances mesurées sur le PC cible ; limites documentées.
+- Aucun gros outil de création 3D requis sur le PC avec moins de 5 Go libres.
 
-## Références techniques
+## Références
 
-- Unity Web — présentation : https://docs.unity.com/en-us/engine/6000.0/manual/platform-specific/webgl/intro
-- Unity Web — limitations techniques : https://docs.unity.com/en-us/engine/6000.6/manual/platform-specific/webgl/intro/technical-overview
-- Unity — optimisation d'un build Web : https://unity.com/how-to/profile-optimize-web-build
+- Babylon.js : https://doc.babylonjs.com/
+- Electron : https://www.electronjs.org/docs/latest/
+- GitHub Actions : https://docs.github.com/actions
+- glTF : https://www.khronos.org/gltf/
